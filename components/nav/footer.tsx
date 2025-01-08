@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {FaGithub} from "react-icons/fa";
 
 function Footer() {
   return (
@@ -7,11 +8,11 @@ function Footer() {
         <div className="flex gap-6 items-center">
           <Link href="/">Home</Link>
         </div>
-        <div>
-          <p>
-            {"Powered by "}
-            <Link href={"https://www.mdxblog.io/"}>MDXBlog</Link>
-          </p>
+        <div className={"flex gap-1 flex-auto items-center"}>
+          <text>{"Powered by "}</text>
+          <Link href={"https://www.mdxblog.io/"}>MDXBlog</Link>
+          <text>{" | "}</text>
+          <Link href={"https://github.com/NaN72dev/blog-mdx"}><FaGithub/></Link>
         </div>
         <nav className="flex gap-4 items-center text-sm">
           <div className="">
