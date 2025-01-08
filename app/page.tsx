@@ -1,5 +1,3 @@
-// import ReactMarkdown from "react-markdown";
-// import Image from "next/image";
 import type {Metadata} from "next";
 
 // Define the metadata generation function
@@ -10,11 +8,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Home() {
-  const markdown = `
-  
-  `;
-
-
   return (
     <div className="max-w-3xl z-10 w-full items-center justify-between">
       <div className="w-full flex justify-center items-center flex-col gap-6">

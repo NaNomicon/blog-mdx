@@ -2,8 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import React from "react";
 import dynamic from "next/dynamic";
-import type { Metadata, ResolvingMetadata } from "next";
-import { format } from "date-fns";
+import type {Metadata, ResolvingMetadata} from "next";
+import {format} from "date-fns";
 
 type Props = {
   params: { slug: string };
@@ -15,7 +15,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const post = await getPost(params);
   return {
-    title: post.metadata.title,
+    title: post.metadata.title + " | NaN",
     description: post.metadata.description,
   };
 }
