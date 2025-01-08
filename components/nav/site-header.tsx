@@ -1,17 +1,8 @@
 import Link from "next/link";
 
-import { ModeToggle } from "@/components/nav/theme-toggle";
-import AuthComponent from "./auth-button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-  SheetClose,
-} from "@/components/ui/sheet";
-import { HamburgerMenuIcon, BoxIcon } from "@radix-ui/react-icons";
+import {ModeToggle} from "@/components/nav/theme-toggle";
+import {Sheet, SheetClose, SheetContent, SheetHeader, SheetTrigger,} from "@/components/ui/sheet";
+import {HamburgerMenuIcon} from "@radix-ui/react-icons";
 
 function SiteHeader() {
   return (
@@ -46,11 +37,6 @@ function SiteHeader() {
                     <SheetClose>Blog</SheetClose>
                   </Link>
                 </div>
-                <div>
-                  <Link href="/contact">
-                    <SheetClose>Contact</SheetClose>
-                  </Link>
-                </div>
               </div>
             </div>
           </SheetContent>
@@ -66,14 +52,11 @@ function SiteHeader() {
           <a className="hover:text-muted-foreground" href="/blog">
             Blog
           </a>
-          <a className="hover:text-muted-foreground" href="/contact">
-            Contact
-          </a>
         </nav>
         <div className="flex items-center justify-end flex-1 space-x-4 z-20">
           <div className="flex gap-2 items-center">
             <ModeToggle />
-            <AuthComponent />
+            {/*<AuthComponent />*/}
           </div>
         </div>
       </div>

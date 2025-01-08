@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
+import type {Metadata} from "next";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
 
 // Define the metadata generation function
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Next Template | About",
+    title: "About | NaN",
   };
 }
 
@@ -16,21 +15,16 @@ export default function About() {
         <h1 className="text-5xl sm:text-6xl font-black pb-6">About</h1>
         <div className="flex flex-col gap-4 text-lg w-full">
           <div className="text-lg">
-            This Next.js template includes MDX support, allowing you to write
-            content using Markdown and embed React components within it. It
-            features a blog page for posting articles, a contact page for
-            communication, and dark mode for a comfortable viewing experience.
-            The template uses shadcn/ui components to ensure consistent design
-            and functionality throughout the site.
+            {"Heyy there! Thanks for visiting my website. It is currently under construction so I won't " +
+                "write too much in this page but I hope that the next time you visit it, it will be a lot better."}
           </div>
-
-          <Link
-            className="hover:underline text-lg"
-            target="_blank"
-            href="https://github.com/owolfdev/next-template-mdx-shad"
-          >
-            Code on Github
-          </Link>
+          <text className="text-center xl font-black pb-6">
+            {"Read my "}
+            <Link href={"/blog/"}>
+              {"blogs"}
+            </Link>
+            {" in the meantime?"}
+          </text>
         </div>
       </div>
     </div>

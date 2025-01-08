@@ -1,16 +1,9 @@
 "use client";
-import { useState } from "react";
-import { useEffect } from "react";
+import {useState} from "react";
 import Link from "next/link";
-import Image from "next/image";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { PersonIcon } from "@radix-ui/react-icons";
-import { Button, buttonVariants } from "../ui/button";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
+import {PersonIcon} from "@radix-ui/react-icons";
+import {buttonVariants} from "../ui/button";
 
 export default function AuthComponent() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,9 +19,6 @@ export default function AuthComponent() {
         <DropdownMenuContent className="bg-background">
           <Link href="/">
             <DropdownMenuItem>Home</DropdownMenuItem>
-          </Link>
-          <Link href="/profile">
-            <DropdownMenuItem>Profile</DropdownMenuItem>
           </Link>
         </DropdownMenuContent>
       </DropdownMenu>
