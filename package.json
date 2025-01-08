@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "docker:build": "docker build --tag registry.services.nandev.net/nan/blog-mdx --tag latest .",
+    "docker:push": "docker push registry.services.nandev.net/nan/blog-mdx --all-tags",
+    "docker:run": "docker run -p 127.0.0.1:3000:3000/tcp registry.services.nandev.net/nan/blog-mdx:latest"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
