@@ -12,8 +12,6 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-EXPOSE 3000
-
 RUN pnpm build
 RUN rm -f .env.local
 
