@@ -1,0 +1,176 @@
+export const metadata = {
+    title: "Deploying Dokploy (and your docker registry) on multiple machines for self-hosting services",
+    publishDate: "2025-01-14",
+    description: "Learn how to streamline deployments and self-host services using Dokploy, a flexible and developer-centric platform. This step-by-step guide walks you through setting up Dokploy on multiple VPS servers, deploying a private Docker registry, and configuring HTTPS with Let's Encrypt. Perfect for developers looking to consolidate projects, automate deployments, and maintain full control of their infrastructure.",
+    category: "self-hosting",
+    cover_image: "/250114-deploy-dokploy/cover.png",
+};
+
+> TL;DR: Consolidate your projects and streamline deployments with Dokploy, a powerful self-hosting platform. This guide covers setting up Dokploy on multiple VPS servers, deploying a private Docker registry, configuring HTTPS with Let's Encrypt, and managing ports for secure access. With Dokploy, you can automate deployments, link your GitHub account for seamless updates, and host anything from personal projects to production-ready services.
+
+<img src={metadata.cover_image} alt="cover image: a boy watching his phone on the bed at night" className={"mx-auto"}/>
+<br/>
+
+As a freelance developer, I juggled hosting for different client projects across many cheap or even free VPS servers. It was a real headache, I always wanted to streamline this process, but never quite had the motivation to make the switch.
+
+Last month, I got an amazing deal on my VPS hosting service: buy one, get one free! These servers had decent specs, with enough vCPU and RAM to handle all my client projects comfortably. I decided to consolidate all my projects into these two machines, and I needed a tool to simplify the deployment process which, led me to discover Dokploy.
+
+Instead of struggling with individual setups, I could consolidate everything onto these two, letting Dokploy automate deployments, manage HTTPS, and handle security. It's been a game-changer – I've saved time, money, and a lot of headaches.
+
+# What is Dokploy
+[Dokploy](https://dokploy.com/) is a developer-centric platform for deploying and managing applications across multiple servers. It supports various deployment methods ([Nixpacks](https://nixpacks.com/), [Heroku Buildpacks](https://devcenter.heroku.com/articles/buildpacks), [Dockerfiles](https://docs.docker.com/build/concepts/dockerfile/#:~:text=A%20Dockerfile%20is%20a%20text,Description), [Docker Compose](https://docs.docker.com/compose/)) and offers features like [user management](https://docs.dokploy.com/docs/core/permissions), [database management](https://docs.dokploy.com/docs/core/databases), [real-time monitoring](https://docs.dokploy.com/docs/core/features) and [more](https://docs.dokploy.com/docs/core/features). With a focus on flexibility and open-source principles, Dokploy empowers you to streamline deployments, scale applications, and maintain control of your infrastructure.
+# [Prerequisites](https://docs.dokploy.com/docs/core/installation#requirements)
+
+## Your VPS server(s)
+### Specs
+To ensure a smooth experience with Dokploy, your server should have at least 2GB of RAM and 30GB of disk space. This specification helps to handle the resources consumed by Docker during builds and prevents system freezes.
+
+If you don't know which provider to choose, Dokploy have some [recommendations](https://docs.dokploy.com/docs/core/installation#providers) for you (which will also support them).
+
+### Operating system
+Dokploy can be run on multiple Linux distros, I usually just use [Ubuntu 24.04 LTS](https://ubuntu.com/blog/tag/ubuntu-24-04-lts) for consistency.
+<details>
+    <summary>All [distros](https://docs.dokploy.com/docs/core/installation#virtual-private-server-vps) tested by Dokploy</summary>
+    - Ubuntu 24.04 LTS
+    - Ubuntu 23.10
+    - Ubuntu 22.04 LTS
+    - Ubuntu 20.04 LTS
+    - Ubuntu 18.04 LTS
+    - Debian 12
+    - Debian 11
+    - Debian 10
+    - Fedora 40
+    - Centos 9
+    - Centos 8
+</details>
+<br/>
+
+### Network
+To enable HTTPS support for your services, you’ll need a domain name or subdomain that points to your server’s IP address. This is essential for generating SSL/TLS certificates through providers like [Let's Encrypt](https://letsencrypt.org/). Ensure your DNS records are correctly configured to map the domain or subdomain to your master server's IP address.
+
+To ensure proper access to your services, configure your firewall or provider’s security group to allow public access to essential ports. Open port `22` for SSH to manage your server, `3000` for the Dokploy dashboard (this can be closed after setting up HTTPS), `443` for secure HTTPS access to your services, and `2377` for Docker Swarm communication. Properly managing these ports enhances connectivity while maintaining security.
+
+# Installation
+Run the following command ([origin](https://docs.dokploy.com/docs/core/installation#docker)) to automatically deploy Dokploy on your master server. This script automatically installs everything required to run Dokploy, including Docker, and starts Dokploy.
+```sh
+curl -sSL https://dokploy.com/install.sh | sudo sh
+```
+
+After completing, navigate to `http://<your-server-ip>:3000` to access the dashboard, create an Admin account, and you can start hosting your project.
+<img src="/250114-deploy-dokploy/create-admin.png" alt="create admin" className={"mx-auto"}/>
+
+# Deploy your first project!
+I will deploy a private docker registry as an example, and it can also be used to connect other machines to your Dokploy instance.
+
+## Create a new project
+Go to the <mark>Projects</mark> tab and click <mark>Create Project</mark> to create a new project, name it `registry`, fill out some description, and then <mark>Create</mark>.
+
+You will see your newly created project in the dashboard, now click on it.
+<img src="/250114-deploy-dokploy/created-project.png" alt="created project" className={"mx-auto"}/>
+<br/>
+
+## Create a new service using a docker image
+Currently, it has no services running, click on <mark>Create Service</mark>/<mark>Application</mark> to deploy a docker container. Name it `docker` and select <mark>Create</mark>. Now go to that service to configure it.
+<img src="/250114-deploy-dokploy/created-service.png" alt="created service" className={"mx-auto"}/>
+<br/>
+
+[//]: # (TODO: copy button next to inline code)
+
+> I originally followed [this guide](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-20-04) on how to deploy a private docker registry
+
+At the <mark>Provider</mark> section, select <mark>Docker</mark> and fill out the Docker image `registry:2`, we will be using the official docker registry image hosted on Docker Hub (`registry.hub.docker.com`). Process to fill out the <mark>Username</mark> and <mark>Password</mark>, you might want to use a [personal access token (PAT)](https://docs.docker.com/security/for-developers/access-tokens/) instead of your password, then hit <mark>Save</mark>.
+<img src="/250114-deploy-dokploy/provider.png" alt="provider configuration" className={"mx-auto"}/>
+<br/>
+
+## Attach a volume
+Go to the <mark>Advanced</mark> tab, at the <mark>Volumes</mark> section, and choose <mark>Add Volume</mark>. We will choose <mark>Volume Mount</mark> with the <mark>Volume Name</mark> `data` and <mark>Mount Path</mark> `/data`.
+
+Head over to the <mark>Environment</mark> tab, click the button to reveal the environment variables, and add our only environment variable:
+```.env
+REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/data
+```
+
+## Security
+You don't want anyone to access your private registry, so we will add basic auth to our registry.
+
+Go to the <mark>Advanced</mark> tab again, head to the <mark>Security</mark> section, click <mark>Add Security</mark>, fill out your username and password, and then <mark>Create</mark>.
+
+## Configure HTTPS
+
+This step is important, as it will allow you to access your registry from outside your server.
+
+Head to the <mark>Domains</mark> tab, click <mark>Add Domain</mark> and fill out the domain that you have prepared. Fill out the <mark>Container Port</mark> with `5000`, toggle <mark>HTTPS</mark> to `On`, select <mark>Let's Encrypt</mark> as your certificate provider, and finally <mark>Create</mark>.
+<img src="/250114-deploy-dokploy/https.png" alt="provider configuration" className={"mx-auto"}/>
+<br/>
+
+## Finally!
+Head to the <mark>General</mark> tab and click <mark>Deploy</mark>. You will be taken to the <mark>Deployments</mark> tab, where you can see the status of your deployment.
+
+Once it's done, you can visit `https://<your-registry-domain>/v2/` and log in, if you see the response `{}` then your registry is up and running!
+
+# Add the worker machine
+## Add the registry
+Now that your registry is up, you can head to Dokploy's <mark>Registry</mark> tab and add your own registry. This is compulsory to add the second machine, as Dokploy will use this registry to deploy your services on other nodes.
+
+## Prepare the second machine
+On the second machine, [install Docker](https://docs.docker.com/engine/install/).
+
+<details>
+    <summary>In case you are running Ubuntu like me | [Documentation](https://docs.docker.com/engine/install/ubuntu/)</summary>
+    ```sh
+    # Uninstall all conflicting packages
+    for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get
+    remove $pkg; done
+
+    # Add Docker's official GPG key:
+    sudo apt-get update
+    sudo apt-get install ca-certificates curl
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+    # Add the repository to Apt sources:
+    echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc]
+    https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    # Actually install Docker
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    ```
+</details>
+<br/>
+
+Go back to the master machine, and get the Docker Swarm <mark>join token</mark> as a worker:
+```sh
+sudo docker swarm join-token worker
+```
+
+You will see a command to join the swarm like the one below, run it on the worker machine.
+```sh
+# To add a worker to this swarm, run the following command:
+docker swarm join --token <your-join-token> <your-master-ip>:2377
+```
+
+That's it, if you go back to the <mark>Swarm</mark> tab, you will see the worker is now part of the swarm and Dokploy will be able to deploy services to it.
+
+# Exploration
+## Now what do I do with it?
+With your Dokploy setup, you’re free to host anything you want! Personally,  I use it to host services like [Minecraft](https://github.com/itzg/docker-minecraft-server), [Glance](https://github.com/glanceapp/glance), [Actual](https://actualbudget.org/docs/install/docker), [Interval](https://interval.com/docs/interval-server#running-interval-server-in-production), my personal as well as client projects, and many more. If you’re still unsure what to host, you can explore this list of [awesome self-hosted projects](https://github.com/awesome-selfhosted/awesome-selfhosted) for inspiration.
+
+## Further actions
+### HTTPS for Dokploy
+Go to the <mark>Server</mark> tab, Fill out your domain, and your Let's Encrypt email, and select Let's Encrypt as your certificate provider. Then hit <mark>Save</mark>.
+
+Reload Traefik in the <mark>Web Server</mark> section, after reloading, your Dokploy is secured with HTTPS and you can safely close port `3000` in your firewall or security group.
+<img src="/250114-deploy-dokploy/traefik-reload.png" alt="provider configuration" className={"mx-auto"}/>
+<br/>
+### Link your GitHub account
+Linking your GitHub account to Dokploy allows you to deploy private projects directly from your repositories with ease. Once connected, you can select your private repositories, automate builds, and manage deployments seamlessly. This integration simplifies the process of keeping your applications up-to-date while maintaining control over your code.
+
+Head over to the <mark>Git</mark> section, choose your Git provider, and authenticate with your Git account. Once connected, you can select your repositories and deploy them directly from Dokploy.
+
+---
+Dokploy has completely changed the way I manage my projects. It’s simple, flexible, and just works. If you’ve been juggling deployments or looking for a way to streamline your setup, give it a try—you might be surprised at how much easier it makes everything. Happy hosting!
