@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import Link from "next/link";
-import type { Metadata } from "next";
+import type {Metadata} from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -61,7 +61,7 @@ export default async function Home() {
   const posts = await getAllPosts();
 
   return (
-    <div className="flex flex-col gap-8 max-w-3xl z-10 w-full items-center justify-between">
+      <div className="flex flex-col gap-8 max-w-3xl z-10 w-full items-center justify-between">
       <div>
         <h2 className="text-5xl sm:text-6xl font-black">Blog</h2>
       </div>

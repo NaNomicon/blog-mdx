@@ -15,4 +15,4 @@ COPY . .
 RUN pnpm build
 RUN rm -f .env.local
 
-CMD ["pnpm", "start"]
+CMD ["pnpm", "start", "-p", "3001"]

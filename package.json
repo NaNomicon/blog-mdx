@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint",
     "docker:build": "docker build --tag registry.services.nandev.net/nan/blog-mdx --tag latest .",
     "docker:push": "docker push registry.services.nandev.net/nan/blog-mdx --all-tags",
-    "docker:run": "docker run -p 127.0.0.1:3000:3000/tcp registry.services.nandev.net/nan/blog-mdx:latest",
+    "docker:run": "docker run -p 127.0.0.1:3001:3001/tcp registry.services.nandev.net/nan/blog-mdx:latest",
     "docker:deploy": "pnpm docker:build && pnpm docker:push"
   },
   "dependencies": {
@@ -36,6 +36,7 @@
     "react-hook-form": "^7.52.1",
     "react-icons": "^5.4.0",
     "react-markdown": "^9.0.1",
+    "react-powerplug": "^1.0.0",
     "react-syntax-highlighter": "^15.5.0",
     "rehype-highlight": "^7.0.0",
     "remark-frontmatter": "^5.0.0",
