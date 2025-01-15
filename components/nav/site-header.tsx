@@ -28,11 +28,6 @@ function SiteHeader() {
                   </Link>
                 </div>
                 <div>
-                  <Link href="/about">
-                    <SheetClose>About</SheetClose>
-                  </Link>
-                </div>
-                <div>
                   <Link href="/blog">
                     <SheetClose>Blog</SheetClose>
                   </Link>
@@ -46,9 +41,6 @@ function SiteHeader() {
           <div className="text-4xl font-bold">NaN</div>
         </Link>
         <nav className="pl-6 gap-6 pt-4 hidden sm:flex text-sm">
-          <a className="hover:text-muted-foreground" href="/about">
-            About
-          </a>
           <a className="hover:text-muted-foreground" href="/blog">
             Blog
           </a>
