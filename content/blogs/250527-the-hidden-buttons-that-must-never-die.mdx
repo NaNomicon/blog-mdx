@@ -1,14 +1,14 @@
 export const metadata = {
     title: "The Hidden Buttons That Must Never Die",
     publishDate: "2025-05-27",
-    description: "In which I learned that client requirements and obfuscated code make for a dangerous combination",
+    description: "A cautionary tale about the dangers of removing seemingly innocent UI elements from production code. Learn how two harmless-looking buttons brought down an entire booking system, the perils of obfuscated JavaScript dependencies, and why sometimes the best fix is to hide rather than delete. A freelancer's nightmare turned into a valuable lesson about technical debt, client communication, and the hidden connections in legacy codebases.",
     category: "TIL",
     cover_image: "/250527-the-hidden-buttons-that-must-never-die/cover.png",
 };
 
-<img src={metadata.cover_image} alt="cover image: The Hidden Buttons That Must Never Die"/>
+**TLDR:** *A simple client request to remove two "unnecessary" buttons from a booking interface turned into a production nightmare when the entire booking system stopped working. The culprit? Obfuscated JavaScript that silently depended on those buttons for initialization. The fix: hide the buttons instead of deleting them, and never speak of this incident again. Sometimes the safest way to remove something is to make it invisible first.*
 
-*In which I learned that client requirements and obfuscated code make for a dangerous combination*
+<img src={metadata.cover_image} alt="cover image: The Hidden Buttons That Must Never Die"/>
 
 ---
 
