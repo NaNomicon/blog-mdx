@@ -7,6 +7,8 @@ import rehypeHighlight from "rehype-highlight";
 const nextConfig = {
   // Configure `pageExtensions` to include markdown and MDX files
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  // Enable standalone output for minimal Docker images
+  output: "standalone",
   // Optionally, add any other Next.js config below
 };
 

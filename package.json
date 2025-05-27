@@ -8,7 +8,9 @@
     "start": "next start -p 3001",
     "lint": "next lint",
     "new-blog": "node scripts/new-blog.js",
-    "docker:build": "docker build --tag registry.services.nandev.net/nan/blog-mdx --tag latest .",
+    "docker:build": "bash scripts/docker-build-optimized.sh",
+    "docker:build-no-cache": "bash scripts/docker-build-optimized.sh false",
+    "docker:build-distroless": "bash scripts/docker-build-optimized.sh true Dockerfile.distroless",
     "docker:push": "docker push registry.services.nandev.net/nan/blog-mdx --all-tags",
     "docker:run": "docker run -p 127.0.0.1:3001:3001/tcp registry.services.nandev.net/nan/blog-mdx:latest",
     "docker:deploy": "pnpm docker:build && pnpm docker:push"
