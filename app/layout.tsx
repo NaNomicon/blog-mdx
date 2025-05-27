@@ -6,12 +6,18 @@ import SiteHeader from "@/components/nav/site-header";
 import Footer from "@/components/nav/footer";
 
 import {ThemeProvider} from "@/components/theme-provider";
+import { generateSEOMetadata, defaultSEOConfig } from "@/lib/seo";
+import { WebsiteStructuredData } from "@/components/seo/structured-data";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "NaN",
-  description: "NaN's website",
+  ...generateSEOMetadata(defaultSEOConfig),
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
 };
 
 export default function RootLayout({
@@ -21,6 +27,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <WebsiteStructuredData
+          siteName={defaultSEOConfig.siteName!}
+          description={defaultSEOConfig.description!}
+          siteUrl={defaultSEOConfig.siteUrl!}
+          author={defaultSEOConfig.author!}
+        />
+      </head>
     <body className={`${inter.className} h-screen`}>
         <ThemeProvider
           attribute="class"

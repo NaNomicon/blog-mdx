@@ -4,6 +4,8 @@ import React from "react";
 import dynamic from "next/dynamic";
 import type {Metadata, ResolvingMetadata} from "next";
 import {format} from "date-fns";
+import { generateSEOMetadata, extractSEOFromBlogMetadata, defaultSEOConfig } from "@/lib/seo";
+import { BlogPostStructuredData, BreadcrumbStructuredData } from "@/components/seo/structured-data";
 
 type Props = {
   params: { slug: string };
@@ -14,10 +16,8 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const post = await getPost(params);
-  return {
-    title: post.metadata.title + " | NaN",
-    description: post.metadata.description,
-  };
+  const seoConfig = extractSEOFromBlogMetadata(post.metadata, params.slug);
+  return generateSEOMetadata(seoConfig);
 }
 
 async function getPost({ slug }: { slug: string }) {
@@ -61,6 +61,24 @@ export default async function Page({ params }: { params: { slug: string } }) {
   );
 
   return (
+    <>
+      <BlogPostStructuredData
+        title={post.metadata.title}
+        description={post.metadata.description}
+        author={defaultSEOConfig.author!}
+        publishDate={post.metadata.publishDate}
+        category={post.metadata.category}
+        coverImage={post.metadata.cover_image}
+        slug={slug}
+        siteUrl={defaultSEOConfig.siteUrl}
+      />
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Home", url: defaultSEOConfig.siteUrl! },
+          { name: "Blog", url: `${defaultSEOConfig.siteUrl}/blog` },
+          { name: post.metadata.title, url: `${defaultSEOConfig.siteUrl}/blog/${slug}` }
+        ]}
+      />
     <div className="max-w-3xl z-10 w-full items-center justify-between">
       <div className="w-full flex justify-center items-center flex-col gap-6">
         <article className="prose prose-lg md:prose-lg lg:prose-lg mx-auto min-w-full">
@@ -81,5 +99,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
         </article>
       </div>
     </div>
+    </>
   );
 }

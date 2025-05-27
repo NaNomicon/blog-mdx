@@ -2,11 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 import Link from "next/link";
 import type {Metadata} from "next";
+import { generateSEOMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: "Blog | NaN",
-  };
+  return generateSEOMetadata({
+    title: "Blog",
+    description: "Welcome to the blog! Here you will find a collection of articles about web development, programming, technology insights, and personal experiences.",
+  });
 }
 
 type Post = {
