@@ -64,6 +64,9 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
             ...(category && {
                 section: category,
             }),
+            ...(slug && {
+                authors: [author],
+            }),
         },
 
         // Twitter Card meta tags
@@ -72,8 +75,10 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
             title: fullTitle,
             description,
             images: [imageUrl],
-            creator: twitterHandle,
-            site: twitterHandle,
+            ...(twitterHandle && {
+                creator: twitterHandle,
+                site: twitterHandle,
+            }),
         },
 
         // Additional SEO meta tags
@@ -121,6 +126,10 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
             // Mobile optimization
             "format-detection": "telephone=no",
             "HandheldFriendly": "true",
+
+            // Additional properties for better social media support
+            "theme-color": "#000000",
+            "msapplication-TileColor": "#000000",
         },
     };
 

@@ -4,11 +4,11 @@
 export const seoConfig = {
     // Basic site information
     siteName: "NaN's Blog",
-    siteUrl: "https://yourdomain.com", // Replace with your actual domain
+    siteUrl: "https://nandev.net", // Replace with your actual domain
     author: "NaN",
 
     // Social media handles
-    twitterHandle: "@yourhandle", // Replace with your Twitter handle
+    twitterHandle: "", // Replace with your Twitter handle
 
     // Default meta information
     defaultTitle: "NaN",
@@ -19,7 +19,7 @@ export const seoConfig = {
     locale: "en_US",
 
     // Default Open Graph image (place in /public folder)
-    defaultOGImage: "/og-default.png",
+    defaultOGImage: "/250527-the-hidden-buttons-that-must-never-die/cover.png",
 
     // Additional SEO settings
     robots: {

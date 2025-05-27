@@ -26,7 +26,7 @@ export function BlogPostStructuredData({
   category,
   coverImage,
   slug,
-  siteUrl = "https://yourdomain.com"
+  siteUrl = "https://nandev.net"
 }: BlogPostStructuredDataProps) {
   const structuredData = {
     "@context": "https://schema.org",
