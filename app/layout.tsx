@@ -9,6 +9,7 @@ import {ThemeProvider} from "@/components/theme-provider";
 import { generateSEOMetadata, defaultSEOConfig } from "@/lib/seo";
 import { WebsiteStructuredData } from "@/components/seo/structured-data";
 import { CloudflareAnalyticsScript } from "@/components/analytics/cloudflare-analytics";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,6 +52,7 @@ export default function RootLayout({
           </main>
           <Footer />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
