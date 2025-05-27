@@ -1,7 +1,9 @@
 import Link from "next/link";
 import {FaGithub} from "react-icons/fa";
+import { getVersion } from "@/lib/version";
 
 function Footer() {
+  const version = getVersion();
   return (
     <footer className=" bottom-0 z-40 w-full border-t bg-background p-6 ">
       <div className="sm:px-8 px-4 flex flex-col justify-between items-center h-16 space-y-4 sm:space-y-0">
@@ -19,6 +21,9 @@ function Footer() {
             <p>
               &copy; {new Date().getFullYear()} NaN
             </p>
+          </div>
+          <div className="text-xs text-muted-foreground">
+            v{version}
           </div>
         </nav>
       </div>

@@ -56,6 +56,13 @@ This blog includes privacy-first Cloudflare Analytics. See [docs/CLOUDFLARE_ANAL
 - `pnpm verify-analytics` - Check analytics configuration
 - `pnpm new-blog` - Create a new blog post
 
+### Version Management
+
+- `pnpm version:show` - Display current version and startup information
+- `pnpm version:patch` - Bump patch version (0.1.1 → 0.1.2)
+- `pnpm version:minor` - Bump minor version (0.1.1 → 0.2.0)
+- `pnpm version:major` - Bump major version (0.1.1 → 1.0.0)
+
 ## Documentation
 
 - [Cloudflare Analytics Setup](docs/CLOUDFLARE_ANALYTICS_SETUP.md)
