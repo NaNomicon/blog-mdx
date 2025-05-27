@@ -49,6 +49,9 @@ export async function generateStaticParams() {
   return params;
 }
 
+// 🚀 ISR Magic - Revalidate every hour!
+export const revalidate = 3600; // 1 hour in seconds
+
 export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;
 

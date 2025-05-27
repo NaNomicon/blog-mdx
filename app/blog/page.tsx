@@ -59,6 +59,9 @@ async function getAllPosts(): Promise<Post[]> {
   return posts;
 }
 
+// 🚀 ISR for blog listing - Revalidate every 30 minutes
+export const revalidate = 1800; // 30 minutes in seconds
+
 export default async function Home() {
   const posts = await getAllPosts();
 
