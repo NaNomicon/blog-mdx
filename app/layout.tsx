@@ -10,6 +10,7 @@ import { generateSEOMetadata, defaultSEOConfig } from "@/lib/seo";
 import { WebsiteStructuredData } from "@/components/seo/structured-data";
 import { CloudflareAnalyticsScript } from "@/components/analytics/cloudflare-analytics";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -53,6 +54,7 @@ export default function RootLayout({
           <Footer />
         </ThemeProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
