@@ -8,6 +8,7 @@ import Footer from "@/components/nav/footer";
 import {ThemeProvider} from "@/components/theme-provider";
 import { generateSEOMetadata, defaultSEOConfig } from "@/lib/seo";
 import { WebsiteStructuredData } from "@/components/seo/structured-data";
+import { CloudflareAnalyticsScript } from "@/components/analytics/cloudflare-analytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +36,7 @@ export default function RootLayout({
           siteUrl={defaultSEOConfig.siteUrl!}
           author={defaultSEOConfig.author!}
         />
+        <CloudflareAnalyticsScript token={defaultSEOConfig.cloudflareAnalyticsToken} />
       </head>
     <body className={`${inter.className} h-screen`}>
         <ThemeProvider

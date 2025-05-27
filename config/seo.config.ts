@@ -30,6 +30,9 @@ export const seoConfig = {
     // Google Analytics ID (optional)
     googleAnalyticsId: "", // e.g., "G-XXXXXXXXXX"
 
+    // Cloudflare Analytics token (optional)
+    cloudflareAnalyticsToken: process.env.NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN || "", // e.g., "your-token-here"
+
     // Google Search Console verification (optional)
     googleSiteVerification: "", // e.g., "your-verification-code"
 
@@ -50,6 +53,7 @@ export const {
     defaultOGImage,
     robots,
     googleAnalyticsId,
+    cloudflareAnalyticsToken,
     googleSiteVerification,
     bingSiteVerification,
 } = seoConfig; 

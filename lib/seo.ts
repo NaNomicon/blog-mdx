@@ -13,6 +13,7 @@ export interface SEOConfig {
     siteName?: string;
     siteUrl?: string;
     twitterHandle?: string;
+    cloudflareAnalyticsToken?: string;
 }
 
 export function generateSEOMetadata(config: SEOConfig): Metadata {
@@ -162,6 +163,7 @@ export const defaultSEOConfig: SEOConfig = {
     siteName: seoConfig.siteName,
     siteUrl: seoConfig.siteUrl,
     twitterHandle: seoConfig.twitterHandle,
+    cloudflareAnalyticsToken: seoConfig.cloudflareAnalyticsToken,
 };
 
 // Utility function to extract SEO data from blog post metadata

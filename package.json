@@ -9,6 +9,7 @@
     "start": "next start -p 3001",
     "lint": "next lint",
     "new-blog": "node scripts/new-blog.js",
+    "verify-analytics": "node scripts/verify-analytics.js",
     "docker:build": "bash scripts/docker-build.sh",
     "docker:run": "docker run --rm -p 3001:3001 registry.services.nandev.net/nan/blog-mdx:latest",
     "docker:push": "docker push registry.services.nandev.net/nan/blog-mdx:latest",
