@@ -6,6 +6,7 @@ import type {Metadata, ResolvingMetadata} from "next";
 import {format} from "date-fns";
 import { generateSEOMetadata, extractSEOFromBlogMetadata, defaultSEOConfig } from "@/lib/seo";
 import { BlogPostStructuredData, BreadcrumbStructuredData } from "@/components/seo/structured-data";
+import { BlogLayout } from "@/components/mdx/blog-layout";
 
 type Props = {
   params: { slug: string };
@@ -81,7 +82,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       />
     <div className="max-w-3xl z-10 w-full items-center justify-between">
       <div className="w-full flex justify-center items-center flex-col gap-6">
-        <article className="prose prose-lg md:prose-lg lg:prose-lg mx-auto min-w-full">
+        <article>
           <div className="pb-8">
             <p className="font-semibold text-lg">
               <span className="text-red-600 pr-1">
@@ -95,7 +96,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
               {post.metadata.title}
             </h1>
           </div>
-          <MDXContent />
+          <BlogLayout metadata={post.metadata}>
+            <MDXContent />
+          </BlogLayout>
         </article>
       </div>
     </div>

@@ -4,13 +4,8 @@ export const metadata = {
     description: "A cautionary tale about the dangers of removing seemingly innocent UI elements from production code. Learn how two harmless-looking buttons brought down an entire booking system, the perils of obfuscated JavaScript dependencies, and why sometimes the best fix is to hide rather than delete. A freelancer's nightmare turned into a valuable lesson about technical debt, client communication, and the hidden connections in legacy codebases.",
     category: "TIL",
     cover_image: "/250527-the-hidden-buttons-that-must-never-die/cover.png",
+    tldr: "A simple client request to remove two \"unnecessary\" buttons from a booking interface turned into a production nightmare when the entire booking system stopped working. The culprit? Obfuscated JavaScript that silently depended on those buttons for initialization. The fix: hide the buttons instead of deleting them, and never speak of this incident again. Sometimes the safest way to remove something is to make it invisible first.",
 };
-
-**TLDR:** *A simple client request to remove two "unnecessary" buttons from a booking interface turned into a production nightmare when the entire booking system stopped working. The culprit? Obfuscated JavaScript that silently depended on those buttons for initialization. The fix: hide the buttons instead of deleting them, and never speak of this incident again. Sometimes the safest way to remove something is to make it invisible first.*
-
-<img src={metadata.cover_image} alt="cover image: The Hidden Buttons That Must Never Die"/>
-
----
 
 It was a quiet Tuesday afternoon when I received a client request: "Remove those unnecessary buttons from the booking interface." As a freelancer, you get used to these seemingly simple tasks that should take no longer than a minute - after all, they were just sitting there, taking up space in the UI and precious bytes in the codebase.
 
@@ -61,8 +56,4 @@ And so, the buttons remain in the codebase to this day, now properly hidden from
 
 ## Conclusion
 
-*Moral of the story: In web development, when dealing with obfuscated code and client requirements, remember that sometimes the safest way to remove something is to make it invisible first. And if the client insists on complete removal, make sure you have a backup of the working code - you might need it sooner than you think.*
-
----
-
-*Published on {metadata.publishDate}* 
+*Moral of the story: In web development, when dealing with obfuscated code and client requirements, remember that sometimes the safest way to remove something is to make it invisible first. And if the client insists on complete removal, make sure you have a backup of the working code - you might need it sooner than you think.* 
