@@ -1,64 +1,59 @@
-# Multi-stage build for ultra-optimized production image
-FROM --platform=linux/amd64 node:20-alpine AS base
+# Ultra-fast build optimized for minimum time and multi-platform compatibility
+FROM node:20-alpine AS base
 
-# Install pnpm globally and setup
-RUN npm install -g pnpm && \
+# Install pnpm and setup in one optimized layer
+RUN npm install -g pnpm@9.5.0 && \
     apk add --no-cache libc6-compat && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/cache/apk/* && \
+    pnpm config set store-dir /root/.local/share/pnpm/store
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files for dependency installation
+# Dependencies stage with aggressive caching
+FROM base AS deps
+
 COPY package.json pnpm-lock.yaml ./
 
-# Dependencies stage - install all dependencies including dev dependencies
-FROM base AS deps
-# Use BuildKit cache mount for faster pnpm installs
+# Install with maximum caching and parallelism
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile
+    --mount=type=cache,id=pnpm-metadata,target=/root/.cache/pnpm \
+    pnpm install --frozen-lockfile --prefer-offline --ignore-scripts
 
-# Builder stage - build the application
+# Builder stage optimized for speed
 FROM base AS builder
-# Copy node_modules from deps stage
+
+# Copy dependencies
 COPY --from=deps /app/node_modules ./node_modules
-# Copy source code
+
+# Copy all source files at once for faster layer creation
 COPY . .
 
-# Build the application with standalone output
-RUN pnpm build
+# Build with maximum optimization for speed
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    NODE_ENV=production \
+    NODE_OPTIONS="--max-old-space-size=6144" \
+    NEXT_PRIVATE_SKIP_VALIDATION=1
 
-# Production stage - create ultra-minimal production image
-FROM --platform=linux/amd64 node:20-alpine AS runner
+# Build with aggressive caching
+RUN --mount=type=cache,id=nextjs,target=/app/.next/cache \
+    --mount=type=cache,id=swc,target=/root/.swc \
+    pnpm build
 
-LABEL authors="NaN"
-
-# Install only absolutely necessary packages
-RUN apk add --no-cache libc6-compat && \
-    rm -rf /var/cache/apk/*
+# Ultra-minimal production image
+FROM gcr.io/distroless/nodejs20-debian12 AS runner
 
 WORKDIR /app
 
-# Create non-root user for security
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
+# Copy built application
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
 
-# Copy the standalone output from builder
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-
-# Switch to non-root user
-USER nextjs
-
-# Expose port
-EXPOSE 3001
-
-# Set environment variables
 ENV PORT=3001 \
     NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     HOSTNAME="0.0.0.0"
 
-# Start the application using the standalone server
-CMD ["node", "server.js"]
+EXPOSE 3001
+
+CMD ["server.js"]

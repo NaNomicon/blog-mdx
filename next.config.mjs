@@ -10,7 +10,7 @@ const nextConfig = {
   // Enable standalone output for minimal Docker images
   output: "standalone",
 
-  // Build optimizations
+  // Build optimizations for speed
   experimental: {
     // Optimize package imports for better tree shaking
     optimizePackageImports: [
@@ -18,12 +18,44 @@ const nextConfig = {
       "react-icons",
       "@radix-ui/react-icons",
     ],
+    // Disable turbo temporarily for stability
+    // turbo: {
+    //   rules: {
+    //     "*.svg": {
+    //       loaders: ["@svgr/webpack"],
+    //       as: "*.js",
+    //     },
+    //   },
+    // },
+    // Enable SWC minification for faster builds
+    swcMinify: true,
+    // Faster builds with reduced type checking
+    typedRoutes: false,
   },
 
-  // Webpack optimizations
+  // Compiler optimizations
+  compiler: {
+    // Remove console logs in production
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+
+  // Image optimization
+  images: {
+    // Optimize image loading
+    formats: ["image/webp", "image/avif"],
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+  },
+
+  // Simplified webpack optimizations for faster builds
   webpack: (config, { dev, isServer }) => {
     // Optimize for production builds
     if (!dev) {
+      // Enable persistent caching with simpler config
+      config.cache = {
+        type: "filesystem",
+      };
+
+      // Simplified optimization for faster builds
       config.optimization = {
         ...config.optimization,
         splitChunks: {
@@ -39,8 +71,17 @@ const nextConfig = {
       };
     }
 
+    // Optimize module resolution
+    config.resolve.symlinks = false;
+
     return config;
   },
+
+  // Enable static optimization
+  trailingSlash: false,
+
+  // Optimize fonts
+  optimizeFonts: true,
 
   // Optionally, add any other Next.js config below
 };
