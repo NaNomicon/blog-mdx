@@ -36,7 +36,7 @@ export default function About() {
       <section className="space-y-16">
         <div className="prose prose-lg max-w-none">
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Hey there! Thanks for visiting my corner of the internet. I'm NaN, a developer with an insatiable 
+            Hey there! Thanks for visiting my corner of the internet. I&apos;m NaN, a developer with an insatiable 
             curiosity for learning and exploring new technologies. This space serves as my digital garden where 
             I document discoveries, share insights, and connect with fellow explorers.
           </p>
@@ -91,7 +91,7 @@ export default function About() {
             <h2 className="text-2xl font-medium">Current Status</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               This website is currently under construction, evolving and improving with each visit. 
-              I'm constantly adding new content, refining the design, and enhancing the user experience.
+              I&apos;m constantly adding new content, refining the design, and enhancing the user experience.
             </p>
           </div>
           

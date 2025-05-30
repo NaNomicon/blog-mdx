@@ -39,7 +39,7 @@ export default function Home() {
               <h2 className="text-2xl font-medium">About</h2>
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              I'm always looking for ways to expand my knowledge, try out fresh ideas, and tackle challenges head-on. I started this blog as a way to document what I've learned, keep track of my progress, and share insights with others.
+              I&apos;m always looking for ways to expand my knowledge, try out fresh ideas, and tackle challenges head-on. I started this blog as a way to document what I&apos;ve learned, keep track of my progress, and share insights with others.
             </p>
           </div>
           
@@ -49,7 +49,7 @@ export default function Home() {
               <h2 className="text-2xl font-medium">Purpose</h2>
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              Whether it's coding tips, problem-solving, or things I've discovered along the way, I hope my posts can help and inspire others on their own journeys.
+              Whether it&apos;s coding tips, problem-solving, or things I&apos;ve discovered along the way, I hope my posts can help and inspire others on their own journeys.
             </p>
           </div>
         </div>
