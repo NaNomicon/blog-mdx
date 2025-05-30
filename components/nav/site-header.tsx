@@ -1,55 +1,63 @@
 import Link from "next/link";
+import { Menu } from "lucide-react";
 
 import {ModeToggle} from "@/components/nav/theme-toggle";
 import {Sheet, SheetClose, SheetContent, SheetHeader, SheetTrigger,} from "@/components/ui/sheet";
-import {HamburgerMenuIcon} from "@radix-ui/react-icons";
 
 function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
-      <div className="sm:px-12 px-6 flex items-center h-16 space-x-4 sm:justify-between sm:space-x-0">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-6 lg:px-8">
+        {/* Mobile Menu */}
         <Sheet>
-          <SheetTrigger className="p-2 sm:hidden">
-            <HamburgerMenuIcon className="w-8 h-8 sm:hidden" />
+          <SheetTrigger className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 md:hidden">
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle menu</span>
           </SheetTrigger>
-          <SheetContent side="left">
-            <SheetHeader className="pt-8">
-              {/* <SheetTitle>
-                <span className="text-4xl">Menu</span>
-              </SheetTitle> */}
-              {/* <SheetDescription>Find your way around.</SheetDescription> */}
+          <SheetContent side="left" className="w-80">
+            <SheetHeader className="text-left">
+              <Link href="/" className="flex items-center space-x-2">
+                <span className="text-2xl font-light">NaN</span>
+              </Link>
             </SheetHeader>
-
-            <div className="pt-8 pl-2 text-lg">
-              <div className="space-y-8 ">
-                <div>
-                  <Link href="/">
-                    <SheetClose>Home</SheetClose>
-                  </Link>
-                </div>
-                <div>
-                  <Link href="/blog">
-                    <SheetClose>Blog</SheetClose>
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <nav className="mt-8 space-y-6">
+              <Link href="/" className="block text-lg font-medium transition-colors hover:text-foreground/80">
+                <SheetClose>Home</SheetClose>
+              </Link>
+              <Link href="/about" className="block text-lg font-medium transition-colors hover:text-foreground/80">
+                <SheetClose>About</SheetClose>
+              </Link>
+              <Link href="/blog" className="block text-lg font-medium transition-colors hover:text-foreground/80">
+                <SheetClose>Blog</SheetClose>
+              </Link>
+            </nav>
           </SheetContent>
         </Sheet>
 
-        <Link href="/">
-          <div className="text-4xl font-bold">NaN</div>
+        {/* Logo */}
+        <Link href="/" className="flex items-center space-x-2">
+          <span className="text-2xl font-light tracking-tight">NaN</span>
         </Link>
-        <nav className="pl-6 gap-6 pt-4 hidden sm:flex text-sm">
-          <a className="hover:text-muted-foreground" href="/blog">
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-8">
+          <Link 
+            href="/about" 
+            className="text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60"
+          >
+            About
+          </Link>
+          <Link 
+            href="/blog" 
+            className="text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60"
+          >
             Blog
-          </a>
+          </Link>
         </nav>
-        <div className="flex items-center justify-end flex-1 space-x-4 z-20">
-          <div className="flex gap-2 items-center">
-            <ModeToggle />
-            {/*<AuthComponent />*/}
-          </div>
+
+        {/* Theme Toggle */}
+        <div className="flex items-center">
+          <ModeToggle />
         </div>
       </div>
     </header>

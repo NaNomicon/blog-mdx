@@ -2,6 +2,7 @@
   "name": "next-template-mdx-shad",
   "version": "0.1.4",
   "private": true,
+  "author": "NaNomicon",
   "scripts": {
     "dev": "node scripts/startup-info.js && next dev -p 3001",
     "build": "next build",

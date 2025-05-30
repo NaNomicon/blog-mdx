@@ -26,7 +26,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    --radius: 0.75rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -66,19 +66,127 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Focus styles */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-primary/20 text-primary-foreground;
+  }
+
+  /* Improved typography */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-medium tracking-tight;
+  }
+
+  /* Link styles */
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  /* Button and interactive element transitions */
+  button,
+  [role="button"] {
+    @apply transition-all duration-200;
   }
 }
 
-/* Add this to your global CSS file */
+/* Code block improvements */
 .code-block pre {
   max-width: 100%;
   overflow-x: auto;
   word-break: break-word;
+  @apply rounded-lg border bg-muted/50;
 }
 
 .code-block code {
   white-space: pre-wrap;
   word-break: break-word;
+  @apply text-sm;
+}
+
+/* Prose improvements for MDX content */
+.prose {
+  @apply max-w-none;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  @apply font-medium tracking-tight;
+}
+
+.prose p {
+  @apply leading-relaxed text-muted-foreground;
+}
+
+.prose a {
+  @apply text-foreground underline underline-offset-4 decoration-muted-foreground/50 hover:decoration-foreground transition-colors;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-border pl-6 italic text-muted-foreground;
+}
+
+.prose ul,
+.prose ol {
+  @apply text-muted-foreground;
+}
+
+.prose li {
+  @apply my-2;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-border rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-border/80;
+}
+
+/* Loading states */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

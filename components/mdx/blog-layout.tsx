@@ -41,18 +41,8 @@ export function BlogLayout({ metadata, children }: BlogLayoutProps) {
       <hr className="mb-8 border-gray-300 dark:border-gray-600" />
 
       {/* Blog Content */}
-      <div className="prose prose-lg md:prose-lg lg:prose-lg mx-auto min-w-full">
+      <div className="prose prose-lg md:prose-xl lg:prose-xl mx-auto max-w-none">
         {children}
-      </div>
-
-      {/* Separator */}
-      <hr className="mt-8 mb-4 border-gray-300 dark:border-gray-600" />
-
-      {/* Published Date */}
-      <div className="mt-8 text-center">
-        <p className="text-sm text-gray-600 dark:text-gray-400 italic">
-          Published on {metadata.publishDate}
-        </p>
       </div>
     </>
   );

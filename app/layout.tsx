@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <WebsiteStructuredData
           siteName={defaultSEOConfig.siteName!}
@@ -40,18 +40,20 @@ export default function RootLayout({
         />
         <CloudflareAnalyticsScript token={defaultSEOConfig.cloudflareAnalyticsToken} />
       </head>
-    <body className={`${inter.className} h-screen`}>
+      <body className={`${inter.className} min-h-screen bg-background font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <SiteHeader />
-          <main className="flex flex-col items-center justify-between px-6 py-12   sm:px-10 sm:py-24 min-h-[calc(100vh-12rem)]">
-            {children}
-          </main>
-          <Footer />
+          <div className="relative flex min-h-screen flex-col">
+            <SiteHeader />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </div>
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />

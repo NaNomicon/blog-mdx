@@ -83,10 +83,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
           { name: post.metadata.title, url: `${defaultSEOConfig.siteUrl}/blog/${slug}` }
         ]}
       />
-    <div className="max-w-3xl z-10 w-full items-center justify-between">
-      <div className="w-full flex justify-center items-center flex-col gap-6">
-        <article>
-          <div className="pb-8">
+    <div className="max-w-4xl mx-auto px-4 py-16">
+      <div className="w-full space-y-8">
+        <article className="space-y-8">
+          <div>
             <p className="font-semibold text-lg">
               <span className="text-red-600 pr-1">
                 {post.metadata.publishDate}
@@ -94,8 +94,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
               {post.metadata.category}
             </p>
           </div>
-          <div className="pb-10">
-            <h1 className="text-5xl sm:text-6xl font-black capitalize leading-12">
+          <div>
+            <h1 className="text-5xl sm:text-6xl font-black capitalize leading-tight">
               {post.metadata.title}
             </h1>
           </div>

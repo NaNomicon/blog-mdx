@@ -5,7 +5,7 @@ export const seoConfig = {
     // Basic site information
     siteName: "NaN's Blog",
     siteUrl: "https://nandev.net", // Replace with your actual domain
-    author: "NaN",
+    author: "NaNomicon",
 
     // Social media handles
     twitterHandle: "", // Replace with your Twitter handle
