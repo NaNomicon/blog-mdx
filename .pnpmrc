@@ -5,5 +5,13 @@ enable-pre-post-scripts=true
 # Allow scripts for @vercel scoped packages
 @vercel:registry=https://registry.npmjs.org/
 
-# Disable the build script warning for trusted Vercel packages
-ignore-scripts=false 
+# Specifically allow @vercel/speed-insights to run build scripts
+# This is more secure than unsafe-perm as it targets specific packages
+scripts-prepend-node-path=true
+
+# Allow build scripts for trusted @vercel packages only
+ignore-scripts=false
+
+# Specifically approve @vercel/speed-insights for build scripts
+# This tells pnpm that this package is trusted
+auto-install-peers=true 

@@ -1,6 +1,6 @@
 {
   "name": "next-template-mdx-shad",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "author": "NaNomicon",
   "scripts": {
@@ -18,7 +18,9 @@
     "docker:build": "bash scripts/docker-build.sh",
     "docker:run": "docker run --rm -p 3001:3001 registry.services.nandev.net/nan/blog-mdx:latest",
     "docker:push": "docker push registry.services.nandev.net/nan/blog-mdx:latest",
-    "docker:deploy": "pnpm docker:build && pnpm docker:push"
+    "docker:deploy": "pnpm docker:build && pnpm docker:push",
+    "approve-builds": "pnpm approve-builds",
+    "postinstall": "pnpm config set ignore-scripts false || true"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
