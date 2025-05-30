@@ -1,5 +1,6 @@
 import { Bot } from 'grammy';
 import type { TelegramConfig, ErrorNotification } from './types';
+import { env } from '../env';
 
 class TelegramNotifier {
     private bot: Bot | null = null;
@@ -20,7 +21,7 @@ class TelegramNotifier {
     private formatErrorMessage(notification: ErrorNotification): string {
         const { error, context } = notification;
         const timestamp = context?.timestamp || new Date();
-        const environment = context?.environment || process.env.NODE_ENV || 'unknown';
+        const environment = context?.environment || env.NODE_ENV || 'unknown';
         const severity = context?.severity || 'medium';
 
         const severityEmoji = {

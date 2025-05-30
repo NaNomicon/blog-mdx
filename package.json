@@ -1,6 +1,6 @@
 {
   "name": "next-template-mdx-shad",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "author": "NaNomicon",
   "scripts": {
@@ -58,7 +58,7 @@
     "tailwind-highlightjs": "^2.0.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8"
+    "zod": "^3.25.42"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^15.4.0-canary.51",

@@ -1,14 +1,15 @@
 import { initializeTelegramNotifier } from './bot';
 import { setupGlobalErrorHandling } from '../error-handler';
+import { env, validateTelegramConfig } from '../env';
 
 // Initialize Telegram bot for error notifications
 export function initializeTelegramErrorNotifications() {
     const config = {
-        botToken: process.env.TELEGRAM_BOT_TOKEN || '',
-        chatId: process.env.TELEGRAM_CHAT_ID || '',
-        enabled: process.env.TELEGRAM_NOTIFICATIONS_ENABLED === 'true' &&
-            Boolean(process.env.TELEGRAM_BOT_TOKEN) &&
-            Boolean(process.env.TELEGRAM_CHAT_ID),
+        botToken: env.TELEGRAM_BOT_TOKEN || '',
+        chatId: env.TELEGRAM_CHAT_ID || '',
+        enabled: env.TELEGRAM_NOTIFICATIONS_ENABLED &&
+            Boolean(env.TELEGRAM_BOT_TOKEN) &&
+            Boolean(env.TELEGRAM_CHAT_ID),
     };
 
     if (config.enabled) {
@@ -31,16 +32,5 @@ export function initializeTelegramErrorNotifications() {
     setupGlobalErrorHandling();
 }
 
-// Environment variables validation
-export function validateTelegramConfig(): {
-    isValid: boolean;
-    missingVars: string[];
-} {
-    const requiredVars = ['TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHAT_ID'];
-    const missingVars = requiredVars.filter(varName => !process.env[varName]);
-
-    return {
-        isValid: missingVars.length === 0,
-        missingVars,
-    };
-} 
+// Re-export the new validation function for backward compatibility
+export { validateTelegramConfig }; 

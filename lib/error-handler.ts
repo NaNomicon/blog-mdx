@@ -1,5 +1,6 @@
 import { notifyError } from './telegram';
 import type { ErrorContext } from './telegram/types';
+import { env } from './env';
 
 // Global error handler for unhandled errors
 export function setupGlobalErrorHandling() {
@@ -12,7 +13,7 @@ export function setupGlobalErrorHandling() {
 
             notifyError(error, {
                 severity: 'high',
-                environment: process.env.NODE_ENV,
+                environment: env.NODE_ENV,
                 additionalData: {
                     type: 'unhandledRejection',
                     promise: promise.toString(),
@@ -25,14 +26,14 @@ export function setupGlobalErrorHandling() {
 
             notifyError(error, {
                 severity: 'critical',
-                environment: process.env.NODE_ENV,
+                environment: env.NODE_ENV,
                 additionalData: {
                     type: 'uncaughtException',
                 },
             });
 
             // Don't exit the process in development
-            if (process.env.NODE_ENV === 'production') {
+            if (env.NODE_ENV === 'production') {
                 process.exit(1);
             }
         });
@@ -45,7 +46,7 @@ export function setupGlobalErrorHandling() {
                 severity: 'medium',
                 url: window.location.href,
                 userAgent: navigator.userAgent,
-                environment: process.env.NODE_ENV,
+                environment: env.NODE_ENV,
                 additionalData: {
                     type: 'windowError',
                     filename: event.filename,
@@ -62,7 +63,7 @@ export function setupGlobalErrorHandling() {
                 severity: 'high',
                 url: window.location.href,
                 userAgent: navigator.userAgent,
-                environment: process.env.NODE_ENV,
+                environment: env.NODE_ENV,
                 additionalData: {
                     type: 'unhandledRejection',
                 },
@@ -83,7 +84,7 @@ export async function logError(
     await notifyError(error, {
         ...context,
         timestamp: new Date(),
-        environment: process.env.NODE_ENV,
+        environment: env.NODE_ENV,
     });
 }
 

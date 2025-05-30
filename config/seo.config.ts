@@ -1,6 +1,8 @@
 // SEO Configuration
 // Update these values with your actual website information
 
+import { env } from "@/lib/env";
+
 export const seoConfig = {
     // Basic site information
     siteName: "NaN's Blog",
@@ -31,7 +33,7 @@ export const seoConfig = {
     googleAnalyticsId: "", // e.g., "G-XXXXXXXXXX"
 
     // Cloudflare Analytics token (optional)
-    cloudflareAnalyticsToken: process.env.NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN || "", // e.g., "your-token-here"
+    cloudflareAnalyticsToken: env.NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN || "", // e.g., "your-token-here"
 
     // Google Search Console verification (optional)
     googleSiteVerification: "", // e.g., "your-verification-code"
