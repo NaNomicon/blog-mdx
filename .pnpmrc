@@ -1,0 +1,9 @@
+# Configuration for Vercel deployments
+# Allow @vercel/speed-insights to run build scripts
+enable-pre-post-scripts=true
+
+# Allow scripts for @vercel scoped packages
+@vercel:registry=https://registry.npmjs.org/
+
+# Disable the build script warning for trusted Vercel packages
+ignore-scripts=false 
