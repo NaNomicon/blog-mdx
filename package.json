@@ -36,6 +36,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
+    "grammy": "^1.36.3",
     "gray-matter": "^4.0.3",
     "highlight.js": "10.7.2",
     "lucide-react": "^0.408.0",
