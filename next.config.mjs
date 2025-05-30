@@ -2,6 +2,9 @@ import createMDX from "@next/mdx";
 import remarkGfm from "remark-gfm";
 import remarkFrontmatter from "remark-frontmatter";
 import rehypeHighlight from "rehype-highlight";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -130,7 +133,7 @@ async function createNextConfig() {
     withBundleAnalyzer = bundleAnalyzer({ enabled: true });
   }
 
-  return withBundleAnalyzer(withMDX(nextConfig));
+  return withBundleAnalyzer(withNextIntl(withMDX(nextConfig)));
 }
 
 // Export the config

@@ -1,0 +1,75 @@
+{
+  "navigation": {
+    "home": "Home",
+    "blog": "Blog",
+    "about": "About",
+    "language": "Language",
+    "theme": "Theme"
+  },
+  "common": {
+    "readMore": "Read more",
+    "backToHome": "Back to home",
+    "backToBlog": "Back to blog",
+    "publishedOn": "Published on",
+    "category": "Category",
+    "tldr": "TL;DR",
+    "tableOfContents": "Table of Contents",
+    "sharePost": "Share this post",
+    "relatedPosts": "Related posts",
+    "loading": "Loading...",
+    "error": "Error",
+    "notFound": "Not found"
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Thoughts, tutorials, and insights on development, technology, and more.",
+    "latestPosts": "Latest posts",
+    "allPosts": "All posts",
+    "noPostsFound": "No posts yet",
+    "searchPlaceholder": "Search posts...",
+    "filterByCategory": "Filter by category",
+    "allCategories": "All categories",
+    "readingTime": "min read",
+    "postNotFound": "Post not found",
+    "postNotFoundDescription": "The blog post you're looking for doesn't exist or has been moved.",
+    "publishedBy": "Published by"
+  },
+  "home": {
+    "hero": {
+      "title": "Welcome to my blog",
+      "subtitle": "Exploring technology, sharing knowledge, and building amazing things.",
+      "cta": "Read latest posts"
+    },
+    "featuredPosts": "Featured posts",
+    "recentPosts": "Recent posts",
+    "title": "Home",
+    "welcome": "Welcome",
+    "description": "Welcome to my personal blog"
+  },
+  "about": {
+    "title": "About",
+    "description": "Learn more about me"
+  },
+  "footer": {
+    "copyright": "© {year} All rights reserved.",
+    "builtWith": "Built with",
+    "and": "and",
+    "poweredBy": "Powered by"
+  },
+  "language": {
+    "switchLanguage": "Choose language",
+    "currentLanguage": "Current language",
+    "switching": "Switching language...",
+    "languages": {
+      "en": "English",
+      "vi": "Tiếng Việt"
+    },
+    "english": "English",
+    "vietnamese": "Tiếng Việt",
+    "switchTo": "Switch to {language}"
+  },
+  "seo": {
+    "defaultTitle": "My Blog",
+    "defaultDescription": "A modern blog built with Next.js, MDX, and Tailwind CSS"
+  }
+} 

@@ -1,75 +1,35 @@
-import fs from "node:fs";
-import path from "node:path";
 import Link from "next/link";
 import Image from "next/image";
-import type {Metadata} from "next";
+import type { Metadata } from "next";
+import { getTranslations } from 'next-intl/server';
 import { generateSEOMetadata } from "@/lib/seo";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getAllBlogPosts } from "@/lib/blog";
+import { Locale } from "@/i18n";
 
-export async function generateMetadata(): Promise<Metadata> {
+interface BlogPageProps {
+  params: {
+    locale: Locale;
+  };
+}
+
+export async function generateMetadata({ params: { locale } }: BlogPageProps): Promise<Metadata> {
+  const t = await getTranslations({ locale, namespace: 'blog' });
+  
   return generateSEOMetadata({
-    title: "Blog",
-    description: "Welcome to the blog! Here you will find a collection of articles about web development, programming, technology insights, and personal experiences.",
+    title: t('title'),
+    description: t('description'),
   });
-}
-
-type Post = {
-  slug: string;
-  metadata: PostMetadata;
-};
-
-interface PostMetadata {
-  title: string;
-  publishDate: string;
-  description?: string;
-  tags?: string[];
-  cover_image?: string;
-  [key: string]: any;
-}
-
-async function getAllPosts(): Promise<Post[]> {
-  const dir = path.join(process.cwd(), "content", "blogs");
-  const files = fs.readdirSync(dir);
-
-  const posts = files
-    .filter(
-      (filename) => filename.endsWith(".mdx") && !filename.startsWith(".")
-    )
-    .map((filename) => {
-      try {
-        const { metadata } = require(`@/content/blogs/${filename}`);
-        return {
-          slug: filename.replace(".mdx", ""),
-          metadata: metadata || {
-            title: "Untitled",
-            publishDate: "1970-01-01",
-          },
-        };
-      } catch (error) {
-        console.error(`Error loading metadata for file ${filename}:`, error);
-        return {
-          slug: filename.replace(".mdx", ""),
-          metadata: { title: "Untitled", publishDate: "1970-01-01" },
-        };
-      }
-    });
-
-  // Sort posts by publishDate in descending order
-  posts.sort(
-    (a, b) =>
-      new Date(b.metadata.publishDate).getTime() -
-      new Date(a.metadata.publishDate).getTime()
-  );
-
-  return posts;
 }
 
 // 🚀 ISR for blog listing - Revalidate every 30 minutes
 export const revalidate = 1800; // 30 minutes in seconds
 
-export default async function Home() {
-  const posts = await getAllPosts();
+export default async function BlogPage({ params: { locale } }: BlogPageProps) {
+  const posts = getAllBlogPosts(locale);
+  const t = await getTranslations({ locale, namespace: 'blog' });
+  const commonT = await getTranslations({ locale, namespace: 'common' });
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-16 space-y-16">
@@ -77,13 +37,13 @@ export default async function Home() {
       <section className="text-center space-y-8">
         <div className="space-y-4">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight">
-            Blog
+            {t('title')}
             <span className="text-muted-foreground">.</span>
           </h1>
           <div className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent mx-auto" />
         </div>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          A collection of thoughts, insights, and discoveries from my journey in development and beyond
+          {t('description')}
         </p>
       </section>
 
@@ -118,12 +78,17 @@ export default async function Home() {
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Calendar className="w-4 h-4" />
                         <time dateTime={post.metadata.publishDate}>
-                          {new Date(post.metadata.publishDate).toLocaleDateString('en-US', {
+                          {new Date(post.metadata.publishDate).toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric'
                           })}
                         </time>
+                        {post.locale !== locale && (
+                          <span className="text-xs bg-muted px-2 py-1 rounded">
+                            {post.locale === 'en' ? 'English' : 'Tiếng Việt'}
+                          </span>
+                        )}
                       </div>
                       
                       <h2 className="text-2xl font-medium leading-tight group-hover:text-foreground/80 transition-colors">
@@ -140,21 +105,16 @@ export default async function Home() {
                         </p>
                       )}
                       
-                      {post.metadata.tags && post.metadata.tags.length > 0 && (
+                      {post.metadata.category && (
                         <div className="flex flex-wrap gap-2">
-                          {post.metadata.tags.slice(0, 3).map((tag: string) => (
-                            <span 
-                              key={tag}
-                              className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground"
-                            >
-                              {tag}
-                            </span>
-                          ))}
+                          <span className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+                            {post.metadata.category}
+                          </span>
                         </div>
                       )}
                       
                       <div className="flex items-center gap-2 text-sm font-medium text-foreground/60 group-hover:text-foreground/80 transition-colors">
-                        Read more
+                        {commonT('readMore')}
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
                     </div>
@@ -169,13 +129,13 @@ export default async function Home() {
               <Calendar className="w-8 h-8 text-muted-foreground" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-xl font-medium">No posts yet</h3>
+              <h3 className="text-xl font-medium">{t('noPostsFound')}</h3>
               <p className="text-muted-foreground">
                 Check back soon for new content!
               </p>
             </div>
             <Button asChild variant="outline">
-              <Link href="/">Return home</Link>
+              <Link href="/">{commonT('backToHome')}</Link>
             </Button>
           </div>
         )}

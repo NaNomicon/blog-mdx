@@ -1,10 +1,17 @@
+'use client';
+
 import Link from "next/link";
 import { Menu } from "lucide-react";
+import { useTranslations } from 'next-intl';
 
-import {ModeToggle} from "@/components/nav/theme-toggle";
-import {Sheet, SheetClose, SheetContent, SheetHeader, SheetTrigger,} from "@/components/ui/sheet";
+import { ModeToggle } from "@/components/nav/theme-toggle";
+import LanguageSwitcherV2 from "@/components/nav/language-switcher-v2";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
 
 function SiteHeader() {
+  const t = useTranslations('navigation');
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-6 lg:px-8">
@@ -22,14 +29,28 @@ function SiteHeader() {
             </SheetHeader>
             <nav className="mt-8 space-y-6">
               <Link href="/" className="block text-lg font-medium transition-colors hover:text-foreground/80">
-                <SheetClose>Home</SheetClose>
+                <SheetClose>{t('home')}</SheetClose>
               </Link>
               <Link href="/about" className="block text-lg font-medium transition-colors hover:text-foreground/80">
-                <SheetClose>About</SheetClose>
+                <SheetClose>{t('about')}</SheetClose>
               </Link>
               <Link href="/blog" className="block text-lg font-medium transition-colors hover:text-foreground/80">
-                <SheetClose>Blog</SheetClose>
+                <SheetClose>{t('blog')}</SheetClose>
               </Link>
+              
+              <Separator className="my-4" />
+              
+              {/* Mobile Controls */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-muted-foreground">{t('language')}</span>
+                  <LanguageSwitcherV2 variant="emoji" showLabel={false} />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-muted-foreground">{t('theme')}</span>
+                  <ModeToggle />
+                </div>
+              </div>
             </nav>
           </SheetContent>
         </Sheet>
@@ -45,18 +66,19 @@ function SiteHeader() {
             href="/about" 
             className="text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60"
           >
-            About
+            {t('about')}
           </Link>
           <Link 
             href="/blog" 
             className="text-sm font-medium transition-colors hover:text-foreground/80 text-foreground/60"
           >
-            Blog
+            {t('blog')}
           </Link>
         </nav>
 
-        {/* Theme Toggle */}
-        <div className="flex items-center">
+        {/* Desktop Controls */}
+        <div className="hidden md:flex items-center space-x-2">
+          <LanguageSwitcherV2 variant="emoji" showLabel={true} />
           <ModeToggle />
         </div>
       </div>
