@@ -5,11 +5,13 @@ import Code from "@/components/mdx/code";
 import InlineCode from "@/components/mdx/inline-code";
 import Pre from "@/components/mdx/pre"; // Adjust the import path as needed
 import { Button } from "@/components/ui/button";
+import { Callout } from "@/components/mdx/callout";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     ...components,
     YouTube,
+    Callout,
     pre: Pre, // Use the custom Pre component
     code: (props) => {
       const { className, children } = props;

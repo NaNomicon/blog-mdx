@@ -1,0 +1,434 @@
+export const metadata = {
+    title: "When Brute Force Fails: Why Simple Solutions Beat Complex Engineering",
+    publishDate: "2025-06-01",
+    description: "I inherited a messy codebase and spent a week building complex detection systems and tiered build configs. All failed. Then I found the solution was sitting right there on the internet. Here's how stepping back and using existing tools saved the project, and why patience beats cleverness in software engineering.",
+    category: "TIL",
+    cover_image: "/250128-obfuscating-partially-obfuscated-chrome-extension/cover.png",
+    tldr: "Spent a week over-engineering solutions for a legacy codebase problem. All failed. Then I found an online tool, went back to basics, and solved it methodically. Sometimes the best engineering solution is the simplest one, and the internet already has the tools you need.",
+};
+
+When working with legacy code, you're often handed messy dependencies, outdated patterns, or inconsistent formatting. But what if the entire codebase you inherit is obfuscated? That's exactly what happened to me on a recent freelance project — and my first instinct to brute-force the problem taught me a valuable lesson about patience and methodology.
+
+In this post, I'll walk you through how I initially tried to solve everything at once, why that failed spectacularly, and how stepping back and taking a methodical approach saved the project. Sometimes the best solution isn't the most complex one.
+
+## 📋 What You'll Learn
+
+(At least that's what I have learned from this experience)
+
+- Why the "simple" approach of just running an obfuscation tool fails
+- 5 sophisticated methods I tried and why each one broke down
+- How stepping back and using existing tools saved the project
+- A methodical approach to handling obfuscated legacy code
+- Key lessons about problem-solving methodology vs. technical complexity
+
+## ✨ The Backstory
+
+I was hired as a freelance developer to maintain and extend an existing Chrome extension. The client handed over the entire codebase in obfuscated form, with no access to the original source.
+
+After analyzing the functionality, I started implementing new features — naturally, I wrote clean, maintainable JavaScript. As a result, the project quickly became a mix of obfuscated and unobfuscated code.
+
+The client needed a secure production build — meaning everything had to be obfuscated again, in a consistent and Chrome-compliant way.
+
+<Callout type="warning" title="Important notes">
+
+Deobfuscation can raise ethical and legal concerns. In my case:
+
+- This was a freelance project with full client authorization
+- The code was obfuscated by the previous developer, and I was tasked with extending and maintaining it
+- Deobfuscation was only performed to debug and understand key behaviors, not to reverse-engineer proprietary IP
+- Final builds were re-obfuscated to protect the client's logic, not to conceal malicious intent
+
+</Callout>
+
+## 🤦 The Naive First Attempt
+
+My first instinct was simple: "Just run the entire codebase through an obfuscation tool and call it a day." How hard could it be?
+
+```bash
+# My brilliant first attempt
+npm install javascript-obfuscator
+node -e "
+const obfuscator = require('javascript-obfuscator');
+const fs = require('fs');
+// Just obfuscate everything!
+fs.readdirSync('./src').forEach(file => {
+  if (file.endsWith('.js')) {
+    const code = fs.readFileSync('./src/' + file, 'utf8');
+    const obfuscated = obfuscator.obfuscate(code);
+    fs.writeFileSync('./src/' + file, obfuscated.getObfuscatedCode());
+  }
+});
+"
+```
+
+**The result?** Complete disaster. Here's why this approach failed spectacularly:
+
+### Problem 1: Double Obfuscation Chaos
+
+Re-obfuscating already obfuscated code created an unreadable mess:
+
+```javascript
+// Original obfuscated code:
+var _0x1a2b = ['push', 'createElement'];
+function _0x3c4d() { return _0x1a2b[0]; }
+
+// After re-obfuscation:
+var _0x9f8e = ['\x70\x75\x73\x68', '\x63\x72\x65\x61\x74\x65\x45\x6c\x65\x6d\x65\x6e\x74'];
+function _0x7b6a() { return _0x9f8e[0x0]; }
+// Now completely broken and unrunnable
+```
+
+The obfuscator couldn't understand the existing obfuscated patterns and mangled them further, breaking the string array references and control flow.
+
+### Problem 2: Chrome API Breakage
+
+The obfuscator renamed global Chrome APIs, making the extension completely non-functional:
+
+```javascript
+// Before:
+chrome.runtime.sendMessage({action: 'getData'});
+
+// After obfuscation:
+_0x1a2b3c.runtime.sendMessage({action: 'getData'}); // chrome is now _0x1a2b3c
+// Chrome doesn't recognize _0x1a2b3c - extension breaks
+```
+
+### Problem 3: Production Build Failures
+
+The production build would work sometimes, fail other times, with no predictable pattern:
+
+```bash
+# Sometimes it worked:
+✓ Build successful - extension loads fine
+
+# Sometimes it didn't:
+✗ Build "successful" but extension crashes on load
+✗ Features work in dev but break in production
+```
+
+The inconsistency made it impossible to ship with confidence.
+
+### Problem 4: No Way to Debug Production Issues
+
+When the production build broke, I had no way to understand why:
+- Source maps were useless (obfuscated → re-obfuscated)
+- Error messages pointed to mangled variable names
+- Couldn't tell if the issue was my code or the double obfuscation
+- Had to guess which files were causing problems
+
+**The lesson?** Sometimes the "simple" solution is the wrong solution. This failure taught me that I needed a much more sophisticated approach to handle the mixed codebase properly.
+
+## 😤 The Brute Force Approach (That Failed)
+
+<Callout type="info" title="TL;DR of This Section">
+
+I spent a week building increasingly complex solutions: obfuscation detection algorithms, tiered configuration systems, selective re-obfuscation logic, Chrome API compatibility hacks, and Git archaeology tools. Each method partially worked but ultimately failed due to edge cases and complexity. The breaking point: a simple one-line bug fix took 3 hours because I couldn't understand the obfuscated context.
+
+</Callout>
+
+My first instinct was to tackle everything at once. I thought I could build a sophisticated system that would handle all the edge cases and complexities. Here's what I tried and how each approach partially worked but ultimately failed:
+
+### Method 1: Smart Obfuscation Detection
+
+I started by building a detection system to identify which files were already obfuscated versus my clean code:
+
+```javascript
+// My overly complex first attempt
+const JavaScriptObfuscator = require('javascript-obfuscator');
+const glob = require('glob');
+
+function isObfuscated(code) {
+  const obfuscatedPatterns = [
+    /_0x[a-f0-9]+/g,           // _0x variable names
+    /\\x[0-9a-f]{2}/g,         // Hex escape sequences  
+    /[A-Za-z0-9+/]{20,}={0,2}/g, // Base64-encoded strings
+    /\['[^']*'\]\(['"][^'"]*['"]\)/g // String array access patterns
+  ];
+  
+  return obfuscatedPatterns.some(pattern => 
+    (code.match(pattern) || []).length > 5
+  );
+}
+```
+
+**What partially worked**: The detection was about 80% accurate for obviously obfuscated files.
+
+**The problem**: Edge cases everywhere. Some obfuscated files used different patterns. Some clean files with lots of data triggered false positives. The threshold of "5 matches" was arbitrary and broke on corner cases.
+
+**What I did wrong**: I was trying to solve a classification problem when I should have been solving a process problem.
+
+### Method 2: Tiered Obfuscation Configs
+
+Next, I tried creating different obfuscation levels based on file sensitivity:
+
+```javascript
+// Apply different obfuscation levels per folder
+const obfuscationConfig = {
+  'src/logger/**/*.js': { 
+    compact: true,
+    controlFlowFlattening: true,
+    deadCodeInjection: true,
+    stringArray: true,
+    rotateStringArray: true
+  },
+  'src/utils/**/*.js': { 
+    compact: true,
+    stringArray: true,
+    rotateStringArray: false
+  },
+  'src/content/**/*.js': {
+    compact: true,
+    renameGlobals: false, // Chrome APIs
+    selfDefending: false
+  }
+  // ... and so on
+};
+```
+
+**What partially worked**: Different files did need different treatment. The content scripts worked better with lighter obfuscation.
+
+**The problem**: Managing the complexity became a nightmare. Each new file type needed its own config. Testing all combinations was impossible. One wrong setting would break the entire extension.
+
+**What I did wrong**: I was optimizing for the wrong thing - trying to be clever with obfuscation levels instead of focusing on maintainability.
+
+### Method 3: Selective Re-obfuscation
+
+Then I tried to be smart about which files to re-obfuscate:
+
+```javascript
+// Re-obfuscate only safe files or updated ones
+files.forEach(file => {
+  const content = fs.readFileSync(file, 'utf8');
+  const lastModified = fs.statSync(file).mtime;
+  const isRecentlyModified = lastModified > lastBuildTime;
+  
+  if (!isObfuscated(content) || isRecentlyModified) {
+    // Safe to obfuscate
+    try {
+      const obfuscated = JavaScriptObfuscator.obfuscate(content, getConfigForFile(file));
+      fs.writeFileSync(file, obfuscated.getObfuscatedCode());
+    } catch (error) {
+      console.log(`Failed to obfuscate ${file}: ${error.message}`);
+      // What do I do now?
+    }
+  }
+});
+```
+
+**What partially worked**: Avoiding re-obfuscation of already mangled code prevented some breakage.
+
+**The problem**: The logic was flawed. "Recently modified" didn't mean "safe to obfuscate." Some files had dependencies on the obfuscated code structure. Error handling was a mess - when obfuscation failed, I had no recovery strategy.
+
+**What I did wrong**: I was treating symptoms instead of the root cause. The real problem wasn't which files to obfuscate, but that I was working with an already-broken codebase.
+
+### Method 4: Chrome API Compatibility Hacks
+
+I spent days trying to make obfuscated code work with Chrome APIs:
+
+```javascript
+const chromeCompatibleConfig = {
+  compact: true,
+  controlFlowFlattening: false,
+  renameGlobals: false,        // Don't rename global objects
+  selfDefending: false,        // Breaks Chrome's content security policy
+  debugProtection: false,      // Causes issues in extension context
+  
+  // Reserve Chrome API keywords
+  reservedNames: [
+    "chrome", "runtime", "tabs", "storage", "extension",
+    "webRequest", "contextMenus", "notifications", "scripting",
+    "action", "alarms", "bookmarks", "contextMenus", "cookies",
+    // ... 50+ more API names
+  ],
+  
+  // Keep string arrays but don't rotate aggressively
+  stringArray: true,
+  rotateStringArray: false,
+  stringArrayThreshold: 0.5
+};
+```
+
+**What partially worked**: Reserving Chrome API names prevented some breakage.
+
+**The problem**: The list kept growing. Every time I tested, I'd find another broken API. Some obfuscated code used dynamic property access that couldn't be reserved. The configuration became unmaintainable.
+
+**What I did wrong**: I was playing whack-a-mole with symptoms instead of addressing the fundamental issue.
+
+### Method 5: Git Archaeology
+
+Finally, I tried to understand the obfuscated commit history:
+
+```bash
+# My workflow for handling obfuscated merges
+git log --oneline --graph
+git show <commit-hash> --name-only   
+git show <commit-hash> --stat        
+git diff <commit-hash>^ <commit-hash> # Try to understand changes
+```
+
+**What partially worked**: I could see which files changed and roughly how much.
+
+**The problem**: The diffs were completely unreadable. Obfuscated variable names changed between commits, making it impossible to track actual logic changes. I was spending hours trying to decode what should have been simple feature additions.
+
+**What I did wrong**: I was trying to work within the constraints of the obfuscated codebase instead of questioning whether those constraints were necessary.
+
+### The Breaking Point
+
+After a week of this, I had:
+- A build system with 200+ lines of configuration
+- Inconsistent obfuscation that broke randomly
+- Chrome extension that worked sometimes, failed other times
+- No clear way to debug issues when they occurred
+- A growing list of "special cases" and workarounds
+
+The final straw was when a simple one-line bug fix took me 3 hours to implement because I couldn't understand the obfuscated context around it.
+
+**The result?** Nothing worked reliably. Re-obfuscating already obfuscated code broke everything. Chrome APIs stopped working randomly. The build system was a house of cards that collapsed whenever I touched it.
+
+## 💡 The Step Back Moment
+
+After days of frustration, I realized I was trying to solve the wrong problem. Instead of working with the obfuscated mess, I needed to start clean.
+
+**The solution was sitting right there on the internet.**
+
+I went back to the very first commit in the repository and used an online deobfuscation tool: [https://obf-io.deobfuscate.io/](https://obf-io.deobfuscate.io/)
+
+```bash
+# Go back to the beginning
+git checkout <first-commit-hash>
+# Copy the obfuscated files to the deobfuscation tool
+# Get clean, readable code back
+```
+
+Suddenly, I had a clean codebase to work with. The original logic was clear, the structure made sense, and I could understand what each part was supposed to do.
+
+## 🔄 The Methodical Approach
+
+Instead of trying to merge obfuscated commits, I took a completely different approach:
+
+### 1. Analyze Changes, Not Code
+
+For each commit after the first one, I didn't try to understand the obfuscated code. Instead, I analyzed what the **changes** were supposed to accomplish:
+
+```bash
+# My new workflow
+git log --oneline <first-commit>..<latest-commit>
+git show <commit-hash> --name-only   # See which files changed
+git show <commit-hash> --stat        # See the scope of changes
+```
+
+### 2. Understand the Intent
+
+For each commit, I asked:
+- What feature was being added?
+- What bug was being fixed?
+- What files were affected?
+- What was the expected behavior change?
+
+### 3. Reapply Changes Manually
+
+Instead of trying to cherry-pick obfuscated commits, I manually implemented the same changes in my clean codebase:
+
+```javascript
+// Instead of trying to understand this obfuscated change:
+// _0x1a2b3c['push'](_0x4d5e6f['createElement']('div'));
+
+// I implemented the clean equivalent:
+elements.push(document.createElement('div'));
+```
+
+### 4. Test Each Change
+
+After each manual implementation, I tested to ensure the functionality matched the expected behavior from the original obfuscated version.
+
+## ✅ The Final Result
+
+This methodical approach led to:
+
+- **Clean, maintainable source code** that I could actually work with
+- **Proper build system** that obfuscated only the final output
+- **Chrome API compatibility** because I wasn't mangling already-mangled code
+- **Easier maintenance** for future features and bug fixes
+
+The build process became simple:
+1. Develop in clean, readable code
+2. Apply single-pass obfuscation for production
+3. Test the obfuscated build thoroughly
+4. Deploy with confidence
+
+### Timeline Comparison
+
+**Before (brute force approach)**: 
+- 1 week of complex build system development
+- 3 hours to implement a simple bug fix
+- Constant debugging of obfuscation issues
+- Unreliable builds
+
+**After (methodical approach)**:
+- 2 days to deobfuscate and understand the codebase
+- 1 day to reapply all historical changes
+- 15 minutes to implement new features
+- Reliable, predictable builds
+
+### The Simple Build Script
+
+```javascript
+// Final build script - simple and effective
+const JavaScriptObfuscator = require('javascript-obfuscator');
+const glob = require('glob');
+
+// Only obfuscate .js files, skip everything else
+glob('src/**/*.js', (err, files) => {
+  files.forEach(file => {
+    const code = fs.readFileSync(file, 'utf8');
+    const obfuscated = JavaScriptObfuscator.obfuscate(code, {
+      compact: true,
+      renameGlobals: false, // Preserve Chrome APIs
+      reservedNames: ['chrome', 'runtime', 'tabs', 'storage']
+    });
+    
+    const outputPath = file.replace('src/', 'dist/');
+    fs.writeFileSync(outputPath, obfuscated.getObfuscatedCode());
+  });
+});
+```
+
+**Total lines of build configuration**: 20 lines (down from 200+)
+
+## 🔄 Lessons Learned
+
+**Don't brute-force complex problems.** Sometimes stepping back and approaching from a different angle is more effective than trying to solve everything at once.
+
+**The solution might already exist online.** Before building complex custom solutions, check if there are tools or services that can help. In my case, a simple online deobfuscation tool saved me days of work.
+
+**Analyze intent, not implementation.** When dealing with obfuscated or legacy code, focus on understanding what changes were supposed to accomplish rather than how they were implemented.
+
+**Methodical beats clever.** A simple, step-by-step approach often works better than trying to build an overly sophisticated solution.
+
+**Start from a known good state.** When possible, go back to the simplest working version and build forward methodically rather than trying to fix a complex broken state.
+
+## 🙌 Final Thoughts
+
+This project taught me that sometimes the best engineering solution isn't the most technically impressive one. Instead of building a complex system to handle obfuscated code, the answer was to eliminate the obfuscation problem entirely and work with clean code.
+
+The experience reinforced that patience and methodology often triumph over brute force and cleverness. When you're stuck on a complex problem, sometimes the best next step is to step back and ask: "Am I solving the right problem?"
+
+If you're working on browser extensions or dealing with inherited code, remember: the internet is full of tools that might solve your problem in minutes rather than days. Don't be afraid to start over from a clean state.
+
+## 🚀 Action Items for You
+
+If you're facing a similar obfuscated codebase challenge:
+
+1. **Try the simple approach first**: Use online deobfuscation tools like [obf-io.deobfuscate.io](https://obf-io.deobfuscate.io/) before building complex solutions
+2. **Go back to the beginning**: Find the earliest commit with the cleanest code
+3. **Focus on intent, not implementation**: Understand what each change was supposed to accomplish
+4. **Build forward methodically**: Apply changes one by one, testing each step
+5. **Keep your build system simple**: Obfuscate only what needs to be obfuscated
+
+## 🔗 Useful Resources
+
+- [javascript-obfuscator](https://github.com/javascript-obfuscator/javascript-obfuscator) - The tool I used for final obfuscation
+- [obf-io.deobfuscate.io](https://obf-io.deobfuscate.io/) - Online deobfuscation tool that saved the project
+- [Chrome Extension Manifest V3](https://developer.chrome.com/docs/extensions/mv3/) - Official Chrome extension documentation
+
+Have you ever spent days on a complex solution only to find a simple one was right there all along? Let me know — I'd love to hear your story.
