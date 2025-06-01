@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { generateSlug } from '@/lib/utils';
 import { ChevronDown, ChevronUp, List } from 'lucide-react';
 
@@ -24,6 +24,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
   const [toc, setToc] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const [isCollapsed, setIsCollapsed] = useState(isMobile); // Start collapsed on mobile
+  const tocContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Extract headings from the page
@@ -70,6 +71,19 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       headings.forEach((heading) => observer.unobserve(heading));
     };
   }, [maxLevel]);
+
+  // Scroll active item into view when activeId changes
+  useEffect(() => {
+    if (activeId && tocContainerRef.current && !isCollapsed) {
+      const activeButton = tocContainerRef.current.querySelector(`button[data-id="${activeId}"]`);
+      if (activeButton) {
+        activeButton.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+        });
+      }
+    }
+  }, [activeId, isCollapsed]);
 
   const handleClick = (id: string) => {
     const element = document.getElementById(id);
@@ -119,13 +133,17 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({
       </div>
 
       {/* TOC Content */}
-      <div className={`transition-all duration-300 ease-in-out ${
-        isCollapsed ? 'max-h-0 opacity-0 overflow-hidden' : 'max-h-[400px] opacity-100 mt-4 overflow-y-auto'
-      }`}>
+      <div 
+        ref={tocContainerRef}
+        className={`transition-all duration-300 ease-in-out ${
+          isCollapsed ? 'max-h-0 opacity-0 overflow-hidden' : 'max-h-[400px] opacity-100 mt-4 overflow-y-auto'
+        }`}
+      >
         <ul className="space-y-2 pr-2">
           {toc.map((item) => (
             <li key={item.id}>
               <button
+                data-id={item.id}
                 onClick={() => handleClick(item.id)}
                 className={`
                   block w-full text-left transition-colors duration-200 hover:text-blue-600 dark:hover:text-blue-400 py-1 px-2 rounded text-sm
