@@ -131,6 +131,22 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
             // Additional properties for better social media support
             "theme-color": "#000000",
             "msapplication-TileColor": "#000000",
+
+            // Social media profile links
+            "twitter:creator": twitterHandle || "",
+            "twitter:site": twitterHandle || "",
+
+            // Additional Open Graph properties
+            "og:site_name": siteName,
+            "og:locale": language,
+
+            // Profile information for better social media integration
+            "profile:username": "NaNomicon",
+            "profile:first_name": "NaN",
+
+            // Additional Twitter properties
+            "twitter:domain": siteUrl?.replace(/https?:\/\//, '') || "",
+            "twitter:url": canonicalUrl,
         },
     };
 

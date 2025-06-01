@@ -1,4 +1,5 @@
 import React from 'react';
+import { seoConfig } from '@/config/seo.config';
 
 interface BlogPostStructuredDataProps {
   title: string;
@@ -18,6 +19,29 @@ interface WebsiteStructuredDataProps {
   author: string;
 }
 
+// Enhanced Person schema with social media profiles
+function getPersonSchema(author: string, siteUrl: string) {
+  return {
+    "@type": "Person",
+    "name": author,
+    "url": siteUrl,
+    "sameAs": [
+      "https://x.com/NaNomicon_",
+      seoConfig.blueskyProfile,
+      seoConfig.dailyDevProfile,
+      "https://github.com/NaN72dev"
+    ],
+    "jobTitle": "Developer",
+    "description": "Developer with a passion for learning and exploring new technologies",
+    "knowsAbout": [
+      "Web Development",
+      "Programming",
+      "Technology",
+      "Software Engineering"
+    ]
+  };
+}
+
 export function BlogPostStructuredData({
   title,
   description,
@@ -33,10 +57,7 @@ export function BlogPostStructuredData({
     "@type": "BlogPosting",
     "headline": title,
     "description": description,
-    "author": {
-      "@type": "Person",
-      "name": author
-    },
+    "author": getPersonSchema(author, siteUrl),
     "datePublished": publishDate,
     "dateModified": publishDate,
     "url": `${siteUrl}/blog/${slug}`,
@@ -44,10 +65,7 @@ export function BlogPostStructuredData({
       "@type": "WebPage",
       "@id": `${siteUrl}/blog/${slug}`
     },
-    "publisher": {
-      "@type": "Person",
-      "name": author
-    },
+    "publisher": getPersonSchema(author, siteUrl),
     ...(coverImage && {
       "image": {
         "@type": "ImageObject",
@@ -82,14 +100,8 @@ export function WebsiteStructuredData({
     "name": siteName,
     "description": description,
     "url": siteUrl,
-    "author": {
-      "@type": "Person",
-      "name": author
-    },
-    "publisher": {
-      "@type": "Person",
-      "name": author
-    },
+    "author": getPersonSchema(author, siteUrl),
+    "publisher": getPersonSchema(author, siteUrl),
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
@@ -122,6 +134,49 @@ export function BreadcrumbStructuredData({
       "name": item.name,
       "item": item.url
     }))
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+    />
+  );
+}
+
+// New component for Person/Profile structured data
+export function PersonStructuredData({
+  name,
+  siteUrl,
+  description
+}: {
+  name: string;
+  siteUrl: string;
+  description: string;
+}) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": name,
+    "url": siteUrl,
+    "description": description,
+    "sameAs": [
+      "https://x.com/NaNomicon_",
+      seoConfig.blueskyProfile,
+      seoConfig.dailyDevProfile,
+      "https://github.com/NaN72dev"
+    ],
+    "jobTitle": "Developer",
+    "knowsAbout": [
+      "Web Development",
+      "Programming",
+      "Technology",
+      "Software Engineering"
+    ],
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": siteUrl
+    }
   };
 
   return (

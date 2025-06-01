@@ -4,6 +4,7 @@ import { Menu } from "lucide-react";
 
 import {ModeToggle} from "@/components/nav/theme-toggle";
 import {Sheet, SheetClose, SheetContent, SheetHeader, SheetTrigger,} from "@/components/ui/sheet";
+import { SocialLinks } from "./social-links";
 
 function SiteHeader() {
   return (
@@ -39,6 +40,11 @@ function SiteHeader() {
                 <SheetClose>Blog</SheetClose>
               </Link>
             </nav>
+            {/* Social Links in Mobile Menu */}
+            <div className="mt-8 pt-6 border-t border-border/40">
+              <p className="text-sm text-muted-foreground mb-4">Connect with me</p>
+              <SocialLinks showLabels={true} />
+            </div>
           </SheetContent>
         </Sheet>
 

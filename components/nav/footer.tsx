@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Github, ExternalLink } from "lucide-react";
+import { GithubIcon, ExternalLink } from "lucide-react";
 import { getVersion } from "@/lib/version";
+import { SocialLinks } from "./social-links";
 
 function Footer() {
   const version = getVersion();
@@ -9,21 +10,24 @@ function Footer() {
     <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container max-w-screen-2xl px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-          {/* Brand */}
-          <div className="space-y-2">
-            <Link href="/" className="flex items-center space-x-2">
-              <Image
-                src="/logo.png"
-                alt="NaN Logo"
-                width={24}
-                height={24}
-                className="rounded-sm"
-              />
-              <span className="text-xl font-light tracking-tight">NaN</span>
-            </Link>
-            <p className="text-sm text-muted-foreground">
-              Developer & Explorer
-            </p>
+          {/* Brand & Social Links */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Link href="/" className="flex items-center space-x-2">
+                <Image
+                  src="/logo.png"
+                  alt="NaN Logo"
+                  width={24}
+                  height={24}
+                  className="rounded-sm"
+                />
+                <span className="text-xl font-light tracking-tight">NaN</span>
+              </Link>
+              <p className="text-sm text-muted-foreground">
+                Developer & Explorer
+              </p>
+            </div>
+            <SocialLinks />
           </div>
 
           {/* Links */}
@@ -50,31 +54,30 @@ function Footer() {
             </nav>
           </div>
 
-          {/* Meta Info */}
-          <div className="flex items-center justify-end gap-4">
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-2">
-                Powered by
-                <Link 
-                  href="https://www.mdxblog.io/" 
-                  className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  MDXBlog
-                  <ExternalLink className="w-3 h-3" />
-                </Link>
-              </span>
+          {/* Powered by & Repository */}
+          <div className="flex flex-col items-end gap-3">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <span>Powered by</span>
               <Link 
-                href="https://github.com/NaN72dev/blog-mdx"
-                className="hover:text-foreground transition-colors"
+                href="https://www.mdxblog.io/" 
+                className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Github className="w-4 h-4" />
-                <span className="sr-only">GitHub</span>
+                MDXBlog
+                <ExternalLink className="w-3 h-3" />
               </Link>
             </div>
+            <Link 
+              href="https://github.com/NaN72dev/blog-mdx"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GithubIcon className="w-4 h-4" />
+              <span>View Source</span>
+              <ExternalLink className="w-3 h-3" />
+            </Link>
           </div>
         </div>
 

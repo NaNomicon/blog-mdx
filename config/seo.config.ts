@@ -10,7 +10,9 @@ export const seoConfig = {
     author: "NaNomicon",
 
     // Social media handles
-    twitterHandle: "", // Replace with your Twitter handle
+    twitterHandle: "@NaNomicon_", // Updated with your Twitter handle
+    dailyDevProfile: "https://app.daily.dev/nanomicon", // Added daily.dev profile
+    blueskyProfile: "https://bsky.app/profile/nanomicon.bsky.social", // Added Bluesky profile
 
     // Default meta information
     defaultTitle: "NaN",
@@ -51,6 +53,8 @@ export const {
     siteUrl,
     author,
     twitterHandle,
+    dailyDevProfile,
+    blueskyProfile,
     defaultTitle,
     defaultDescription,
     language,
