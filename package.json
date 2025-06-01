@@ -19,6 +19,11 @@
     "docker:run": "docker run --rm -p 3001:3001 registry.services.nandev.net/nan/blog-mdx:latest",
     "docker:push": "docker push registry.services.nandev.net/nan/blog-mdx:latest",
     "docker:deploy": "pnpm docker:build && pnpm docker:push",
+    "devcontainer:build": "docker build -f .devcontainer/Dockerfile -t blog-mdx-devcontainer --build-arg GIT_USER_NAME=\"$(git config user.name 2>/dev/null || echo '')\" --build-arg GIT_USER_EMAIL=\"$(git config user.email 2>/dev/null || echo '')\" --build-arg GIT_SIGNING_KEY=\"$(git config user.signingkey 2>/dev/null || echo '')\" --build-arg GIT_SIGN_COMMITS=\"$(git config commit.gpgsign 2>/dev/null || echo 'false')\" --build-arg GIT_REPO_URL=\"$(git config --get remote.origin.url | sed 's/git@github.com:/https:\\/\\/github.com\\//')\" .",
+    "devcontainer:start": "docker run -d --name blog-mdx-dev -p 3002:3001 -p 3003:3000 -v blog-mdx-workspace:/workspace blog-mdx-devcontainer",
+    "devcontainer:stop": "docker stop blog-mdx-dev && docker rm blog-mdx-dev",
+    "devcontainer:shell": "docker exec -it blog-mdx-dev bash",
+    "devcontainer:logs": "docker logs -f blog-mdx-dev",
     "approve-builds": "pnpm approve-builds",
     "postinstall": "pnpm config set ignore-scripts false || true"
   },
