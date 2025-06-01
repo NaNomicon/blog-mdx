@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Github, ExternalLink } from "lucide-react";
 import { getVersion } from "@/lib/version";
 
@@ -10,8 +11,15 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           {/* Brand */}
           <div className="space-y-2">
-            <Link href="/" className="text-xl font-light tracking-tight">
-              NaN
+            <Link href="/" className="flex items-center space-x-2">
+              <Image
+                src="/logo.png"
+                alt="NaN Logo"
+                width={24}
+                height={24}
+                className="rounded-sm"
+              />
+              <span className="text-xl font-light tracking-tight">NaN</span>
             </Link>
             <p className="text-sm text-muted-foreground">
               Developer & Explorer

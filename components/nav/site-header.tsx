@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Menu } from "lucide-react";
 
 import {ModeToggle} from "@/components/nav/theme-toggle";
@@ -17,6 +18,13 @@ function SiteHeader() {
           <SheetContent side="left" className="w-80">
             <SheetHeader className="text-left">
               <Link href="/" className="flex items-center space-x-2">
+                <Image
+                  src="/logo.png"
+                  alt="NaN Logo"
+                  width={32}
+                  height={32}
+                  className="rounded-sm"
+                />
                 <span className="text-2xl font-light">NaN</span>
               </Link>
             </SheetHeader>
@@ -36,6 +44,13 @@ function SiteHeader() {
 
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
+          <Image
+            src="/logo.png"
+            alt="NaN Logo"
+            width={32}
+            height={32}
+            className="rounded-sm"
+          />
           <span className="text-2xl font-light tracking-tight">NaN</span>
         </Link>
 

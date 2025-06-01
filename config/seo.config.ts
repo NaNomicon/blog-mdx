@@ -21,7 +21,10 @@ export const seoConfig = {
     locale: "en_US",
 
     // Default Open Graph image (place in /public folder)
-    defaultOGImage: "/250527-the-hidden-buttons-that-must-never-die/cover.png",
+    defaultOGImage: "/logo.png",
+
+    // Logo for branding
+    logo: "/logo.png",
 
     // Additional SEO settings
     robots: {

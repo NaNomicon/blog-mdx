@@ -24,6 +24,24 @@ if (typeof window === 'undefined') {
 
 export const metadata: Metadata = {
   ...generateSEOMetadata(defaultSEOConfig),
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/logo.png', sizes: '400x400', type: 'image/png' },
+    ],
+    shortcut: '/favicon-32x32.png',
+    apple: [
+      { url: '/logo.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      {
+        rel: 'apple-touch-icon-precomposed',
+        url: '/logo.png',
+      },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
@@ -40,6 +58,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <WebsiteStructuredData
           siteName={defaultSEOConfig.siteName!}
           description={defaultSEOConfig.description!}
