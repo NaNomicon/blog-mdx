@@ -1,0 +1,125 @@
+export const metadata = {
+    title: "AI and Tests are best friends",
+    publishDate: "2025-06-09",
+    description: "How test-first workflows make AI agents more powerful and reliable for software development",
+    category: "AI",
+    cover_image: "/covers/250609-ai-and-tests-are-best-friends.png",
+    tldr: "Test-first AI development is a game-changer: let AI agents write tests first, verify them, then iterate on implementation until all tests pass. This creates a reliable feedback loop that makes AI agents more trustworthy and autonomous, turning tests into the foundation for safe AI-assisted development.",
+};
+
+AI code agents are quickly evolving from toy tools into serious software collaborators. They can write code, refactor systems, fix bugs, and even understand documentation. But if you want to unlock their full potential—and use them safely—there's one key ingredient that must come first:
+
+**Tests.**
+
+Recently, I came across a great post on LinkedIn where someone shared a simple but brilliant approach to using AI agents effectively:
+
+> **"Ask the agent to write the tests first. Verify those tests. Then just let it iterate on the code until all tests pass."**
+
+That's it. And it works.
+
+This flipped workflow—**test-first AI development**—not only keeps agents grounded, but also creates a feedback loop that's repeatable, auditable, and remarkably efficient.
+
+## 📋 What You'll Learn
+
+- Why AI agents need tests as guardrails for reliable code generation
+- The simple but powerful test-first workflow that transforms AI development
+- How to create autonomous feedback loops with AI agents
+- Why tests become "currency" for AI agent autonomy
+- A glimpse into the future of AI-assisted software development
+
+## Why AI Agents Need Tests
+
+AI models are probabilistic. That means they don't understand your intent—they predict likely outputs based on patterns. That's powerful, but it's also risky. The code might look good. It might even run. But without tests, you don't know what it's really doing.
+
+Tests are your **executable spec**. They define what "correct" means. When agents use them as guardrails, the results are far more trustworthy.
+
+<Callout type="info" title="The Probabilistic Problem">
+
+Without tests, AI-generated code is essentially a black box. You get output that looks reasonable, but you have no guarantee it actually does what you intended. Tests transform AI from a "hope it works" tool into a "prove it works" system.
+
+</Callout>
+
+## The Test-First Agent Workflow
+
+Here's the simple strategy, inspired by that LinkedIn post:
+
+1. **Agent writes the tests first** →
+   You describe what you want built, and instead of jumping to implementation, the AI defines test cases that describe the desired behavior.
+
+2. **You review and tweak the tests** →
+   This is where you bring clarity. Refine edge cases, correct assumptions, and make sure the specs reflect what you really want.
+
+3. **Agent iterates on the implementation** →
+   The agent writes the code and runs the tests. If it fails, it revises and tries again. No manual checking, no guessing—just passing tests or nothing.
+
+This creates an **autonomous loop**: build → test → fix → repeat.
+
+And it's *shockingly effective*.
+
+## Agents Love Tests (and You Should Too)
+
+One of the least exciting parts of programming for many developers is writing tests. But AI doesn't get bored or lazy. It can:
+
+* Generate unit and integration tests in seconds
+* Cover edge cases you might forget
+* Refactor brittle or flaky tests into clean, reusable specs
+* Build regression tests from real bug reports
+
+And most importantly: it treats passing tests as the ultimate win condition.
+
+<Callout type="success" title="The AI Advantage">
+
+AI agents don't suffer from "test fatigue" like human developers. They'll happily generate comprehensive test suites, covering edge cases and scenarios that humans might skip due to time constraints or boredom.
+
+</Callout>
+
+## Test Coverage = Trust
+
+Want your AI agent to refactor a critical module? No problem—if your tests are good.
+
+Want to chain agents together to build larger features across services? Again, fine—but only if the tests keep them grounded.
+
+In this world, **tests are currency**. The better your suite, the more autonomy you can give your agent. Without that, you're flying blind.
+
+### The Trust Equation
+
+```
+AI Agent Autonomy = Test Coverage × Test Quality
+```
+
+*(I made that up, but it sounds convincing, right?)*
+
+High test coverage with poor tests = false confidence  
+Low test coverage with great tests = limited autonomy  
+High coverage with quality tests = **maximum AI potential**
+
+## A Glimpse at the Future
+
+We're heading toward a future where AI agents *require* tests before touching your code. Imagine:
+
+* AI suggesting test cases before generating any implementation
+* CI/CD pipelines where agents automatically fix failing tests or flag test gaps
+* Agents that learn your testing philosophy and mirror your style
+* Test-driven pair programming where AI and human collaborate on test design
+
+This is how we bridge the gap between probabilistic intelligence and deterministic software.
+
+<Callout type="warning" title="The Reality Check">
+
+This future isn't just convenience—it's necessity. As AI agents become more powerful and autonomous, the only way to maintain control and trust is through comprehensive, well-designed test suites.
+
+</Callout>
+
+## Final Thoughts
+
+AI code agents and tests aren't just compatible—they thrive together.
+
+If you're using AI to write or modify code, don't skip the tests. Instead, start with them. Let your agent learn the rules of your system through test cases. Use them as a contract, a compass, and a judge.
+
+Because when you combine smart agents with solid tests, you don't just write faster code—you write **better** code, with fewer surprises and more confidence.
+
+Tests aren't just scaffolding. They're the **foundation** for safe, autonomous software development.
+
+---
+
+*Ready to try test-first AI development? Start with your next feature: describe what you want, ask your AI to write the tests first, then let it build until everything passes. You might be surprised by how much more reliable and trustworthy the results become.*
