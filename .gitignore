@@ -39,3 +39,9 @@ yarn-error.log*
 next-env.d.ts
 
 .env
+
+# ide/code editor
+.vscode
+.idea
+.cursorrules
+.cursor/rules
