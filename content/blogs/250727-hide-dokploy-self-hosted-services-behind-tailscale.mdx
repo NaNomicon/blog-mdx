@@ -32,13 +32,11 @@ This eliminates the need for manual configuration updates when applications are 
 In essence, Traefik acts as the intelligent traffic controller within Dokploy, making deployments more robust, scalable, and easier to manage.
 
 ## TailScale
-[Tailscale](https://tailscale.com) is a zero-config [VPN](https://www.cloudflare.com/learning/access-management/what-is-a-vpn/) that creates a secure network between your devices, no matter where they are. It simplifies secure access by building on the [WireGuard protocol](https://nordvpn.com/blog/vpn-wireguard/). 
+[Tailscale](https://tailscale.com) is a [Mesh VPN](https://tailscale.com/learn/understanding-mesh-vpns) service designed to simplify and secure connections between devices and services across various networks.
 
-In Dokploy, Tailscale could potentially be used to create a secure and [private network](https://nordvpn.com/blog/what-is-private-network/) for connecting Dokploy instances or deployed applications across different servers or cloud providers, without the complexities of traditional VPN setups. 
+Unlike traditional VPNs that often route all traffic through a central server, Tailscale creates a peer-to-peer ["tailnet"](https://tailscale.com/kb/1136/tailnet) where each authorized device can communicate directly and securely with others using the WireGuard protocol. This approach results in lower latency and higher throughput, making it highly efficient for [remote access](https://nordvpn.com/blog/what-is-remote-access/), [site-to-site networking](https://tailscale.com/kb/1214/site-to-site), and multi-cloud environments. 
 
-This would allow for secure communication between various components of a Dokploy-managed infrastructure, even if they are geographically dispersed, by essentially creating a [Mesh VPN](https://tailscale.com/learn/understanding-mesh-vpns) where all authorized devices can communicate directly and securely.
-
-While not a core component of Dokploy's immediate deployment mechanism like Traefik, Tailscale could enhance the security and networking capabilities for more distributed or complex Dokploy deployments.
+Tailscale integrates with existing identity providers for user authentication and emphasizes a zero-config setup, aiming to provide strong end-to-end encryption and a robust security model without complex manual configurations.
 
 ## Why
 - [ ] Why
