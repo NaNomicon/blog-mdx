@@ -6,11 +6,44 @@ export const metadata = {
     cover_image: "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 };
 
-- [ ] What
-  - [ ] Dokploy
-  - [ ] TailScale
-  - [ ] Traefik
+- [ ] context
+
+# What & Why
+- [ ] new section name
+- [ ] Skip this section button
+
+## Dokploy
+
+[Dokploy](https://dokploy.com/) is an open-source, self-hostable deployment platform that simplifies the process of managing and deploying applications. 
+
+It acts as an alternative to services like [Heroku](https://www.heroku.com/), [Vercel](https://vercel.com/), and [Netlify](https://www.netlify.com/), providing developers with full control over their deployment pipelines and hosting environments. 
+
+Dokploy leverages [Docker](https://www.docker.com/) and [Traefik](https://traefik.io/) for robust container management, offering features such as flexible application deployment using various builders ([Nixpacks](https://nixpacks.com/), [Heroku Buildpacks](https://devcenter.heroku.com/articles/buildpacks), custom Dockerfiles), native [Docker Compose](https://docs.docker.com/compose/) support, database management with backups (for [MySQL](https://www.mysql.com/), [PostgreSQL](https://www.postgresql.org/), [MongoDB](https://www.mongodb.com/), [MariaDB](https://mariadb.org/), [Redis](https://redis.io/)), real-time monitoring, and API/CLI access. 
+
+It's designed to provide simplicity, flexibility, and scalability for a wide range of applications and databases, allowing users to deploy to single or multiple remote servers.
+
+## Traefik
+[Traefik](https://traefik.io/) is an open-source [Edge Router](https://www.cisco.com/site/us/en/learn/topics/networking/what-is-an-edge-router.html) that makes publishing your services an easy experience. It receives requests and finds out which components are responsible for handling them. 
+
+In Dokploy, Traefik acts as the modern [HTTP reverse proxy](https://www.cloudflare.com/learning/cdn/glossary/reverse-proxy/) and [load balancer](https://www.cloudflare.com/learning/performance/what-is-load-balancing/) that facilitates seamless routing of requests to the various deployed applications. It plays a crucial role in Dokploy's architecture by automatically discovering services and configuring routes, thanks to its integration with Docker. 
+
+This eliminates the need for manual configuration updates when applications are scaled up or down, or when new services are introduced. Traefik's dynamic capabilities allow it to efficiently manage incoming traffic, ensuring requests are directed to the correct application containers and enabling features like [SSL/TLS](https://www.cloudflare.com/learning/ssl/how-does-ssl-work/) termination, request routing based on hostnames or paths, and load balancing across multiple instances of an application. 
+
+In essence, Traefik acts as the intelligent traffic controller within Dokploy, making deployments more robust, scalable, and easier to manage.
+
+## TailScale
+[Tailscale](https://tailscale.com) is a zero-config [VPN](https://www.cloudflare.com/learning/access-management/what-is-a-vpn/) that creates a secure network between your devices, no matter where they are. It simplifies secure access by building on the [WireGuard protocol](https://nordvpn.com/blog/vpn-wireguard/). 
+
+In Dokploy, Tailscale could potentially be used to create a secure and [private network](https://nordvpn.com/blog/what-is-private-network/) for connecting Dokploy instances or deployed applications across different servers or cloud providers, without the complexities of traditional VPN setups. 
+
+This would allow for secure communication between various components of a Dokploy-managed infrastructure, even if they are geographically dispersed, by essentially creating a [Mesh VPN](https://tailscale.com/learn/understanding-mesh-vpns) where all authorized devices can communicate directly and securely.
+
+While not a core component of Dokploy's immediate deployment mechanism like Traefik, Tailscale could enhance the security and networking capabilities for more distributed or complex Dokploy deployments.
+
+## Why
 - [ ] Why
+
+# How
 - [ ] How
   Key Idea: Tailscale as a Certificate Resolver for Traefik
 
