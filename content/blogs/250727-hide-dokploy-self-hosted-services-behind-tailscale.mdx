@@ -38,8 +38,16 @@ Unlike traditional VPNs that often route all traffic through a central server, T
 
 Tailscale integrates with existing identity providers for user authentication and emphasizes a zero-config setup, aiming to provide strong end-to-end encryption and a robust security model without complex manual configurations.
 
-## Why
-- [ ] Why
+## Why?
+Integrating Dokploy and its services with Tailscale offers substantial benefits in terms of security and network management, particularly for distributed deployments. 
+
+Dokploy streamlines the deployment and orchestration of applications, which often entails exposing various services. By situating these services behind a Tailscale network, you establish a secure, private network that connects Dokploy instances or deployed applications across diverse servers or cloud providers, bypassing the complexities of traditional VPN setups. 
+
+This approach effectively removes your Dokploy instances and their managed applications from direct exposure to the public internet, thereby significantly reducing the attack surface and mitigating risks associated with unauthorized access.
+
+Furthermore, Tailscale, functioning as a Mesh VPN, simplifies secure communication between various components of a Dokploy-managed infrastructure, even when geographically dispersed.
+
+All authorized devices within the Tailscale network can communicate directly and securely. While not a direct component of Dokploy's immediate deployment mechanism like Traefik, Tailscale significantly enhances the security and networking capabilities for more intricate or distributed Dokploy deployments, ensuring that only authenticated devices within your private Tailscale network can discover and interact with your Dokploy services.
 
 # How
 - [ ] How
