@@ -50,140 +50,46 @@ Furthermore, Tailscale, functioning as a Mesh VPN, simplifies secure communicati
 All authorized devices within the Tailscale network can communicate directly and securely. While not a direct component of Dokploy's immediate deployment mechanism like Traefik, Tailscale significantly enhances the security and networking capabilities for more intricate or distributed Dokploy deployments, ensuring that only authenticated devices within your private Tailscale network can discover and interact with your Dokploy services.
 
 # How
-- [ ] How
-  Key Idea: Tailscale as a Certificate Resolver for Traefik
+Hiding Dokploy and its services behind Tailscale's network offers significant benefits in terms of security and simplified access. 
 
-  Traefik v3.0 and later versions have native support for Tailscale as a TLS certificate resolver. This is the most straightforward approach for your setup. Here's how it works:
+Firstly, it creates a secure, private network for your services, shielding them from direct exposure to the public internet. This reduces the attack surface, as your Dokploy instances are not openly accessible to anyone on the web. 
 
-  Tailscale HTTPS Certificates: Tailscale can automatically provide valid HTTPS certificates for services within your tailnet (e.g., your-service.your-machine.ts.net). These certificates are issued by Let's Encrypt, and Tailscale handles the renewal process.
+Tailscale acts as a mesh VPN, allowing your devices to connect securely across different networks without the need for traditional port forwarding or complex firewall rules. This "security by design" approach means that only authenticated and authorized devices within your Tailscale network can reach your Dokploy services, making them inherently more secure against external threats.
 
-  Traefik Integration: Traefik can be configured to use this Tailscale feature to obtain certificates for your services. When Traefik receives an HTTPS request for a *.ts.net domain, it queries the local Tailscale daemon for the certificate.
+Secondly, Tailscale streamlines the process of managing TLS certificates for your Dokploy services, especially when combined with a reverse proxy like Traefik. 
+
+Traefik versions 3.0 and later offer native support for Tailscale as a TLS certificate resolver. This integration allows Traefik to automatically obtain and renew HTTPS certificates from Let's Encrypt for your services, using Tailscale's capabilities. This eliminates the manual overhead of certificate management and ensures that your Dokploy applications are always served over a secure, encrypted connection (HTTPS). 
+
+Furthermore, this setup facilitates easy access to your services using user-friendly `.ts.net` domains while maintaining the security benefits of being hidden from the public internet.
+
+## Caveats
+While utilizing Tailscale's `*.ts.net` domains with path-based or port-based routing offers a straightforward way to access your Dokploy services within your secure tailnet, opting for custom domains or subdomains provides significant advantages in both security and ease of use, especially for services intended for a wider audience or for long-term production deployments.
+
+Using path-based and port-based routing simplify the initial setup by leveraging a single `*.ts.net` endpoint, however they can lead to less intuitive URLs and potential conflicts if not meticulously managed, making it harder for users to navigate or remember specific service addresses.
+
+In contrast, leveraging custom domains or subdomains, even when those domains are routed through Traefik and ultimately served by services within your Tailscale network, offers a more robust and user-friendly experience. 
+
+Custom domains allow you to implement additional layers of security, such as DNS-based filtering, Web Application Firewalls (WAFs) outside of Tailscale, or more granular access controls at the domain level before traffic even reaches your Tailscale network. 
+
+From an ease-of-use perspective, custom domains provide cleaner, more memorable URLs (e.g., app.yourdomain.com instead of dokploy-server.my-tailnet.ts.net/app). While Tailscale's [MagicDNS](https://tailscale.com/kb/1081/magicdns) is convenient, custom domains offer a more professional and intuitive appearance for users within your tailnet, simplifying access and integration with other domain-centric services.
+
+While this blog post demonstrates the simplicity of `*.ts.net` domains, I am actively working on another blog post that details the setup for custom subdomains (which also applies to full domains), offering these enhanced security and usability benefits. You can follow me on my publishing channels () to get notifications on when the guide is released.
+- [ ] Add links to channels
 
 # Prerequisites
 - A deployed Dokploy server
 - Set up your Tailscale Network
 
 - [ ] Specify current versions of Dokploy, (Traefik), and Tailscale
-- A domain name
-  - [ ] Verify Traefik interaction with `*.ts.net` domains
-  - [ ] Dokploy & Traefik is recommended to use a domain name
-  - [ ] TailScale don't support creating `*.ts.net` domains
-  - [ ] Recommend to use Domain providers that support DNS-01 challenge (list some of with referal links)
 
 # Steps
 ## TailScale
-- [ ] (Optional) enable MagicDNS
+- [ ] enable MagicDNS
 
 ## Main
-- [ ] DNS
+- [ ] tailscale cert Provider
 - [ ] Dokploy
 - [ ] Individual services
 
 ## Public services
-
-# (Optional) SSL
-- [ ] DNS-01 challenge
-  - [ ] What & Why
-  - [ ] How
-    The DNS-01 challenge works like this:
-    1. Request: When Traefik needs a certificate for service_name.my.domain, it sends a request to the ACME server (e.g., Let's Encrypt).
-    2. Challenge: The ACME server responds with a unique string (a "token") and asks Traefik to create a specific TXT record at a particular subdomain (usually _acme-challenge.service_name.my.domain) in your public DNS.
-    3. Validation: Traefik, using the credentials you provide, instructs your DNS provider's API to add this TXT record.
-    4. Verification: The ACME server then queries the global DNS system for that specific TXT record. If it finds the correct token, it validates that you control the domain.
-    5. Issuance: Once validated, the ACME server issues the SSL certificate to Traefik.
-    6. Renewal: Traefik automatically handles renewal before the certificate expires.
-  - [ ] Use staging environment to test the challenge
-
-  Key Traefik Configuration Elements for DNS-01 Challenge
-
-  You'll typically configure this in your Traefik static configuration file (e.g., traefik.yml or traefik.toml) and through environment variables for sensitive API keys.
-
-  1. Define an Entrypoint for HTTPS (Websecure)
-
-
-  First, ensure Traefik listens on the standard HTTPS port.
-
-
-    # traefik.yml
-    entryPoints:
-      websecure:
-        address: ":443"
-        # Optional: Redirect HTTP to HTTPS, useful if you expose port 80 externally
-        # but in your case, since it's behind Tailscale, it might not be strictly necessary
-        # and could be handled by a router later if needed.
-        # http:
-        #   redirections:
-        #     entryPoint:
-        #       to: websecure
-        #       scheme: https
-
-  2. Define a Certificate Resolver (ACME)
-
-
-  This is the core of the SSL configuration.
-
-
-    # traefik.yml
-    certificatesResolvers:
-      letsencrypt: # You can name this anything, "letsencrypt" is common
-        acme:
-          email: your-email@example.com # Important: For renewal notifications from Let's Encrypt
-          storage: "/path/to/acme.json" # Path where Traefik stores certificates and ACME state
-          # For Docker, this path should be a volume mount (e.g., /certs/acme.json)
-          caServer: "https://acme-v02.api.letsencrypt.org/directory" # Production ACME server
-          # caServer: "https://acme-staging-v02.api.letsencrypt.org/directory" # **Use this for testing!** Avoid hitting rate limits.
-    
-          dnsChallenge:
-            provider: cloudflare # Or whatever your DNS provider is (e.g., google, route53, digitalocean, etc.)
-            delayBeforeCheck: 0 # Optional: Time in seconds to wait before checking DNS propagation. Adjust if you have issues.
-            resolvers:
-              - "1.1.1.1:53" # Optional: Specify custom DNS resolvers for validation. Good for debugging.
-              - "8.8.8.8:53"
-
-  Key Points for certificatesResolvers:
-
-
-  - email: Crucial for Let's Encrypt to contact you regarding certificate expiry or issues.
-  - storage: This file (acme.json) stores your certificates and ACME account information. It must be persistent (e.g., a Docker volume mount) so Traefik doesn't have to re-obtain certificates every time it restarts.
-  - caServer:
-    - https://acme-staging-v02.api.letsencrypt.org/directory: ALWAYS start with the staging server for testing! This allows you to debug your setup without hitting Let's Encrypt's strict rate limits. Once everything works, switch to the production server.
-    - https://acme-v02.api.letsencrypt.org/directory: The production server for live certificates.
-  - dnsChallenge.provider: This is where you specify your DNS provider. Traefik supports a wide range of providers (e.g., Cloudflare, AWS Route 53, Google Cloud DNS, DigitalOcean, OVH, etc.). The specific provider name (e.g., cloudflare) must match Traefik's supported list.
-  - delayBeforeCheck: Sometimes, DNS propagation can take a moment. If you experience validation failures, increasing this delay (e.g., to 5 or 10 seconds) can help.
-
-  3. Provide DNS Provider Credentials (Environment Variables)
-
-
-  This is perhaps the most crucial part. Traefik needs credentials to interact with your DNS provider's API. These should always be passed as environment variables, not directly in your configuration file, for security.
-
-  The specific environment variables depend on your DNS provider.
-
-  Example for Cloudflare:
-
-
-    # In your docker-compose.yml for the Traefik service:
-    environment:
-      - CF_API_EMAIL=your-cloudflare-email@example.com
-      - CF_API_KEY=your_cloudflare_global_api_key_or_scoped_token
-      # OR if using a specific API token for security (recommended):
-      # - CF_DNS_API_TOKEN=your_cloudflare_scoped_api_token
-
-
-  - Cloudflare Specifics:
-    - CF_API_EMAIL and CF_API_KEY (Global API Key): Easier but less secure. The API key has full access to your account.
-    - CF_DNS_API_TOKEN (Scoped API Token): Highly Recommended. Create an API token in Cloudflare with permissions only to "Zone -> DNS -> Edit" for the specific zone(s) you need. This significantly limits the blast radius if the key is compromised.
-  Example for AWS Route 53:
-
-
-    # In your docker-compose.yml for the Traefik service:
-    environment:
-      - AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_ACCESS_KEY
-      # Optional: For specific regions
-      # - AWS_REGION=us-east-1
-
-
-  - AWS Specifics: Create an IAM user with programmatic access and a policy that grants route53:ChangeResourceRecordSets permission for your hosted zone.
-  Consult Traefik's Documentation: You must refer to the Traefik documentation for ACME DNS Challenge Providers to find the correct environment variables for your specific DNS provider.
-- [ ] SSL for Dokploy
-- [ ] SSL for individual services
+Probably nothing special.
