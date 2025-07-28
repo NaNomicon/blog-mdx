@@ -6,11 +6,12 @@ export const metadata = {
     cover_image: "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 };
 
-- [ ] context
+import { Callout } from "@/components/mdx/callout";
 
 # What & Why
-- [ ] new section name
-- [ ] Skip this section button
+{/* TODO new section name */}
+{/* TODO Skip this section button */}
+{/* TODO context */}
 
 ## Dokploy
 
@@ -74,22 +75,38 @@ Custom domains allow you to implement additional layers of security, such as DNS
 From an ease-of-use perspective, custom domains provide cleaner, more memorable URLs (e.g., app.yourdomain.com instead of dokploy-server.my-tailnet.ts.net/app). While Tailscale's [MagicDNS](https://tailscale.com/kb/1081/magicdns) is convenient, custom domains offer a more professional and intuitive appearance for users within your tailnet, simplifying access and integration with other domain-centric services.
 
 While this blog post demonstrates the simplicity of `*.ts.net` domains, I am actively working on another blog post that details the setup for custom subdomains (which also applies to full domains), offering these enhanced security and usability benefits. You can follow me on my publishing channels () to get notifications on when the guide is released.
-- [ ] Add links to channels
+{/* TODO Add links to channels */}
 
 # Prerequisites
-- A deployed Dokploy server
-- Set up your Tailscale Network
+To follow this guide, you'll need a Dokploy server already deployed and running. If you haven't set up Dokploy yet, you can find detailed instructions in [the official installation documentation](https://docs.dokploy.com/docs/core/installation). This guide assumes Dokploy is accessible and operational, whether on a cloud VM, a dedicated server, or even a local machine.
 
-- [ ] Specify current versions of Dokploy, (Traefik), and Tailscale
+Additionally, you'll need an active Tailscale network. This involves having Tailscale installed and configured on your Dokploy server, as well as on any client devices from which you intend to access your Dokploy services. 
+
+If you're new to Tailscale, their [Quick start guide](https://tailscale.com/kb/1017/install) is a great place to start. Ensure your Dokploy server is properly authenticated and connected to your Tailscale network.
+
+In this guide, I will be using 2 machines, one acts as a Dokploy server and the other acts as a client (my own laptop) which consumes the services hosted on the Dokploy server. I will also be running the Tailscale client directly on the host machine for simplicity. If you're running TailScale in a Docker container or any other ways (that I do not know of), you might experience some differences when following the steps.
+
+<details>
+    <summary> The versions I'm using for this guide </summary>
+    - Dokploy: `v0.24.4`
+    - Tailscale (server): `1.86.0`
+    - Tailscale (macOS client): `1.82.0`
+
+    {/* annotation color: #9400ff */}
+    <img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/dokploy-version.png" alt="dokploy version" className={"mx-auto"}/>
+    <img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/tailscale-server-version.png" alt="tailscale server version" className={"mx-auto"}/>
+    <img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/tailscale-client-version.png" alt="tailscale client version" className={"mx-auto"}/>
+</details>
+<br/>
 
 # Steps
 ## TailScale
-- [ ] enable MagicDNS
+{/* TODO enable MagicDNS */}
 
 ## Main
-- [ ] tailscale cert Provider
-- [ ] Dokploy
-- [ ] Individual services
+{/* TODO tailscale cert Provider */}
+{/* TODO Dokploy */}
+{/* TODO Individual services */}
 
 ## Public services
 Probably nothing special.
