@@ -80,9 +80,7 @@ While this blog post demonstrates the simplicity of `*.ts.net` domains, I am act
 # Prerequisites
 To follow this guide, you'll need a Dokploy server already deployed and running. If you haven't set up Dokploy yet, you can find detailed instructions in [the official installation documentation](https://docs.dokploy.com/docs/core/installation). This guide assumes Dokploy is accessible and operational, whether on a cloud VM, a dedicated server, or even a local machine.
 
-Additionally, you'll need an active Tailscale network. This involves having Tailscale installed and configured on your Dokploy server, as well as on any client devices from which you intend to access your Dokploy services. 
-
-If you're new to Tailscale, their [Quick start guide](https://tailscale.com/kb/1017/install) is a great place to start. Ensure your Dokploy server is properly authenticated and connected to your Tailscale network.
+Additionally, you'll need an active Tailscale network. This involves having Tailscale installed and configured on your Dokploy server, as well as on any client devices from which you intend to access your Dokploy services. If you're new to Tailscale, their [Quick start guide](https://tailscale.com/kb/1017/install) is a great place to start. Ensure your Dokploy server is properly authenticated and connected to your Tailscale network.
 
 In this guide, I will be using 2 machines, one acts as a Dokploy server and the other acts as a client (my own laptop) which consumes the services hosted on the Dokploy server. I will also be running the Tailscale client directly on the host machine for simplicity. If you're running TailScale in a Docker container or any other ways (that I do not know of), you might experience some differences when following the steps.
 
@@ -92,6 +90,7 @@ In this guide, I will be using 2 machines, one acts as a Dokploy server and the 
     - Tailscale (server): `1.86.0`
     - Tailscale (macOS client): `1.82.0`
 
+    {/* TODO: carosel & shadows */}
     {/* annotation color: #9400ff */}
     <img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/dokploy-version.png" alt="dokploy version" className={"mx-auto"}/>
     <img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/tailscale-server-version.png" alt="tailscale server version" className={"mx-auto"}/>
@@ -100,8 +99,18 @@ In this guide, I will be using 2 machines, one acts as a Dokploy server and the 
 <br/>
 
 # Steps
-## TailScale
-{/* TODO enable MagicDNS */}
+## Enable TailScale's MagicDNS
+<details>
+    <summary>What? Why?</summary>
+
+    **MagicDNS** is a built-in feature of **Tailscale** that provides a private, automatic **DNS resolution service** for devices on your Tailnet. Instead of relying on traditional **DNS servers** to resolve hostnames to IP addresses, **MagicDNS** dynamically assigns and updates internal domain names (e.g., `my-server.your-tailnet-name.ts.net`) to the ephemeral 100.x.y.z IP addresses of your Tailscale devices. 
+
+    We use MagicDNS with `*.ts.net` domains because it significantly simplifies the process of obtaining and managing **SSL certificates** for our internal domain, as Traefik can [integrate directly with the Tailscale daemon](https://tailscale.com/kb/1234/traefik-certificates) to provision certificates for `*.ts.net` hostnames, ensuring **secure HTTPS communication** for your private services without needing **external DNS validation**.
+</details>
+<br/>
+
+Go to [TailScale's DNS Setting Page](https://login.tailscale.com/admin/dns) page, go to the **MagicDNS section** and click the **Enable MagicDNS** button. The result should look like this:
+<img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/magic-dns.png" alt="tailscale magicdns" className={"mx-auto"}/>
 
 ## Main
 {/* TODO tailscale cert Provider */}
