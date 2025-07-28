@@ -84,6 +84,8 @@ Additionally, you'll need an active Tailscale network. This involves having Tail
 
 In this guide, I will be using 2 machines, one acts as a Dokploy server and the other acts as a client (my own laptop) which consumes the services hosted on the Dokploy server. I will also be running the Tailscale client directly on the host machine for simplicity. If you're running TailScale in a Docker container or any other ways (that I do not know of), you might experience some differences when following the steps.
 
+{/* TODO Explain hostnames and tailscale name */}
+
 <details>
     <summary> The versions I'm using for this guide </summary>
     - Dokploy: `v0.24.4`
@@ -112,9 +114,60 @@ In this guide, I will be using 2 machines, one acts as a Dokploy server and the 
 Go to [TailScale's DNS Setting Page](https://login.tailscale.com/admin/dns) page, go to the **MagicDNS section** and click the **Enable MagicDNS** button. The result should look like this:
 <img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/magic-dns.png" alt="tailscale magicdns" className={"mx-auto"}/>
 
-## Main
-{/* TODO tailscale cert Provider */}
-{/* TODO Dokploy */}
+## Add TailScale cert Provider to Traefik (and use it for the Dokploy app itself)
+<details>
+    <summary>Why?</summary>
+
+    {/* TODO */}
+</details>
+<br/>
+
+Go to the Dokploy's **Traefix File System** page, under **Home**, or at `http://server:3000/dashboard/traefik`.
+
+<img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/trafik-fs-location.png" alt="traefik file system location" className={"mx-auto"}/>
+
+{/* TODO wrong file */}
+Select our config file `traefik.yml` and click on the **Unlock** button to edit it.
+
+<img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/traefik-fs-unlock.png" alt="traefik unlock" className={"mx-auto"}/>
+
+Add these two lines under the `certificatesResolvers` section. 
+```yaml
+tailscale:
+    tailscale: {}
+```
+
+{/* TODO wrong config */}
+It probably will look like this:
+<img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/traefix-config.png" alt="traefik config" className={"mx-auto"}/>
+
+{/* 
+## Configure TailScale to use the new resolver for the Dokploy app itself
+
+Expand the `dynamic` folder and open the `dokploy.yml` file, also unlock it.
+
+<img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/traefix-dokploy-config-location.png" alt="traefik dokploy config location" className={"mx-auto"}/> */}
+
+Under `entryPoints`/`websecure`/`http`/`tls`/`certificatesResolvers`, we will change it to our new `tailscale` resolver. It should look like this:
+
+<img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/myresolver.png" alt="myresolver example" className={"mx-auto"}/>
+
+Hit the **Update** button and **lock** the file again.
+
+## Configure the domain for the Dokploy app 
+
+Go to the Dokploy's **Web Server** page, under **Settings**, or at `http://server:3000/dashboard/settings/server`.
+
+<img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/dokploy-settings-server.png" alt="dokploy web server" className={"mx-auto"}/>
+
+Fill in the your server's TailScale domain (`server.[your-tailnet-name].ts.net`), enable **HTTPs**, use **Let's Encrypt** as the certificate provider, and click **Save**.
+
+<img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/dokploy-domain-settings.png" alt="dokploy web server" className={"mx-auto"}/>
+
+Go ahead and restart the Dokploy app (Click **Server** > **Restart**).
+
+<img src="/250727-hide-dokploy-self-hosted-services-behind-tailscale/dokploy-restart.png" alt="dokploy restart" className={"mx-auto"}/>
+
 {/* TODO Individual services */}
 
 ## Public services
