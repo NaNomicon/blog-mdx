@@ -33,23 +33,29 @@ function Footer() {
           {/* Links */}
           <div className="flex justify-center">
             <nav className="flex items-center gap-6">
-              <Link 
-                href="/" 
+              <Link
+                href="/"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Home
               </Link>
-              <Link 
-                href="/about" 
+              <Link
+                href="/about"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 About
               </Link>
-              <Link 
-                href="/blog" 
+              <Link
+                href="/blog"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Blog
+              </Link>
+              <Link
+                href="/privacy-policy"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Privacy Policy
               </Link>
             </nav>
           </div>
@@ -58,8 +64,8 @@ function Footer() {
           <div className="flex flex-col items-end gap-3">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>Powered by</span>
-              <Link 
-                href="https://www.mdxblog.io/" 
+              <Link
+                href="https://www.mdxblog.io/"
                 className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -68,7 +74,7 @@ function Footer() {
                 <ExternalLink className="w-3 h-3" />
               </Link>
             </div>
-            <Link 
+            <Link
               href="https://github.com/NaN72dev/blog-mdx"
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               target="_blank"
@@ -86,9 +92,7 @@ function Footer() {
           <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} NaNomicon. All rights reserved.
           </p>
-          <div className="text-xs text-muted-foreground">
-            v{version}
-          </div>
+          <div className="text-xs text-muted-foreground">v{version}</div>
         </div>
       </div>
     </footer>
