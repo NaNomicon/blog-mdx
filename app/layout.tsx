@@ -10,10 +10,6 @@ import { TelegramClientInit } from "@/components/telegram-client-init";
 import { ThemeProvider } from "@/components/theme-provider";
 import { generateSEOMetadata, defaultSEOConfig } from "@/lib/seo";
 import { WebsiteStructuredData } from "@/components/seo/structured-data";
-import {
-  CloudflareAnalyticsScript,
-  CloudflareAnalytics,
-} from "@/components/analytics/cloudflare-analytics";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { initializeTelegramErrorNotifications } from "@/lib/telegram";
@@ -80,10 +76,6 @@ export default function RootLayout({
           siteUrl={defaultSEOConfig.siteUrl!}
           author={defaultSEOConfig.author!}
         />
-        {/* Server-side Cloudflare Analytics for initial load */}
-        <CloudflareAnalyticsScript
-          token={defaultSEOConfig.cloudflareAnalyticsToken}
-        />
       </head>
       <body
         className={`${inter.className} min-h-screen bg-background font-sans antialiased`}
@@ -107,9 +99,6 @@ export default function RootLayout({
         {/* Analytics components */}
         <Analytics />
         <SpeedInsights />
-        <CloudflareAnalytics
-          token={defaultSEOConfig.cloudflareAnalyticsToken}
-        />
         <Script
           defer
           src="https://umami.nanomicon.com/script.js"

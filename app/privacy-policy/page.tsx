@@ -34,16 +34,6 @@ export default function PrivacyPolicy() {
           </article>
         </div>
       </div>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            document.getElementById('umami-opt-out').addEventListener('click', () => {
-                localStorage.setItem('umami.disabled', '1');
-                window.location.reload();
-            });
-            `,
-        }}
-      />
     </>
   );
 }

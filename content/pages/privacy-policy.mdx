@@ -1,4 +1,4 @@
-import { disableAnalytics, markPrivacyConsentSet } from "@/components/alert-privacy-notice";
+import { UmamiOptOut } from '@/components/umami-opt-out';
 
 **Last Updated: July 31, 2025**
 
@@ -159,7 +159,7 @@ The data collected through Umami helps us to:
 - Improve the overall user experience and performance of our Service.
 - Detect and troubleshoot technical issues.
 
-While we strive for maximum transparency and privacy in our use of Umami, you have the right to opt-out of this analytics tracking at any time. You can do so by <a href='#' id='umami-opt-out'>clicking here to opt-out</a>.
+While we strive for maximum transparency and privacy in our use of Umami, you have the right to opt-out of this analytics tracking at any time. You can do so by <UmamiOptOut />.
 
 For more general information about how Umami (the software) handles privacy, you can visit their documentation at https://umami.is/privacy. Please note that our specific configuration and data handling practices, as outlined in this policy, govern our use of Umami.
 
@@ -303,13 +303,3 @@ You are advised to review this Privacy Policy periodically for any changes. Chan
 If you have any questions about this Privacy Policy, You can contact us:
 
 - By email: hello@nanomicon.com
-
-<script dangerouslySetInnerHTML={{
-  __html: `
-  document.addEventListener("umami-opt-out", () => {
-    localStorage.setItem("umami.disabled", "1");
-    localStorage.setItem("privacy.consent", "1");
-    window.location.reload();
-  });
-`
-}} />
