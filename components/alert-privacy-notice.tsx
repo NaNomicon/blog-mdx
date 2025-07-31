@@ -65,8 +65,10 @@ export function usePrivacyToast() {
                 We Value Your Privacy
               </h3>
               <p className="text-sm text-muted-foreground mt-1">
-                We use cookies to enhance your browsing experience and analyze
-                site traffic. See our{" "}
+                We use privacy-focused cookies to improve your experience. Your
+                data is anonymized and stays securely with us.
+                <br />
+                See our{" "}
                 <Link
                   href="/privacy-policy"
                   className="underline underline-offset-2 font-bold text-foreground hover:text-muted-foreground"
