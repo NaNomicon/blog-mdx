@@ -83,6 +83,7 @@ export default function RootLayout({
           defer
           src="https://umami.nanomicon.com/script.js"
           data-website-id="a7d10e27-6883-4bd4-8f16-ba202d552abd"
+          data-domains="nanomicon.com,nandev.dev"
         />
       </head>
       <body
@@ -105,6 +106,11 @@ export default function RootLayout({
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />
+        <Script
+          id="umami-outbound-links"
+          src="/scripts/umami-outbound.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
