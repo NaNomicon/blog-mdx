@@ -10,13 +10,15 @@ import { TelegramClientInit } from "@/components/telegram-client-init";
 import { ThemeProvider } from "@/components/theme-provider";
 import { generateSEOMetadata, defaultSEOConfig } from "@/lib/seo";
 import { WebsiteStructuredData } from "@/components/seo/structured-data";
-import { CloudflareAnalyticsScript } from "@/components/analytics/cloudflare-analytics";
-import { Analytics } from "@vercel/analytics/next";
+import {
+  CloudflareAnalyticsScript,
+  CloudflareAnalytics,
+} from "@/components/analytics/cloudflare-analytics";
+import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { initializeTelegramErrorNotifications } from "@/lib/telegram";
 import Script from "next/script";
 import { Toaster } from "sonner";
-import { PrivacyToastInit } from "@/components/privacy-toast-init";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -78,14 +80,9 @@ export default function RootLayout({
           siteUrl={defaultSEOConfig.siteUrl!}
           author={defaultSEOConfig.author!}
         />
+        {/* Server-side Cloudflare Analytics for initial load */}
         <CloudflareAnalyticsScript
           token={defaultSEOConfig.cloudflareAnalyticsToken}
-        />
-        <Script
-          defer
-          src="https://umami.nanomicon.com/script.js"
-          data-website-id="a7d10e27-6883-4bd4-8f16-ba202d552abd"
-          data-domains="nanomicon.com,nandev.dev"
         />
       </head>
       <body
@@ -106,10 +103,19 @@ export default function RootLayout({
             </div>
           </ErrorBoundary>
           <Toaster />
-          <PrivacyToastInit />
         </ThemeProvider>
+        {/* Analytics components */}
         <Analytics />
         <SpeedInsights />
+        <CloudflareAnalytics
+          token={defaultSEOConfig.cloudflareAnalyticsToken}
+        />
+        <Script
+          defer
+          src="https://umami.nanomicon.com/script.js"
+          data-website-id="a7d10e27-6883-4bd4-8f16-ba202d552abd"
+          data-domains="nanomicon.com,nandev.dev"
+        />
         <Script
           id="umami-outbound-links"
           src="/scripts/umami-outbound.js"
