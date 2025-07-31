@@ -103,7 +103,6 @@ export default function RootLayout({
           defer
           src="https://umami.nanomicon.com/script.js"
           data-website-id="a7d10e27-6883-4bd4-8f16-ba202d552abd"
-          data-domains="nanomicon.com,nandev.dev"
         />
         <Script
           id="umami-outbound-links"
