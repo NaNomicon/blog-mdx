@@ -1,18 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Cookie, Settings, Check } from "lucide-react";
+import { Cookie, Settings } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useState } from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { useState, useEffect, useCallback } from "react";
 
 export function isPrivacyConsentSet() {
   return localStorage.getItem("privacy.consent") === "1";
@@ -50,72 +41,19 @@ export function usePrivacyToast() {
     isAnalyticsEnabled()
   );
 
-  function handleAccept() {
+  const handleAccept = useCallback(() => {
     enableAnalytics();
     markPrivacyConsentSet();
     toast.dismiss(PRIVACY_TOAST_ID);
-  }
+  }, []);
 
-  function handleEssentialOnly() {
+  const handleEssentialOnly = useCallback(() => {
     disableAnalytics();
     markPrivacyConsentSet();
     toast.dismiss(PRIVACY_TOAST_ID);
-  }
+  }, []);
 
-  function handleSavePreferences() {
-    setAnalyticsEnabled(analyticsEnabled);
-    markPrivacyConsentSet();
-    setPreferencesOpen(false);
-    toast.dismiss(PRIVACY_TOAST_ID);
-  }
-
-  function PreferencesContent() {
-    return (
-      <div className="space-y-6">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between p-3 border rounded-lg bg-muted/50">
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <Check className="w-4 h-4 text-green-600" />
-                <h4 className="font-medium">Strictly Necessary</h4>
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">
-                Essential cookies for the website to function properly. These
-                cannot be disabled.
-              </p>
-            </div>
-            <div className="text-sm text-muted-foreground">Always Active</div>
-          </div>
-
-          <div className="flex items-center justify-between p-3 border rounded-lg">
-            <div className="flex-1">
-              <h4 className="font-medium">Analytics (e.g., Umami)</h4>
-              <p className="text-sm text-muted-foreground mt-1">
-                Help us understand how visitors interact with our website
-                through anonymous analytics.
-              </p>
-            </div>
-            <button
-              onClick={() => setAnalyticsEnabledState(!analyticsEnabled)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${
-                analyticsEnabled ? "bg-primary" : "bg-input"
-              }`}
-              role="switch"
-              aria-checked={analyticsEnabled}
-            >
-              <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${
-                  analyticsEnabled ? "translate-x-6" : "translate-x-1"
-                }`}
-              />
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  function showPrivacyToast() {
+  const showPrivacyToast = useCallback(() => {
     if (isPrivacyConsentSet()) {
       return;
     }
@@ -131,7 +69,7 @@ export function usePrivacyToast() {
 
     toast.custom(
       (t) => (
-        <div className="flex items-start gap-4 p-4 bg-background border border-border rounded-lg shadow-lg min-w-[350px]">
+        <div className="flex items-start gap-4 p-4 bg-background border border-border rounded-lg shadow-lg min-w-[280px] max-w-[90vw] sm:min-w-[400px]">
           <Cookie className="w-5 h-5 mt-0.5 text-muted-foreground flex-shrink-0" />
           <div className="flex-1 space-y-3">
             <div>
@@ -152,7 +90,7 @@ export function usePrivacyToast() {
                 .
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Button size="sm" onClick={handleAccept}>
                 Accept
               </Button>
@@ -163,31 +101,14 @@ export function usePrivacyToast() {
               >
                 Essential only
               </Button>
-              <Sheet open={preferencesOpen} onOpenChange={setPreferencesOpen}>
-                <SheetTrigger asChild>
-                  <Button size="sm" variant="outline">
-                    <Settings className="w-4 h-4 mr-1" />
-                    Preferences
-                  </Button>
-                </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader>
-                    <SheetTitle>Cookie Preferences</SheetTitle>
-                    <SheetDescription>
-                      Manage your cookie preferences. You can enable or disable
-                      different types of cookies below.
-                    </SheetDescription>
-                  </SheetHeader>
-                  <div className="py-6">
-                    <PreferencesContent />
-                  </div>
-                  <SheetFooter>
-                    <Button onClick={handleSavePreferences} className="w-full">
-                      Save Preferences
-                    </Button>
-                  </SheetFooter>
-                </SheetContent>
-              </Sheet>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setPreferencesOpen(true)}
+              >
+                <Settings className="w-4 h-4 mr-1" />
+                Preferences
+              </Button>
             </div>
           </div>
         </div>
@@ -199,9 +120,35 @@ export function usePrivacyToast() {
         duration: Infinity,
       }
     );
-  }
+  }, [setPreferencesOpen, handleAccept, handleEssentialOnly]);
 
-  return { showPrivacyToast };
+  // Hide toast when preferences dialog is open
+  useEffect(() => {
+    if (preferencesOpen) {
+      toast.dismiss(PRIVACY_TOAST_ID);
+    }
+  }, [preferencesOpen]);
+
+  const savePreferences = useCallback(() => {
+    setAnalyticsEnabled(analyticsEnabled);
+    markPrivacyConsentSet();
+    toast.dismiss(PRIVACY_TOAST_ID);
+  }, [analyticsEnabled]);
+
+  const handleSavePreferences = useCallback(() => {
+    savePreferences();
+    setPreferencesOpen(false);
+  }, [savePreferences]);
+
+  return {
+    showPrivacyToast,
+    preferencesOpen,
+    setPreferencesOpen,
+    analyticsEnabled,
+    setAnalyticsEnabledState,
+    handleSavePreferences,
+    savePreferences,
+  };
 }
 
 // Utility function to check if privacy toast is currently showing
