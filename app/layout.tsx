@@ -111,6 +111,15 @@ export default function RootLayout({
           src="/scripts/umami-outbound.js"
           strategy="afterInteractive"
         />
+        <Script
+          id="umami-default-opt-out"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              localStorage.setItem("umami.disabled", "1");
+            `,
+          }}
+        />
       </body>
     </html>
   );

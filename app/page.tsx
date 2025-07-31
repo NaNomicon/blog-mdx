@@ -1,7 +1,8 @@
-import type {Metadata} from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen, User, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import AlertCookieNotice from "@/components/alert-cookie-notice";
 
 // Define the metadata generation function
 export async function generateMetadata(): Promise<Metadata> {
@@ -27,7 +28,7 @@ export default function Home() {
           </div>
           <div className="w-16 h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto" />
         </div>
-        
+
         <div className="max-w-2xl mx-auto space-y-6">
           <p className="text-xl text-muted-foreground leading-relaxed">
             Developer with a passion for learning and exploring new things
@@ -46,10 +47,13 @@ export default function Home() {
               <h2 className="text-2xl font-medium gradient-text">About</h2>
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              I&apos;m always looking for ways to expand my knowledge, try out fresh ideas, and tackle challenges head-on. I started this blog as a way to document what I&apos;ve learned, keep track of my progress, and share insights with others.
+              I&apos;m always looking for ways to expand my knowledge, try out
+              fresh ideas, and tackle challenges head-on. I started this blog as
+              a way to document what I&apos;ve learned, keep track of my
+              progress, and share insights with others.
             </p>
           </div>
-          
+
           <div className="card-enhanced space-y-6">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-accent/10">
@@ -58,7 +62,9 @@ export default function Home() {
               <h2 className="text-2xl font-medium gradient-text">Purpose</h2>
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              Whether it&apos;s coding tips, problem-solving, or things I&apos;ve discovered along the way, I hope my posts can help and inspire others on their own journeys.
+              Whether it&apos;s coding tips, problem-solving, or things
+              I&apos;ve discovered along the way, I hope my posts can help and
+              inspire others on their own journeys.
             </p>
           </div>
         </div>
@@ -71,7 +77,11 @@ export default function Home() {
             Currently under construction, but getting better every day
           </p>
           <div className="relative inline-block">
-            <Button asChild size="lg" className="group bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button
+              asChild
+              size="lg"
+              className="group bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+            >
               <Link href="/blog" className="flex items-center gap-2">
                 Explore my thoughts
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -80,6 +90,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <AlertCookieNotice />
     </div>
   );
 }
