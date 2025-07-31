@@ -15,6 +15,8 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { initializeTelegramErrorNotifications } from "@/lib/telegram";
 import Script from "next/script";
+import { Toaster } from "sonner";
+import { PrivacyToastInit } from "@/components/privacy-toast-init";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -103,6 +105,8 @@ export default function RootLayout({
               <Footer />
             </div>
           </ErrorBoundary>
+          <Toaster />
+          <PrivacyToastInit />
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />
@@ -110,15 +114,6 @@ export default function RootLayout({
           id="umami-outbound-links"
           src="/scripts/umami-outbound.js"
           strategy="afterInteractive"
-        />
-        <Script
-          id="umami-default-opt-out"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              localStorage.setItem("umami.disabled", "1");
-            `,
-          }}
         />
       </body>
     </html>

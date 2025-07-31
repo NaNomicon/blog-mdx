@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen, User, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import AlertCookieNotice from "@/components/alert-cookie-notice";
 
 // Define the metadata generation function
 export async function generateMetadata(): Promise<Metadata> {
@@ -90,7 +89,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <AlertCookieNotice />
     </div>
   );
 }
