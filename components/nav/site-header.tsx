@@ -5,6 +5,7 @@ import { Menu } from "lucide-react";
 import {ModeToggle} from "@/components/nav/theme-toggle";
 import {Sheet, SheetClose, SheetContent, SheetHeader, SheetTrigger,} from "@/components/ui/sheet";
 import { SocialLinks } from "./social-links";
+import HireButton from "../hire-button";
 
 function SiteHeader() {
   return (
@@ -39,7 +40,7 @@ function SiteHeader() {
                 <SheetClose>About</SheetClose>
               </Link>
               <Link href="/blog" className="block text-lg font-medium transition-all duration-300 hover:text-primary hover:translate-x-2">
-                <SheetClose>Blog</SheetClose>
+                <SheetClose>Blogs</SheetClose>
               </Link>
             </nav>
             {/* Social Links in Mobile Menu */}
@@ -82,9 +83,13 @@ function SiteHeader() {
           </Link>
         </nav>
 
-        {/* Theme Toggle */}
-        <div className="flex items-center">
-          <ModeToggle />
+        <div className="flex items-center gap-2">
+          <HireButton />
+
+          {/* Theme Toggle */}
+          <div className="flex items-center">
+            <ModeToggle />
+          </div>
         </div>
       </div>
     </header>
