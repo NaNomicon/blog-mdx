@@ -28,16 +28,16 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/logo.png", sizes: "400x400", type: "image/png" },
+      { url: "/favicon.ico", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico", sizes: "16x16", type: "image/png" },
+      { url: "/favicon.ico", sizes: "400x400", type: "image/png" },
     ],
-    shortcut: "/favicon-32x32.png",
-    apple: [{ url: "/logo.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/favicon.ico", sizes: "180x180", type: "image/png" }],
     other: [
       {
         rel: "apple-touch-icon-precomposed",
-        url: "/logo.png",
+        url: "/favicon.ico",
       },
     ],
   },
@@ -61,13 +61,13 @@ export default function RootLayout({
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="/favicon-32x32.png"
+          href="/favicon.ico"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="/favicon-16x16.png"
+          href="/favicon.ico"
         />
         <link rel="shortcut icon" href="/favicon.ico" />
         <WebsiteStructuredData
