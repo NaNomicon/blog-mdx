@@ -1,8 +1,7 @@
-import fs from "node:fs";
-import path from "node:path";
 import Link from "next/link";
 import Image from "next/image";
-import type {Metadata} from "next";
+import type { Metadata } from "next";
+import { client } from "@/tina/__generated__/client";
 import { generateSEOMetadata } from "@/lib/seo";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,8 @@ import { Button } from "@/components/ui/button";
 export async function generateMetadata(): Promise<Metadata> {
   return generateSEOMetadata({
     title: "Blog",
-    description: "Welcome to the blog! Here you will find a collection of articles about web development, programming, technology insights, and personal experiences.",
+    description:
+      "Welcome to the blog! Here you will find a collection of articles about web development, programming, technology insights, and personal experiences.",
   });
 }
 
@@ -25,37 +25,32 @@ interface PostMetadata {
   description?: string;
   tags?: string[];
   cover_image?: string;
+  category?: string;
   [key: string]: any;
 }
 
 async function getAllPosts(): Promise<Post[]> {
-  const dir = path.join(process.cwd(), "content", "blogs");
-  const files = fs.readdirSync(dir);
+  const postsResponse = await client.queries.postConnection({
+    sort: "publishDate",
+  });
 
-  const posts = files
-    .filter(
-      (filename) => filename.endsWith(".mdx") && !filename.startsWith(".")
-    )
-    .map((filename) => {
-      try {
-        const { metadata } = require(`@/content/blogs/${filename}`);
-        return {
-          slug: filename.replace(".mdx", ""),
-          metadata: metadata || {
-            title: "Untitled",
-            publishDate: "1970-01-01",
-          },
-        };
-      } catch (error) {
-        console.error(`Error loading metadata for file ${filename}:`, error);
-        return {
-          slug: filename.replace(".mdx", ""),
-          metadata: { title: "Untitled", publishDate: "1970-01-01" },
-        };
-      }
-    });
+  const posts =
+    postsResponse.data.postConnection.edges?.map((edge) => {
+      const node = edge?.node;
+      return {
+        slug: node?._sys.filename || "",
+        metadata: {
+          title: node?.title || "Untitled",
+          publishDate: node?.publishDate || "1970-01-01",
+          description: node?.description || "",
+          cover_image: node?.cover_image || "",
+          category: node?.category || "",
+          tags: node?.tags as string[] || [],
+        },
+      };
+    }) || [];
 
-  // Sort posts by publishDate in descending order
+  // Sort by date descending (Tina might handle this but let's be sure)
   posts.sort(
     (a, b) =>
       new Date(b.metadata.publishDate).getTime() -
@@ -83,7 +78,8 @@ export default async function Home() {
           <div className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent mx-auto" />
         </div>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          A collection of thoughts, insights, and discoveries from my journey in development and beyond
+          A collection of thoughts, insights, and discoveries from my journey in
+          development and beyond
         </p>
       </section>
 
@@ -92,8 +88,8 @@ export default async function Home() {
         {posts.length > 0 ? (
           <div className="grid gap-8">
             {posts.map((post, index) => (
-              <article 
-                key={post.slug} 
+              <article
+                key={post.slug}
                 className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/50 transition-all duration-300 hover:border-border hover:bg-card/80 hover:shadow-lg"
               >
                 <Link href={`/blog/${post.slug}`} className="block">
@@ -112,38 +108,50 @@ export default async function Home() {
                         </div>
                       </div>
                     )}
-                    
+
                     {/* Content */}
-                    <div className={`space-y-4 ${post.metadata.cover_image ? 'md:col-span-3' : 'md:col-span-4'}`}>
+                    <div
+                      className={`space-y-4 ${
+                        post.metadata.cover_image
+                          ? "md:col-span-3"
+                          : "md:col-span-4"
+                      }`}
+                    >
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Calendar className="w-4 h-4" />
                         <time dateTime={post.metadata.publishDate}>
-                          {new Date(post.metadata.publishDate).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                          })}
+                          {new Date(post.metadata.publishDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
                         </time>
                       </div>
-                      
+
                       <h2 className="text-2xl font-medium leading-tight group-hover:text-foreground/80 transition-colors">
                         {post.metadata.title}
                       </h2>
-                      
+
                       {post.metadata.description && (
-                        <p className="text-muted-foreground leading-relaxed overflow-hidden" style={{
-                          display: '-webkit-box',
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: 'vertical'
-                        }}>
+                        <p
+                          className="text-muted-foreground leading-relaxed overflow-hidden"
+                          style={{
+                            display: "-webkit-box",
+                            WebkitLineClamp: 3,
+                            WebkitBoxOrient: "vertical",
+                          }}
+                        >
                           {post.metadata.description}
                         </p>
                       )}
-                      
+
                       {post.metadata.tags && post.metadata.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2">
                           {post.metadata.tags.slice(0, 3).map((tag: string) => (
-                            <span 
+                            <span
                               key={tag}
                               className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground"
                             >
@@ -152,7 +160,7 @@ export default async function Home() {
                           ))}
                         </div>
                       )}
-                      
+
                       <div className="flex items-center gap-2 text-sm font-medium text-foreground/60 group-hover:text-foreground/80 transition-colors">
                         Read more
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

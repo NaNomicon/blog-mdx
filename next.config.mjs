@@ -1,8 +1,3 @@
-import createMDX from "@next/mdx";
-import remarkGfm from "remark-gfm";
-import remarkFrontmatter from "remark-frontmatter";
-import rehypeHighlight from "rehype-highlight";
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Configure `pageExtensions` to include markdown and MDX files
@@ -18,15 +13,6 @@ const nextConfig = {
       "react-icons",
       "@radix-ui/react-icons",
     ],
-    // Disable turbo temporarily for stability
-    // turbo: {
-    //   rules: {
-    //     "*.svg": {
-    //       loaders: ["@svgr/webpack"],
-    //       as: "*.js",
-    //     },
-    //   },
-    // },
     // Enable SWC minification for faster builds
     swcMinify: true,
     // Faster builds with reduced type checking
@@ -109,17 +95,7 @@ const nextConfig = {
 
   // Optimize fonts
   optimizeFonts: true,
-
-  // Optionally, add any other Next.js config below
 };
-
-const withMDX = createMDX({
-  options: {
-    remarkPlugins: [remarkGfm, remarkFrontmatter],
-    rehypePlugins: [rehypeHighlight],
-    format: "mdx",
-  },
-});
 
 // Bundle analyzer setup - proper ES module handling
 async function createNextConfig() {
@@ -130,7 +106,7 @@ async function createNextConfig() {
     withBundleAnalyzer = bundleAnalyzer({ enabled: true });
   }
 
-  return withBundleAnalyzer(withMDX(nextConfig));
+  return withBundleAnalyzer(nextConfig);
 }
 
 // Export the config
