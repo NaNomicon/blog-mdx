@@ -7,10 +7,15 @@ const branch =
   process.env.HEAD ||
   "main";
 
+const isLocal = process.env.NODE_ENV === "development" || process.env.TINA_PUBLIC_IS_LOCAL === "1";
+
 export default defineConfig({
   branch,
-  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "dummy", // Get this from tina.io
-  token: process.env.TINA_TOKEN || "dummy", // Get this from tina.io
+  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
+  token: process.env.TINA_TOKEN,
+
+  // Self-hosted configuration
+  contentApiUrlOverride: process.env.NEXT_PUBLIC_TINA_GQL_URL,
 
   build: {
     outputFolder: "admin",

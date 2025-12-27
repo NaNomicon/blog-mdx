@@ -17,6 +17,16 @@ const envSchema = z.object({
     // Analytics
     NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN: z.string().optional(),
 
+    // TinaCMS Configuration
+    TINA_PUBLIC_IS_LOCAL: z.string().optional().default("0"),
+    NEXT_PUBLIC_TINA_GQL_URL: z.string().optional(),
+    MONGODB_URI: z.string().optional(),
+    GITHUB_PERSONAL_ACCESS_TOKEN: z.string().optional(),
+    GITHUB_OWNER: z.string().optional(),
+    GITHUB_REPO: z.string().optional(),
+    TINA_TOKEN: z.string().optional(),
+    NEXT_PUBLIC_TINA_BRANCH: z.string().optional().default("main"),
+
     // Build configuration
     ANALYZE: z
         .string()

@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - TINA_PUBLIC_IS_LOCAL=0
+      - MONGODB_URI=mongodb://mongo:27017/tinacms
+      - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
+      - GITHUB_OWNER=${GITHUB_OWNER}
+      - GITHUB_REPO=${GITHUB_REPO}
+      - TINA_TOKEN=${TINA_TOKEN}
+      - NEXT_PUBLIC_TINA_BRANCH=${NEXT_PUBLIC_TINA_BRANCH:-main}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - TELEGRAM_NOTIFICATIONS_ENABLED=${TELEGRAM_NOTIFICATIONS_ENABLED:-false}
+      - NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN=${NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN}
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6.0
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+
