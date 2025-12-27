@@ -1,6 +1,6 @@
 import { createDatabase, FilesystemBridge } from "@tinacms/datalayer";
 import { MongodbLevel } from "mongodb-level";
-import { Level } from "level";
+import { MemoryLevel } from "memory-level";
 import { Octokit } from "octokit";
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "1";
@@ -10,8 +10,8 @@ const octokit = new Octokit({
 });
 
 export default createDatabase({
-  databaseAdapter: (isLocal
-    ? new Level("./db")
+  databaseAdapter: (isLocal || !process.env.MONGODB_URI
+    ? new MemoryLevel()
     : new MongodbLevel({
         collectionName: "tinacms",
         dbName: "tinacms",

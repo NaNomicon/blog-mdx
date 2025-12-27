@@ -15,7 +15,8 @@ export default defineConfig({
   token: process.env.TINA_TOKEN,
 
   // Self-hosted configuration
-  contentApiUrlOverride: process.env.NEXT_PUBLIC_TINA_GQL_URL,
+  // Fallback to a relative path or dummy URL during build to satisfy the CLI
+  contentApiUrlOverride: process.env.NEXT_PUBLIC_TINA_GQL_URL || "/api/tina/gql",
 
   build: {
     outputFolder: "admin",
