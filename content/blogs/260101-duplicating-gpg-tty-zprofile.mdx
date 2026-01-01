@@ -1,0 +1,95 @@
+export const metadata = {
+    title: "The Curious Case of the Duplicating GPG_TTY and the Hidden .zprofile Culprit (and Why My Terminal Was So Slow!)",
+    publishDate: "2026-01-01",
+    description: "A deep dive into why export GPG_TTY=$(tty) was duplicating in .zshrc, causing massive terminal slowdowns, and how to fix it by finding the culprit in .zprofile.",
+    category: "TIL",
+    tldr: "If your terminal is starting up slowly and you see thousands of duplicate GPG_TTY exports in your .zshrc, check your .zprofile for a non-idempotent script that appends to .zshrc on every login shell launch. The fix is to remove the script and use Oh My Zsh's gpg-agent plugin instead.",
+    cover_image: "/covers/260101-duplicating-gpg-tty-zprofile.jpg",
+};
+
+<p className="text-xs text-muted-foreground italic -mt-4 mb-4">
+  Image by <a href="https://pixabay.com/users/joffi-1229850/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1685092">joffi</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1685092">Pixabay</a>
+</p>
+
+Every now and then, a seemingly small configuration quirk can turn into a head-scratching mystery, especially in the world of dotfiles. I recently found myself in such a predicament: the line `export GPG_TTY=$(tty)` kept magically reappearing in my `.zshrc` file every time I opened a new terminal. What started as a minor annoyance quickly became a fascinating dive into shell startup logic, Oh My Zsh plugins, and the often-overlooked nuances of dotfile management, culminating in a significant performance hit to my terminal's startup speed.
+
+---
+
+## The Problem: A Frustratingly Sluggish Start (and a Massive Secret in .zshrc)
+
+It began with a subtle, then increasingly painful, realization: my terminal was taking forever to start. What used to be an instantaneous pop-up was now a sluggish crawl of several seconds. I'd open Cursor, or Terminal.app, or Tabby, and just... wait.
+
+After days of frustration, I decided to peek under the hood and opened my `.zshrc`. To my absolute horror, I found that it had grown to include **thousands** of identical lines: `export GPG_TTY=$(tty)`. Every single one of those redundant lines was being parsed and executed by Zsh every time I opened a new terminal session, turning my snappy startup into a frustrating wait.
+
+The `GPG_TTY` environment variable is crucial for GnuPG (GPG) to know which terminal to use for passphrase prompts—essential for signing Git commits. So, while the line itself was important, its relentless duplication (at least 3,000 times!) was definitely not.
+
+---
+
+## Initial Suspicions: Oh My Zsh Plugins
+
+My first thought, like many Zsh users, went straight to Oh My Zsh and its myriad of plugins. I knew there was a `gpg-agent` plugin, and its `README.md` explicitly stated: "Updates the GPG_TTY environment variable before each shell execution."
+
+A quick grep confirmed the plugin contained the line `export GPG_TTY=$TTY`. This told me the plugin was indeed managing the variable. My initial theory was that the plugin might be flawed, constantly writing to my `.zshrc`. But plugins are usually sourced, not designed to write back to the user's main configuration file. This was a critical distinction.
+
+If the plugin was setting the variable, and I was also seeing it appended to `.zshrc`, it suggested a conflict: the plugin was doing its job, but something else was writing the redundant line.
+
+---
+
+## The Hunt for the Writer
+
+Knowing that the line was being written (not just sourced) was key. I systematically tried:
+
+1.  **Removing the duplicate line from .zshrc**: It reappeared.
+2.  **Disabling the gpg-agent plugin**: The line still reappeared in `.zshrc`. This was a major clue! If the plugin wasn't the writer, something else was.
+3.  **Temporarily commenting out source $ZSH/oh-my-zsh.sh in .zshrc**: Even with Oh My Zsh completely disabled, the line still appeared.
+
+This confirmed the culprit was outside of Oh My Zsh's direct influence, meaning it was likely in another Zsh startup file or a system-level script.
+
+This narrowed the scope significantly. Zsh processes several startup files in a specific order:
+
+- `~/.zshenv`
+- `~/.zprofile` (for login shells)
+- `~/.zshrc` (for interactive shells)
+- `~/.zlogin` (for login shells, after .zshrc)
+
+Given the login shell behavior, `.zprofile` became a prime suspect.
+
+---
+
+## The Aha! Moment: .zprofile Reveals Its Secrets
+
+Opening my `~/.zprofile` file, I immediately spotted it:
+
+```bash
+# https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key
+# Add GPG key
+if [ -r ~/.zshrc ]; then echo -e '\nexport GPG_TTY=$(tty)' >> ~/.zshrc; \
+  else echo -e '\nexport GPG_TTY=$(tty)' >> ~/.zprofile; fi
+```
+
+There it was! A script, seemingly taken directly from GitHub's documentation on managing commit signature verification, designed to add `export GPG_TTY=$(tty)` to my `.zshrc`.
+
+Here is where I have to admit my own fault. Looking back at the documentation, it was clear that this command was meant to be run **only once** as a terminal command to initialize the configuration. Instead, I had mistakenly copied the logic and pasted it directly into my `~/.zprofile`.
+
+The fatal flaw: **This script lacked idempotence.** It performed no check to see if `GPG_TTY` was already present in `~/.zshrc`. Every time my login shell started and sourced `.zprofile`, it dutifully checked if `.zshrc` was readable (which it always was) and then unconditionally appended the line. Because `.zprofile` runs on every new login session, it was effectively "spamming" my `.zshrc` with new exports every time I opened my IDE or logged in.
+
+---
+
+## The Fix and the Lesson Learned
+
+The solution was simple:
+
+1.  I went back to my `~/.zshrc` and manually deleted all the thousands of duplicate `export GPG_TTY=$(tty)` lines.
+2.  Crucially, I then removed the entire `if ... else ... fi` block from my `~/.zprofile`.
+
+Upon opening a new terminal, my `.zshrc` remained pristine, `GPG_TTY` was still correctly set (thanks to the Oh My Zsh `gpg-agent` plugin), and most importantly, my terminal startup speed was back to being snappy!
+
+<Callout type="info" title="Key Lessons Learned">
+- **Idempotence is king in dotfiles**: Any script that modifies a configuration file should first check if the change is actually needed. Without this, you're inviting bloat, confusion, and significant performance degradation.
+- **Understand your shell's startup files**: Knowing the order and purpose of `.zshenv`, `.zprofile`, `.zshrc`, etc., is vital for effective troubleshooting.
+- **Third-party documentation can be a double-edged sword**: While GitHub's guide intended to be helpful, the specific script provided for Zsh users could lead to issues if executed more than once, especially if it's placed in a file like `.zprofile` that runs frequently.
+- **Trust the specialized tools**: If you're using a plugin (like Oh My Zsh's `gpg-agent`) designed to manage a specific environment variable, it's often best to let it handle the heavy lifting.
+</Callout>
+
+This little adventure taught me a lot about the intricacies of my own shell environment. While it was a frustrating few days, the satisfaction of finally solving the mystery and reclaiming my fast terminal startup was well worth it. Keep your dotfiles clean, and always be wary of scripts that append without checking!
+

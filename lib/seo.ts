@@ -33,7 +33,12 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
 
     const fullTitle = title === "NaN" ? title : `${title} | ${siteName}`;
     const canonicalUrl = slug ? `${siteUrl}/blog/${slug}` : siteUrl;
-    const imageUrl = coverImage ? `${siteUrl}${coverImage}` : `${siteUrl}${seoConfig.defaultOGImage}`;
+    
+    // Check if coverImage is an absolute URL
+    const isAbsoluteImageUrl = coverImage?.startsWith('http://') || coverImage?.startsWith('https://');
+    const imageUrl = coverImage 
+        ? (isAbsoluteImageUrl ? coverImage : `${siteUrl}${coverImage}`) 
+        : `${siteUrl}${seoConfig.defaultOGImage}`;
 
     const metadata: Metadata = {
         // Basic meta tags
