@@ -1,4 +1,8 @@
 packages:
-  - "."
+  - .
+
 builtDependencies:
-  - "@vercel/speed-insights"
+  - '@vercel/speed-insights'
+
+onlyBuiltDependencies:
+  - '@vercel/speed-insights'
