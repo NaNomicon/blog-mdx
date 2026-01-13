@@ -1,5 +1,3 @@
-import fs from "node:fs";
-import path from "node:path";
 import React from "react";
 import dynamic from "next/dynamic";
 import type {Metadata, ResolvingMetadata} from "next";
@@ -7,6 +5,8 @@ import {format} from "date-fns";
 import { generateSEOMetadata, extractSEOFromBlogMetadata, defaultSEOConfig } from "@/lib/seo";
 import { BlogPostStructuredData, BreadcrumbStructuredData } from "@/components/seo/structured-data";
 import { BlogLayout } from "@/components/mdx/blog-layout";
+import { getPostBySlug, getAllPosts, isPreviewMode, type BlogPostMetadata } from "@/lib/content";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: { slug: string };
@@ -16,37 +16,18 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const post = await getPost(params);
+  const post = await getPostBySlug<BlogPostMetadata>("blogs", params.slug, isPreviewMode());
+  if (!post) return {};
+  
   const seoConfig = extractSEOFromBlogMetadata(post.metadata, params.slug);
   return generateSEOMetadata(seoConfig);
 }
 
-async function getPost({ slug }: { slug: string }) {
-  try {
-    const mdxPath = path.join("content", "blogs", `${slug}.mdx`);
-    if (!fs.existsSync(mdxPath)) {
-      throw new Error(`MDX file for slug ${slug} does not exist`);
-    }
-
-    const { metadata } = await import(`@/content/blogs/${slug}.mdx`);
-
-    return {
-      slug,
-      metadata,
-    };
-  } catch (error) {
-    console.error("Error fetching post:", error);
-    throw new Error(`Unable to fetch the post for slug: ${slug}`);
-  }
-}
-
 export async function generateStaticParams() {
-  const files = fs.readdirSync(path.join("content", "blogs"));
-  const params = files.map((filename) => ({
-    slug: filename.replace(".mdx", ""),
+  const posts = await getAllPosts<BlogPostMetadata>("blogs");
+  return posts.map((post) => ({
+    slug: post.slug,
   }));
-
-  return params;
 }
 
 // 🚀 ISR Magic - Revalidate every hour!
@@ -55,9 +36,14 @@ export const revalidate = 3600; // 1 hour in seconds
 export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
-  const post = await getPost(params);
-  // Dynamically import the MDX file based on the slug
-  const MDXContent = dynamic(() => import(`@/content/blogs/${slug}.mdx`));
+  const post = await getPostBySlug<BlogPostMetadata>("blogs", slug, isPreviewMode());
+  
+  if (!post) {
+    notFound();
+  }
+
+  // Dynamically import the MDX file based on the actual type (could be 'blogs' or 'drafts')
+  const MDXContent = dynamic(() => import(`@/content/${post.type}/${slug}.mdx`));
 
   const formattedDate = format(
     new Date(post.metadata.publishDate),

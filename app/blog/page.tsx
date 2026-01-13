@@ -1,11 +1,10 @@
-import fs from "node:fs";
-import path from "node:path";
 import Link from "next/link";
 import Image from "next/image";
 import type {Metadata} from "next";
 import { generateSEOMetadata } from "@/lib/seo";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getAllPosts, isPreviewMode, type BlogPostMetadata } from "@/lib/content";
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateSEOMetadata({
@@ -14,62 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-type Post = {
-  slug: string;
-  metadata: PostMetadata;
-};
-
-interface PostMetadata {
-  title: string;
-  publishDate: string;
-  description?: string;
-  tags?: string[];
-  cover_image?: string;
-  [key: string]: any;
-}
-
-async function getAllPosts(): Promise<Post[]> {
-  const dir = path.join(process.cwd(), "content", "blogs");
-  const files = fs.readdirSync(dir);
-
-  const posts = files
-    .filter(
-      (filename) => filename.endsWith(".mdx") && !filename.startsWith(".")
-    )
-    .map((filename) => {
-      try {
-        const { metadata } = require(`@/content/blogs/${filename}`);
-        return {
-          slug: filename.replace(".mdx", ""),
-          metadata: metadata || {
-            title: "Untitled",
-            publishDate: "1970-01-01",
-          },
-        };
-      } catch (error) {
-        console.error(`Error loading metadata for file ${filename}:`, error);
-        return {
-          slug: filename.replace(".mdx", ""),
-          metadata: { title: "Untitled", publishDate: "1970-01-01" },
-        };
-      }
-    });
-
-  // Sort posts by publishDate in descending order
-  posts.sort(
-    (a, b) =>
-      new Date(b.metadata.publishDate).getTime() -
-      new Date(a.metadata.publishDate).getTime()
-  );
-
-  return posts;
-}
-
 // 🚀 ISR for blog listing - Revalidate every 30 minutes
 export const revalidate = 1800; // 30 minutes in seconds
 
 export default async function Home() {
-  const posts = await getAllPosts();
+  const posts = await getAllPosts<BlogPostMetadata>("blogs", isPreviewMode());
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-16 space-y-16">

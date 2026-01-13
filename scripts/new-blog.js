@@ -104,15 +104,19 @@ async function main() {
       (await promptUser("Enter blog description: ")) || "A new blog post";
     const category =
       (await promptUser("Enter category (default: General): ")) || "General";
-    const coverImage =
-      (await promptUser("Enter cover image URL (optional): ")) ||
-      "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
 
     const now = new Date();
     const datePrefix = formatDate(now);
     const slug = slugify(title);
     const fileName = `${datePrefix}-${slug}.mdx`;
     const filePath = path.join(process.cwd(), "content", "blogs", fileName);
+
+    // Default cover image path
+    const defaultCoverName = `${datePrefix}-${slug}.png`;
+    const defaultCoverPath = `/covers/${defaultCoverName}`;
+
+    const coverImageInput = await promptUser(`Enter cover image filename (default: ${defaultCoverName}): `);
+    const coverImage = coverImageInput ? `/covers/${coverImageInput}` : defaultCoverPath;
 
     // Check if file already exists
     if (fs.existsSync(filePath)) {
@@ -136,12 +140,19 @@ async function main() {
       fs.mkdirSync(blogsDir, { recursive: true });
     }
 
+    // Ensure the covers directory exists
+    const coversDir = path.join(process.cwd(), "public", "covers");
+    if (!fs.existsSync(coversDir)) {
+      fs.mkdirSync(coversDir, { recursive: true });
+    }
+
     // Write the file
     fs.writeFileSync(filePath, blogContent);
 
     console.log("\n✅ Blog post created successfully!");
     console.log(`📁 File: ${fileName}`);
     console.log(`📍 Path: ${filePath}`);
+    console.log(`🖼️  Expected cover image: public/covers/${coverImage.split('/').pop()}`);
     console.log("\n📝 You can now edit the file and add your content!");
   } catch (error) {
     console.error("❌ Error creating blog post:", error.message);

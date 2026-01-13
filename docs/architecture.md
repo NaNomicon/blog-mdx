@@ -15,8 +15,8 @@ This project is a static-first blog built with Next.js 14, leveraging the App Ro
 
 ### 1. Content Rendering Pipeline
 1. **Dynamic Route**: `app/blog/[slug]/page.tsx` and `app/notes/[slug]/page.tsx` capture the slug.
-2. **Metadata Extraction**: The MDX file is imported to extract its exported `metadata` object.
-3. **SEO Generation**: `generateMetadata` uses the extracted metadata to set page titles, descriptions, and OpenGraph tags.
+2. **Metadata Extraction & Validation**: Content is fetched via `lib/content.ts`, which imports the MDX file and validates its `metadata` object using **Zod schemas**.
+3. **SEO Generation**: `generateMetadata` uses the validated metadata to set page titles, descriptions, and OpenGraph tags.
 4. **Dynamic Import**: `MDXContent` is loaded via `next/dynamic` to keep the main bundle light.
 5. **Layout Injection**: `BlogLayout` or `NoteLayout` wraps the content, providing specialized UI for long-form or short-form content.
 6. **Component Mapping**: `mdx-components.tsx` maps standard Markdown elements (h1, p, etc.) and custom components (YouTube, Callout) to React components.
@@ -24,14 +24,14 @@ This project is a static-first blog built with Next.js 14, leveraging the App Ro
 ### 2. Snippets & Notes Grouping
 1. **Source**: Files in `content/notes/`.
 2. **Taxonomy**: Grouped by `type`, `tags`, or `book_title`.
-3. **Daily Digest**: Logic to group snippets by `publishDate` for chronological browsing.
+3. **Daily Digest**: Logic in `lib/content.ts` to group snippets by `publishDate` for chronological browsing.
 4. **Integration**: Related snippets are cross-referenced on blog posts using shared tags.
 
 ### 3. Post Creation Workflow
 1. User runs `pnpm new-blog` or `pnpm new-note`.
 2. `scripts/new-blog.js` or `scripts/new-note.js` prompts for post details.
 3. A new MDX file is created in `content/blogs/` or `content/notes/` with a timestamped filename (YYMMDD-slug.mdx).
-4. Assets are manually placed in `public/YYMMDD-slug/`.
+4. Assets like covers are placed in `public/covers/`. Post-specific images can be stored in `public/YYMMDD-slug/`.
 
 ### 3. Telegram Bot Integration
 - Located in `lib/telegram/`.
@@ -48,10 +48,11 @@ This project is a static-first blog built with Next.js 14, leveraging the App Ro
 - **Server Components**: Used by default for all pages and layouts to minimize client-side JS.
 - **Islands Architecture (Selective Hydration)**: Only complex interactive components (like TOC or Search) are marked as `'use client'`.
 - **Composition**: `BlogLayout` uses composition to separate layout concerns from the content rendering logic.
-- **Zod Validation**: Used for environment variable validation and potentially for metadata schema in the future.
+- **Zod Validation**: Extensively used for environment variable validation and MDX metadata schemas to ensure content integrity.
 
 ## Performance Optimizations
 - **Static Generation**: All blog posts are pre-rendered at build time.
 - **ISR**: Revalidation every 3600 seconds ensures content updates without full rebuilds.
 - **Image Optimization**: `next/image` is used for all cover and content images.
 - **Dynamic Imports**: MDX files are loaded only when requested.
+- **Draft Preview**: Integrated mechanism in `lib/content.ts` to preview drafts in development mode without impacting production.
