@@ -1,12 +1,15 @@
+import { Suspense } from "react";
 import { type Metadata } from "next";
 import { getAllPosts, getPostBySlug, getAdjacentPosts, isPreviewMode, type NoteMetadata, type Post } from "@/lib/content";
-import { NoteCard } from "@/components/notes/note-card";
 import { generateSEOMetadata } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { NoteDialog } from "@/components/notes/note-dialog";
+import { getPaginatedNotes, type NoteFilters } from "@/lib/notes";
+import { InfiniteNotesStream } from "@/components/notes/infinite-notes-stream";
+import { NotesFilter } from "@/components/notes/notes-filter";
 
 export async function generateMetadata({ params }: { params: { name: string } }): Promise<Metadata> {
   const collectionName = decodeURIComponent(params.name);
@@ -31,60 +34,103 @@ export default async function CollectionPage({
   searchParams,
 }: { 
   params: { name: string };
-  searchParams: { note?: string };
+  searchParams: { 
+    tag?: string; 
+    note?: string;
+    from?: string;
+    to?: string;
+    sort?: "asc" | "desc";
+    view?: "masonry" | "list";
+  };
 }) {
   const collectionName = decodeURIComponent(params.name);
-  const allNotes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
-  const notes = allNotes.filter(n => n.metadata.collection === collectionName);
+  
+  const filters: NoteFilters = {
+    collection: collectionName,
+    tag: searchParams.tag,
+    from: searchParams.from,
+    to: searchParams.to,
+    sort: searchParams.sort,
+  };
 
-  if (notes.length === 0) {
+  const { notes: initialNotes, hasMore } = await getPaginatedNotes(filters, 1, 10);
+
+  if (initialNotes.length === 0 && !searchParams.tag && !searchParams.from && !searchParams.to) {
     notFound();
   }
+
+  // Get tags specifically for this collection for the filter
+  const allNotes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
+  const collectionNotes = allNotes.filter(n => n.metadata.collection === collectionName);
+  const allTags = Array.from(new Set(collectionNotes.flatMap(n => n.metadata.tags || []))) as string[];
 
   // Handle selected note for dialog
   let selectedNote = null;
   let adjacentNotes: { prev: Post<NoteMetadata> | null; next: Post<NoteMetadata> | null } = { prev: null, next: null };
   if (searchParams.note) {
-    selectedNote = notes.find(n => n.slug === searchParams.note) || null;
-    if (selectedNote) {
-      // Get adjacent notes within this collection context
-      const index = notes.findIndex(n => n.slug === searchParams.note);
-      adjacentNotes = {
-        prev: index > 0 ? notes[index - 1] : null,
-        next: index < notes.length - 1 ? notes[index + 1] : null,
-      };
-    }
+    const [note, adjacent] = await Promise.all([
+      getPostBySlug<NoteMetadata>("notes", searchParams.note, isPreviewMode()),
+      getAdjacentPosts<NoteMetadata>("notes", searchParams.note, isPreviewMode()),
+    ]);
+    selectedNote = note;
+    adjacentNotes = adjacent;
   }
+
+  const currentLayout = searchParams.view || "masonry";
 
   return (
     <div className="min-h-screen bg-muted/20">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 space-y-12">
         {/* Header Section */}
-        <section className="space-y-6">
-          <Button variant="ghost" asChild className="mb-4">
+        <section className="space-y-8">
+          <Button variant="ghost" asChild className="hover:bg-primary/5 hover:text-primary transition-colors">
             <Link href="/notes" className="flex items-center gap-2">
               <ChevronLeft className="h-4 w-4" />
-              Back to all notes
+              <span className="text-sm font-medium uppercase tracking-wider">Back to all notes</span>
             </Link>
           </Button>
           
-          <div className="space-y-4">
-            <h1 className="text-4xl sm:text-5xl font-light tracking-tight">
-              Collection: <span className="text-primary font-medium">{collectionName}</span>
-            </h1>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              {notes.length} {notes.length === 1 ? 'note' : 'notes'} in this collection.
-            </p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-muted-foreground/60">
+                <div className="h-px w-8 bg-border" />
+                <span className="text-xs font-bold uppercase tracking-[0.3em]">Collection</span>
+              </div>
+              <h1 className="text-5xl sm:text-6xl font-light tracking-tight">
+                {collectionName}
+                <span className="text-primary">.</span>
+              </h1>
+              <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
+                A curated stream of thoughts and discoveries from the <span className="text-foreground font-medium">{collectionName}</span> collection.
+              </p>
+            </div>
+
+            <div className="flex-shrink-0">
+              <Suspense fallback={<div className="h-10 w-[200px] animate-pulse bg-muted/20 rounded-lg" />}>
+                <NotesFilter 
+                  collections={[]} 
+                  tags={allTags} 
+                  hideCollection={true} 
+                />
+              </Suspense>
+            </div>
           </div>
         </section>
 
-        {/* Masonry Feed */}
+        {/* Notes Feed */}
         <section>
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-8">
-            {notes.map((note) => (
-              <NoteCard key={note.slug} note={note} />
-            ))}
-          </div>
+          {initialNotes.length > 0 ? (
+            <InfiniteNotesStream 
+              initialNotes={initialNotes}
+              filters={filters}
+              hasMore={hasMore}
+              currentLayout={currentLayout}
+            />
+          ) : (
+            <div className="text-center py-24 border rounded-2xl bg-muted/30 border-dashed">
+              <p className="text-muted-foreground italic">No notes found matching your filters in this collection.</p>
+            </div>
+          )}
         </section>
       </div>
 

@@ -64,24 +64,29 @@ export default async function NotesPage({
 
   return (
     <div className="space-y-0 min-h-screen bg-muted/20">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-24 pb-12 space-y-12">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 space-y-12">
         {/* Header Section */}
-        <section className="text-center space-y-6">
-          <div className="space-y-4">
-            <h1 className="text-5xl sm:text-6xl font-light tracking-tight">
-              Notes
-              <span className="text-muted-foreground">.</span>
-            </h1>
-            <div className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent mx-auto" />
-          </div>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            A stream of short-form thoughts, quick tips, and discoveries.
-          </p>
+        <section className="space-y-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b pb-12">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-muted-foreground/60">
+                <div className="h-px w-8 bg-border" />
+                <span className="text-xs font-bold uppercase tracking-[0.3em]">Knowledge Base</span>
+              </div>
+              <h1 className="text-5xl sm:text-7xl font-light tracking-tight">
+                Notes
+                <span className="text-primary">.</span>
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
+                A stream of short-form thoughts, quick tips, and discoveries.
+              </p>
+            </div>
 
-          <div className="pt-8">
-            <Suspense fallback={<div className="h-10 w-full animate-pulse bg-muted/20 rounded-lg max-w-md mx-auto" />}>
-              <NotesFilter collections={allCollections} tags={allTags} />
-            </Suspense>
+            <div className="flex-shrink-0">
+              <Suspense fallback={<div className="h-10 w-full animate-pulse bg-muted/20 rounded-lg max-w-md mx-auto" />}>
+                <NotesFilter collections={allCollections} tags={allTags} />
+              </Suspense>
+            </div>
           </div>
         </section>
 

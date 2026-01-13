@@ -71,32 +71,50 @@ export function InfiniteNotesStream({
 
   return (
     <div className="space-y-12">
-      <div className={cn(
-        currentLayout === "masonry" 
-          ? "columns-1 md:columns-2 lg:columns-2 gap-8" 
-          : "flex flex-col max-w-3xl mx-auto w-full"
-      )}>
-        {notes.map((note) => (
-          <NoteCard key={note.slug} note={note} />
-        ))}
-      </div>
+      {currentLayout === "masonry" ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          {/* Column 1: Even indices */}
+          <div className="flex flex-col gap-8">
+            {notes
+              .filter((_, i) => i % 2 === 0)
+              .map((note) => (
+                <NoteCard key={note.slug} note={note} />
+              ))}
+          </div>
+          {/* Column 2: Odd indices */}
+          <div className="flex flex-col gap-8">
+            {notes
+              .filter((_, i) => i % 2 !== 0)
+              .map((note) => (
+                <NoteCard key={note.slug} note={note} />
+              ))}
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col max-w-3xl mx-auto w-full gap-8">
+          {notes.map((note) => (
+            <NoteCard key={note.slug} note={note} />
+          ))}
+        </div>
+      )}
 
       {hasMore && (
-        <div ref={observerTarget} className="flex justify-center py-20">
+        <div ref={observerTarget} className="flex justify-center py-20 min-h-[120px]">
           {isPending && (
-            <div className="flex items-center gap-2 text-muted-foreground/50 animate-in fade-in duration-500">
+            <div className="flex items-center gap-2 text-muted-foreground/40 animate-in fade-in duration-500">
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span className="text-xs font-medium uppercase tracking-widest">Loading more notes...</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Synchronizing...</span>
             </div>
           )}
         </div>
       )}
       
       {!hasMore && notes.length > 0 && (
-        <div className="text-center py-12 text-muted-foreground text-sm italic">
-          No more notes to show.
+        <div className="text-center py-20">
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em]">There&apos;s no more notes to show.</span>
         </div>
       )}
     </div>
   );
 }
+

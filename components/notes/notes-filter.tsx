@@ -33,10 +33,12 @@ import { Calendar } from "@/components/ui/calendar";
 
 export function NotesFilter({ 
   collections, 
-  tags 
+  tags,
+  hideCollection = false
 }: { 
   collections: string[]; 
-  tags: string[] 
+  tags: string[];
+  hideCollection?: boolean;
 }) {
   const [mounted, setMounted] = React.useState(false);
   const searchParams = useSearchParams();
@@ -136,24 +138,26 @@ export function NotesFilter({
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-end gap-3 py-2 relative">
         {/* Collection Select */}
-        <div className="flex items-center gap-2">
-          <Select
-            value={currentCollection}
-            onValueChange={(value) => setFilter("collection", value)}
-          >
-            <SelectTrigger className="h-10 w-[160px] bg-background">
-              <SelectValue placeholder="Collection" />
-            </SelectTrigger>
-            <SelectContent className="z-40">
-              <SelectItem value="all">All Collections</SelectItem>
-              {collections.map((collection) => (
-                <SelectItem key={collection} value={collection}>
-                  {collection}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {!hideCollection && (
+          <div className="flex items-center gap-2">
+            <Select
+              value={currentCollection}
+              onValueChange={(value) => setFilter("collection", value)}
+            >
+              <SelectTrigger className="h-10 w-[160px] bg-background">
+                <SelectValue placeholder="Collection" />
+              </SelectTrigger>
+              <SelectContent className="z-40">
+                <SelectItem value="all">All Collections</SelectItem>
+                {collections.map((collection) => (
+                  <SelectItem key={collection} value={collection}>
+                    {collection}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         {/* Tags Multi-Select */}
         <div className="flex items-center gap-2">
