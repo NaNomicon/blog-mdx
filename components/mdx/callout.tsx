@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { AlertTriangle, Info, CheckCircle, XCircle } from 'lucide-react';
+import { AlertTriangle, Info, CheckCircle, XCircle, Quote } from 'lucide-react';
 
 interface CalloutProps {
-  type?: 'info' | 'warning' | 'success' | 'error';
+  type?: 'info' | 'warning' | 'success' | 'error' | 'quote';
   title?: string;
   children: React.ReactNode;
   className?: string;
@@ -34,6 +34,12 @@ const calloutConfig = {
     className: 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950/30',
     iconClassName: 'text-red-600 dark:text-red-400',
     titleClassName: 'text-red-900 dark:text-red-100',
+  },
+  quote: {
+    icon: Quote,
+    className: 'border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-950/30',
+    iconClassName: 'text-gray-600 dark:text-gray-400',
+    titleClassName: 'text-gray-900 dark:text-gray-100',
   },
 };
 
