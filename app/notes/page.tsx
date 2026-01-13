@@ -5,6 +5,7 @@ import { NoteCard } from "@/components/notes/note-card";
 import { generateSEOMetadata } from "@/lib/seo";
 import { NotesFilter } from "@/components/notes/notes-filter";
 import { NoteDialog } from "@/components/notes/note-dialog";
+import { cn } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateSEOMetadata({
@@ -27,6 +28,7 @@ export default async function NotesPage({
     from?: string;
     to?: string;
     sort?: "asc" | "desc";
+    view?: "masonry" | "list";
   };
 }) {
   let notes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
@@ -81,6 +83,8 @@ export default async function NotesPage({
     return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
   });
 
+  const currentLayout = searchParams.view || "masonry";
+
   return (
     <div className="space-y-0 min-h-screen bg-muted/20">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-24 pb-12 space-y-12">
@@ -104,10 +108,14 @@ export default async function NotesPage({
           </div>
         </section>
 
-        {/* Masonry Feed */}
+        {/* Notes Feed */}
         <section>
           {notes.length > 0 ? (
-            <div className="columns-1 md:columns-2 lg:columns-2 gap-8">
+            <div className={cn(
+              currentLayout === "masonry" 
+                ? "columns-1 md:columns-2 lg:columns-2 gap-8" 
+                : "flex flex-col max-w-3xl mx-auto w-full"
+            )}>
               {notes.map((note) => (
                 <NoteCard key={note.slug} note={note} />
               ))}

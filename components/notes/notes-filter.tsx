@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Check, ChevronsUpDown, X, Calendar as CalendarIcon, ArrowDownWideNarrow, ArrowUpWideNarrow } from "lucide-react";
+import { Check, ChevronsUpDown, X, Calendar as CalendarIcon, ArrowDownWideNarrow, ArrowUpWideNarrow, LayoutGrid, List } from "lucide-react";
 import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
 
@@ -52,6 +52,7 @@ export function NotesFilter({
 
   const currentCollection = searchParams.get("collection") || "all";
   const currentSort = (searchParams.get("sort") as "asc" | "desc") || "desc";
+  const currentLayout = (searchParams.get("view") as "masonry" | "list") || "masonry";
   const fromParam = searchParams.get("from");
   const toParam = searchParams.get("to");
   
@@ -97,6 +98,11 @@ export function NotesFilter({
   const toggleSort = () => {
     const nextSort = currentSort === "desc" ? "asc" : "desc";
     setFilter("sort", nextSort);
+  };
+
+  const toggleLayout = () => {
+    const nextLayout = currentLayout === "masonry" ? "list" : "masonry";
+    setFilter("view", nextLayout);
   };
 
   const toggleTag = (tag: string) => {
@@ -259,7 +265,25 @@ export function NotesFilter({
           </span>
         </Button>
 
-        {(currentCollection !== "all" || currentTags.length > 0 || dateRange || currentSort !== "desc") && (
+        {/* Layout Toggle */}
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-10 px-3 bg-background border-dashed"
+          onClick={toggleLayout}
+          title={currentLayout === "masonry" ? "Switch to list view" : "Switch to masonry view"}
+        >
+          {currentLayout === "masonry" ? (
+            <LayoutGrid className="h-4 w-4 mr-2 text-primary" />
+          ) : (
+            <List className="h-4 w-4 mr-2 text-primary" />
+          )}
+          <span className="text-xs font-medium uppercase tracking-wider">
+            {currentLayout === "masonry" ? "Masonry" : "List"}
+          </span>
+        </Button>
+
+        {(currentCollection !== "all" || currentTags.length > 0 || dateRange || currentSort !== "desc" || currentLayout !== "masonry") && (
           <Button 
             variant="ghost" 
             size="sm" 
