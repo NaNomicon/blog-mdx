@@ -6,7 +6,7 @@ This project is a static-first blog built with Next.js 14, leveraging the App Ro
 ## Directory Structure
 - `app/`: Next.js App Router pages and layouts.
 - `components/`: UI components, MDX-specific components, and layout wrappers.
-- `content/`: MDX source files for blogs and static pages.
+- `content/`: MDX source files for blogs, notes, and static pages.
 - `lib/`: Shared logic, utilities, and integrations (Telegram, SEO).
 - `public/`: Static assets like images and manifest files.
 - `scripts/`: CLI tools for managing the blog workflow.
@@ -14,17 +14,23 @@ This project is a static-first blog built with Next.js 14, leveraging the App Ro
 ## Key Workflows
 
 ### 1. Content Rendering Pipeline
-1. **Dynamic Route**: `app/blog/[slug]/page.tsx` captures the slug.
+1. **Dynamic Route**: `app/blog/[slug]/page.tsx` and `app/notes/[slug]/page.tsx` capture the slug.
 2. **Metadata Extraction**: The MDX file is imported to extract its exported `metadata` object.
 3. **SEO Generation**: `generateMetadata` uses the extracted metadata to set page titles, descriptions, and OpenGraph tags.
 4. **Dynamic Import**: `MDXContent` is loaded via `next/dynamic` to keep the main bundle light.
-5. **Layout Injection**: `BlogLayout` wraps the content, providing a TOC, cover image, and TLDR section.
+5. **Layout Injection**: `BlogLayout` or `NoteLayout` wraps the content, providing specialized UI for long-form or short-form content.
 6. **Component Mapping**: `mdx-components.tsx` maps standard Markdown elements (h1, p, etc.) and custom components (YouTube, Callout) to React components.
 
-### 2. Post Creation Workflow
-1. User runs `pnpm new-blog`.
-2. `scripts/new-blog.js` prompts for post details.
-3. A new MDX file is created in `content/blogs/` with a timestamped filename (YYMMDD-slug.mdx).
+### 2. Snippets & Notes Grouping
+1. **Source**: Files in `content/notes/`.
+2. **Taxonomy**: Grouped by `type`, `tags`, or `book_title`.
+3. **Daily Digest**: Logic to group snippets by `publishDate` for chronological browsing.
+4. **Integration**: Related snippets are cross-referenced on blog posts using shared tags.
+
+### 3. Post Creation Workflow
+1. User runs `pnpm new-blog` or `pnpm new-note`.
+2. `scripts/new-blog.js` or `scripts/new-note.js` prompts for post details.
+3. A new MDX file is created in `content/blogs/` or `content/notes/` with a timestamped filename (YYMMDD-slug.mdx).
 4. Assets are manually placed in `public/YYMMDD-slug/`.
 
 ### 3. Telegram Bot Integration
