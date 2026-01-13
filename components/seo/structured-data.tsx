@@ -10,6 +10,7 @@ interface BlogPostStructuredDataProps {
   coverImage?: string;
   slug: string;
   siteUrl?: string;
+  pathPrefix?: string;
 }
 
 interface WebsiteStructuredDataProps {
@@ -50,7 +51,8 @@ export function BlogPostStructuredData({
   category,
   coverImage,
   slug,
-  siteUrl = "https://nandev.net"
+  siteUrl = "https://nanomicon.com",
+  pathPrefix = "/blog"
 }: BlogPostStructuredDataProps) {
   const structuredData = {
     "@context": "https://schema.org",
@@ -60,10 +62,10 @@ export function BlogPostStructuredData({
     "author": getPersonSchema(author, siteUrl),
     "datePublished": publishDate,
     "dateModified": publishDate,
-    "url": `${siteUrl}/blog/${slug}`,
+    "url": `${siteUrl}${pathPrefix}/${slug}`,
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `${siteUrl}/blog/${slug}`
+      "@id": `${siteUrl}${pathPrefix}/${slug}`
     },
     "publisher": getPersonSchema(author, siteUrl),
     ...(coverImage && {

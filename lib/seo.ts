@@ -14,6 +14,7 @@ export interface SEOConfig {
     siteUrl?: string;
     twitterHandle?: string;
     cloudflareAnalyticsToken?: string;
+    pathPrefix?: string;
 }
 
 export function generateSEOMetadata(config: SEOConfig): Metadata {
@@ -29,10 +30,11 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
         siteName = seoConfig.siteName,
         siteUrl = seoConfig.siteUrl,
         twitterHandle = seoConfig.twitterHandle,
+        pathPrefix = "/blog",
     } = config;
 
     const fullTitle = title === "NaN" ? title : `${title} | ${siteName}`;
-    const canonicalUrl = slug ? `${siteUrl}/blog/${slug}` : siteUrl;
+    const canonicalUrl = slug ? `${siteUrl}${pathPrefix}/${slug}` : siteUrl;
     
     // Check if coverImage is an absolute URL
     const isAbsoluteImageUrl = coverImage?.startsWith('http://') || coverImage?.startsWith('https://');

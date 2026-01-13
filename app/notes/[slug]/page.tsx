@@ -2,6 +2,8 @@ import { getPostBySlug, getAllPosts, getAdjacentPosts, isPreviewMode, type NoteM
 import { notFound } from "next/navigation";
 import { NoteDetail } from "@/components/notes/note-detail";
 import { generateSEOMetadata } from "@/lib/seo";
+import { BlogPostStructuredData } from "@/components/seo/structured-data";
+import { seoConfig } from "@/config/seo.config";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -14,6 +16,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return generateSEOMetadata({
     title: note.metadata.title,
     description: note.metadata.description || `Read ${note.metadata.title} in my notes.`,
+    pathPrefix: "/notes",
   });
 }
 
@@ -34,6 +37,15 @@ export default async function NotePage({ params }: { params: { slug: string } })
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-16">
+      <BlogPostStructuredData
+        title={note.metadata.title}
+        description={note.metadata.description || ""}
+        publishDate={note.metadata.publishDate}
+        author={seoConfig.author}
+        slug={note.slug}
+        category={note.metadata.collection}
+        pathPrefix="/notes"
+      />
       <div className="mb-8">
         <Button variant="ghost" asChild className="pl-0 text-muted-foreground hover:text-primary">
           <Link href="/notes" className="flex items-center gap-2">

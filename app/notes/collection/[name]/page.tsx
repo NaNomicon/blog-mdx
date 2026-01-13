@@ -13,6 +13,8 @@ export async function generateMetadata({ params }: { params: { name: string } })
   return generateSEOMetadata({
     title: `${collectionName} - Notes Collection`,
     description: `Browse all notes in the ${collectionName} collection.`,
+    slug: params.name,
+    pathPrefix: "/notes/collection",
   });
 }
 

@@ -20,7 +20,7 @@ export default function About() {
     <>
       <PersonStructuredData
         name="NaNomicon"
-        siteUrl="https://nandev.net"
+        siteUrl="https://nanomicon.com"
         description="Developer with a passion for learning and exploring new technologies"
       />
       <div className="max-w-4xl mx-auto px-4 py-16 space-y-24">

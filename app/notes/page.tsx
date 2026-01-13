@@ -10,6 +10,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateSEOMetadata({
     title: "Notes & Snippets",
     description: "Short-form thoughts, quick tips, and web discoveries.",
+    slug: "notes",
+    pathPrefix: "",
   });
 }
 

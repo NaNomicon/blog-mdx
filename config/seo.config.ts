@@ -6,7 +6,7 @@ import { env } from "@/lib/env";
 export const seoConfig = {
     // Basic site information
     siteName: "NaN's Blog",
-    siteUrl: "https://nandev.net", // Replace with your actual domain
+    siteUrl: "https://nanomicon.com", // Replace with your actual domain
     author: "NaNomicon",
 
     // Social media handles
