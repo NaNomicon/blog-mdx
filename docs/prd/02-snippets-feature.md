@@ -1,26 +1,26 @@
 # PRD: Snippets & Notes System
 
 ## 1. Overview
-The Snippets & Notes System is an extension of the existing blog platform designed for short-form content, quick thoughts, book summaries, and web discoveries. Unlike long-form blog posts, snippets are optimized for scannability, quick consumption, and dense grouping (e.g., by date or topic). This feature aims to capture the "digital garden" aspect of personal blogging, allowing for more frequent, smaller updates.
+The Snippets & Notes System is an extension of the existing blog platform designed for short-form content, quick thoughts, book summaries, and web discoveries. Unlike long-form blog posts, snippets are optimized for scannability, quick consumption, and dense grouping. This feature aims to capture the "digital garden" aspect of personal blogging, allowing for more frequent, smaller updates via a highly interactive and fluid UI.
 
 ## 2. User Stories
 - **As a writer**, I want to quickly jot down thoughts or quotes without the pressure of writing a full-length article.
-- **As a reader**, I want to browse through a stream of short updates and filter them by specific interests (e.g., AI, book notes).
-- **As a researcher**, I want to see all notes related to a specific book or topic grouped together so I can see the progression of thoughts.
-- **As a visitor**, I want to see a "Daily Digest" of what the author was thinking or reading on a specific day.
+- **As a reader**, I want to browse through a stream of short updates in a visually engaging way and filter them by specific interests.
+- **As a researcher**, I want to see all notes related to a specific book or topic grouped together.
+- **As a visitor**, I want to read notes sequentially without leaving the main list page to maintain context.
 
 ## 3. Functional Requirements
 
 ### 3.1 Content Management
 - Support for MDX files in a new `content/notes/` directory.
 - Follow the existing naming convention: `YYMMDD-slug.mdx`.
-- Snippets can be categorized as: `thought`, `link`, `book`, `idea`, etc.
+- Snippets can be grouped into cohesive collections for better organization.
 
 ### 3.2 Metadata & Taxonomy
 - **Mandatory Metadata**:
   - `title`: Short title or first line of the snippet.
   - `publishDate`: YYYY-MM-DD.
-  - `type`: One of [`thought`, `link`, `book`, `idea`].
+  - `collection`: The name of the collection this snippet belongs to (e.g., "Daily Log", "React Tips", "Book: Dune").
 - **Optional Metadata**:
   - `source_url`: URL for link-based snippets.
   - `book_title`: Title of the book for book-related notes.
@@ -28,36 +28,43 @@ The Snippets & Notes System is an extension of the existing blog platform design
   - `category`: Broader grouping (e.g., "Web Dev", "Philosophy").
 
 ### 3.3 Viewing & Grouping
-- **Main Notes Page**: A chronological feed of all snippets.
-- **Filtering**: Ability to filter by `type`, `category`, and `tags`.
-- **Daily Digest**: A specialized view that groups all snippets from the same `publishDate` under a single date heading.
-- **Tag/Book Archives**: Dedicated pages for tags (e.g., `/notes/tag/ai`) or books (e.g., `/notes/book/dune`).
-- **Related Notes Widget**: Display relevant snippets on long-form blog posts based on shared tags.
+- **Main Notes Page**: A chronological feed of all snippets using a Masonry/Grid-lane layout.
+- **Filtering**: Ability to filter by `collection`, `category`, and `tags` via a sticky sidebar or top bar.
+- **Collection Archives**: Dedicated pages for each collection (e.g., `/notes/collection/daily-log`) that show only snippets from that collection.
+- **Daily Digest**: Group snippets from the same `publishDate` under a single date heading.
+- **Sequential Navigation**: Ability to navigate to the "Previous" or "Next" note directly from the current note view.
 
 ## 4. UI/UX Requirements
 - **Layout**: 
-  - **Snippet Card**: Minimalist design with no large headers. Focus on content.
-  - **Grid/List Toggle**: Allow users to switch between a dense list view and a more visual card grid.
-  - **Icons**: Distinct icons for each snippet type (e.g., 📝 for thought, 🔗 for link, 📚 for book).
+  - **Masonry/Grid-Lanes**: A responsive, multi-column masonry layout where cards of varying heights fit together efficiently. 
+  - **Responsive**: 1 column on mobile, 2 on tablet, 3+ on desktop.
+  - **Snippet Card**: Minimalist design focusing on content. Collection-specific badges or subtle color coding to distinguish between different collections.
 - **Interactions**:
-  - Infinite scroll or "Load More" for the main feed.
-- **Responsiveness**: Mobile-first design, cards stack vertically on small screens.
-- **Accessibility**: High contrast for text snippets, ARIA labels for type icons.
+  - **Dialog-First Navigation**: Clicking a note in the list opens it in a Modal/Dialog overlay.
+  - **Intercepting Routes**: The URL updates to `/notes/[slug]` when the dialog opens, but the list page remains visible in the background.
+  - **Deep Linking**: Refreshing or visiting `/notes/[slug]` directly should still show the note in a dialog context.
+  - **In-Dialog Navigation**: "Previous" and "Next" buttons inside the dialog to cycle through the filtered list of notes.
+  - **Infinite Scroll**: "Load More" or auto-scroll for the main feed.
+- **Accessibility**:
+  - ARIA Modal patterns for the dialog.
+  - Keyboard navigation (Esc to close, Arrow keys for Prev/Next).
+  - High contrast for dense text.
 
 ## 5. Technical Considerations
-- **Data Model**: MDX files in `content/notes/`. Extend the current `PostMetadata` interface to include snippet-specific fields.
+- **Data Model**: Extend `PostMetadata` in `lib/content.ts` to include snippet-specific fields like `collection`.
 - **Backend/Logic**:
-  - Helper functions to group posts by date (Daily Digest logic).
-  - Search indexing to include snippets in the global site search.
+  - **Parallel & Intercepting Routes**: Utilize Next.js 14 `@modal/(.)notes/[slug]` to handle the dialog-over-list pattern.
+  - **Grouped Sorting**: Helper functions to fetch notes and group them by date or collection.
 - **Libraries/Tools**: 
-  - Reuse existing Shadcn UI components (`Card`, `Badge`, `Button`).
-  - `lucide-react` for snippet type icons.
+  - `react-masonry-css` or Tailwind `columns-` for the masonry layout.
+  - `framer-motion` for smooth dialog transitions and card entries.
+  - Shadcn UI `Dialog` component.
 - **Performance**: 
-  - Use Server Components for initial feed rendering.
-  - Client-side filtering for immediate feedback.
+  - Use Server Components for the initial list and note content.
+  - Prefetching for Prev/Next notes to make navigation feel instantaneous.
 
 ## 6. Success Metrics
-- **Content Volume**: Increase in total published items (snippets + blogs) by 50%.
-- **Engagement**: Increase in page views for the "Notes" section compared to standard blog posts.
-- **Navigation**: Users visiting more than 3 snippets per session.
-- **Scannability**: Average time spent on the main notes page > 1 minute (indicating active reading/browsing).
+- **Content Volume**: Increase in total published items by 50%.
+- **Engagement**: Users visiting more than 5 snippets per session due to easier navigation.
+- **UX Fluidity**: Average time spent in "Dialog Mode" vs. bouncing back to the list.
+- **Direct Access**: 99% success rate for deep-linked notes loading correctly.
