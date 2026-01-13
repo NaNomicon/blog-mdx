@@ -6,6 +6,8 @@ import { generateSEOMetadata } from "@/lib/seo";
 import { NotesFilter } from "@/components/notes/notes-filter";
 import { NoteDialog } from "@/components/notes/note-dialog";
 import { cn } from "@/lib/utils";
+import { getFilteredNotes, getPaginatedNotes, type NoteFilters } from "@/lib/notes";
+import { InfiniteNotesStream } from "@/components/notes/infinite-notes-stream";
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateSEOMetadata({
@@ -31,11 +33,20 @@ export default async function NotesPage({
     view?: "masonry" | "list";
   };
 }) {
-  let notes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
+  const filters: NoteFilters = {
+    collection: searchParams.collection,
+    tag: searchParams.tag,
+    from: searchParams.from,
+    to: searchParams.to,
+    sort: searchParams.sort,
+  };
 
-  // Get all possible filters from ALL notes before filtering
-  const allCollections = Array.from(new Set(notes.map(n => n.metadata.collection).filter(Boolean))) as string[];
-  const allTags = Array.from(new Set(notes.flatMap(n => n.metadata.tags || []))) as string[];
+  const { notes: initialNotes, hasMore } = await getPaginatedNotes(filters, 1, 10);
+  
+  // Get ALL notes just for filter counts/lists (this is still fast as it's just reading metadata)
+  const allNotes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
+  const allCollections = Array.from(new Set(allNotes.map(n => n.metadata.collection).filter(Boolean))) as string[];
+  const allTags = Array.from(new Set(allNotes.flatMap(n => n.metadata.tags || []))) as string[];
 
   // Handle selected note for dialog
   let selectedNote = null;
@@ -48,40 +59,6 @@ export default async function NotesPage({
     selectedNote = note;
     adjacentNotes = adjacent;
   }
-
-  // Apply filters
-  if (searchParams.collection) {
-    notes = notes.filter(n => n.metadata.collection === searchParams.collection);
-  }
-  
-  const tagFilter = searchParams.tag;
-  if (tagFilter) {
-    const selectedTags = tagFilter.split(",");
-    notes = notes.filter(n => 
-      selectedTags.every(tag => n.metadata.tags?.includes(tag))
-    );
-  }
-
-  // Date range filter
-  if (searchParams.from || searchParams.to) {
-    const fromDate = searchParams.from ? new Date(searchParams.from) : null;
-    const toDate = searchParams.to ? new Date(searchParams.to) : null;
-    
-    notes = notes.filter(n => {
-      const publishDate = new Date(n.metadata.publishDate);
-      if (fromDate && publishDate < fromDate) return false;
-      if (toDate && publishDate > toDate) return false;
-      return true;
-    });
-  }
-
-  // Sort
-  const sortOrder = searchParams.sort || "desc";
-  notes = notes.sort((a, b) => {
-    const dateA = new Date(a.metadata.publishDate).getTime();
-    const dateB = new Date(b.metadata.publishDate).getTime();
-    return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
-  });
 
   const currentLayout = searchParams.view || "masonry";
 
@@ -110,16 +87,13 @@ export default async function NotesPage({
 
         {/* Notes Feed */}
         <section>
-          {notes.length > 0 ? (
-            <div className={cn(
-              currentLayout === "masonry" 
-                ? "columns-1 md:columns-2 lg:columns-2 gap-8" 
-                : "flex flex-col max-w-3xl mx-auto w-full"
-            )}>
-              {notes.map((note) => (
-                <NoteCard key={note.slug} note={note} />
-              ))}
-            </div>
+          {initialNotes.length > 0 ? (
+            <InfiniteNotesStream 
+              initialNotes={initialNotes}
+              filters={filters}
+              hasMore={hasMore}
+              currentLayout={currentLayout}
+            />
           ) : (
             <div className="text-center py-24 border rounded-2xl bg-muted/30">
               <p className="text-muted-foreground">No notes found matching your filters.</p>

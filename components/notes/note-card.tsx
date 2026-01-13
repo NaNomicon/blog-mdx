@@ -9,11 +9,11 @@ export function NoteCard({ note }: { note: Post<NoteMetadata> }) {
   const { title, publishDate, collection, tags, category } = metadata;
 
   const MDXContent = dynamic(() => import(`@/content/${type}/${slug}.mdx`), {
-    loading: () => <div className="animate-pulse h-20 bg-muted/50 rounded-md" />
+    loading: () => <div className="h-20 bg-muted/20 rounded-md animate-pulse" />
   });
 
   return (
-    <div className="mb-8 break-inside-avoid">
+    <div className="mb-8 break-inside-avoid animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out fill-mode-both">
       <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
         <div className="p-7 space-y-6">
           {/* Header */}
