@@ -19,7 +19,8 @@ export type BlogPostMetadata = z.infer<typeof BlogPostMetadataSchema>;
 export const NoteMetadataSchema = z.object({
   title: z.string(),
   publishDate: z.string(),
-  type: z.enum(["thought", "link", "book", "idea"]),
+  collection: z.string(),
+  type: z.enum(["thought", "link", "book", "idea"]).optional(),
   description: z.string().optional(),
   source_url: z.string().url().optional(),
   book_title: z.string().optional(),
@@ -46,7 +47,8 @@ const CONTENT_PATH = path.join(process.cwd(), "content");
  */
 export async function getAllPosts<T extends BlogPostMetadata | NoteMetadata>(
   type: ContentType,
-  includeDrafts: boolean = false
+  includeDrafts: boolean = false,
+  _intendedType?: "blogs" | "notes"
 ): Promise<Post<T>[]> {
   const dir = path.join(CONTENT_PATH, type);
   
@@ -63,12 +65,25 @@ export async function getAllPosts<T extends BlogPostMetadata | NoteMetadata>(
       const slug = filename.replace(".mdx", "");
       try {
         // Use dynamic import for metadata
-        // Note: In Next.js App Router, we need to be careful with dynamic imports in Server Components
-        // But for metadata extraction, this is generally fine if configured correctly.
-        const { metadata } = await import(`@/content/${type}/${filename}`);
+        const mdxModule = await import(`@/content/${type}/${filename}`);
+        const metadata = mdxModule.metadata;
         
-        // Validate metadata
-        const schema = type === "notes" ? NoteMetadataSchema : BlogPostMetadataSchema;
+        if (!metadata) return null;
+
+        // Validate metadata based on type or intended type for drafts
+        const validationType = type === "drafts" ? (_intendedType || "blogs") : type;
+        
+        // Strict filtering: if we want notes, it MUST have a collection
+        if (validationType === "notes" && !metadata.collection) {
+          return null;
+        }
+        
+        // If we want blogs, it MUST NOT have a collection (to keep them separate)
+        if (validationType === "blogs" && metadata.collection) {
+          return null;
+        }
+
+        const schema = validationType === "notes" ? NoteMetadataSchema : BlogPostMetadataSchema;
         const validatedMetadata = schema.parse(metadata);
 
         return {
@@ -77,7 +92,8 @@ export async function getAllPosts<T extends BlogPostMetadata | NoteMetadata>(
           type,
         };
       } catch (error) {
-        console.error(`Error loading metadata for ${type}/${filename}:`, error);
+        // Silently skip if metadata doesn't match the schema (e.g. blog draft when looking for notes)
+        // console.error(`Error loading metadata for ${type}/${filename}:`, error);
         return null;
       }
     })
@@ -87,8 +103,7 @@ export async function getAllPosts<T extends BlogPostMetadata | NoteMetadata>(
 
   // If including drafts and we are not already looking at drafts
   if (includeDrafts && type !== "drafts") {
-    const drafts = await getAllPosts<T>("drafts");
-    // Mark them as drafts or handle them as needed
+    const drafts = await getAllPosts<T>("drafts", false, type as "blogs" | "notes");
     validPosts.push(...drafts);
   }
 
@@ -118,10 +133,14 @@ export async function getPostBySlug<T extends BlogPostMetadata | NoteMetadata>(
 
   for (const mdxPath of possiblePaths) {
     if (fs.existsSync(mdxPath)) {
-      const actualType = mdxPath.includes("/drafts/") ? "drafts" : type;
+      const isDraft = mdxPath.includes("/drafts/");
+      const actualType = isDraft ? "drafts" : type;
       try {
         const { metadata } = await import(`@/content/${actualType}/${slug}.mdx`);
-        const schema = actualType === "notes" ? NoteMetadataSchema : BlogPostMetadataSchema;
+        
+        // Use the original requested type to determine schema, even if it's a draft
+        const validationType = type === "drafts" ? "blogs" : type;
+        const schema = validationType === "notes" ? NoteMetadataSchema : BlogPostMetadataSchema;
         const validatedMetadata = schema.parse(metadata);
 
         return {
@@ -130,13 +149,34 @@ export async function getPostBySlug<T extends BlogPostMetadata | NoteMetadata>(
           type: actualType as ContentType,
         };
       } catch (error) {
-        console.error(`Error loading post ${actualType}/${slug}:`, error);
-        return null;
+        // Only log error if it's not a schema mismatch for a draft
+        if (!isDraft) {
+          console.error(`Error loading post ${actualType}/${slug}:`, error);
+        }
+        continue;
       }
     }
   }
 
   return null;
+}
+
+export async function getAdjacentPosts<T extends BlogPostMetadata | NoteMetadata>(
+  type: ContentType,
+  slug: string,
+  includeDrafts: boolean = false
+): Promise<{ prev: Post<T> | null; next: Post<T> | null }> {
+  const posts = await getAllPosts<T>(type, includeDrafts);
+  const index = posts.findIndex((post) => post.slug === slug);
+
+  if (index === -1) {
+    return { prev: null, next: null };
+  }
+
+  return {
+    prev: index > 0 ? posts[index - 1] : null,
+    next: index < posts.length - 1 ? posts[index + 1] : null,
+  };
 }
 
 /**

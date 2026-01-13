@@ -42,6 +42,9 @@ function SiteHeader() {
               <Link href="/blog" className="block text-lg font-medium transition-all duration-300 hover:text-primary hover:translate-x-2">
                 <SheetClose>Blogs</SheetClose>
               </Link>
+              <Link href="/notes" className="block text-lg font-medium transition-all duration-300 hover:text-primary hover:translate-x-2">
+                <SheetClose>Notes</SheetClose>
+              </Link>
             </nav>
             {/* Social Links in Mobile Menu */}
             <div className="mt-8 pt-6 border-t border-border/40">
@@ -79,6 +82,13 @@ function SiteHeader() {
             className="text-sm font-medium transition-all duration-300 hover:text-primary text-foreground/60 relative group"
           >
             Blog
+            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full"></span>
+          </Link>
+          <Link 
+            href="/notes" 
+            className="text-sm font-medium transition-all duration-300 hover:text-primary text-foreground/60 relative group"
+          >
+            Notes
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full"></span>
           </Link>
         </nav>

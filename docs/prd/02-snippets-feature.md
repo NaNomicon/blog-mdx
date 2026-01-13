@@ -41,8 +41,8 @@ The Snippets & Notes System is an extension of the existing blog platform design
   - **Snippet Card**: Minimalist design focusing on content. Collection-specific badges or subtle color coding to distinguish between different collections.
 - **Interactions**:
   - **Dialog-First Navigation**: Clicking a note in the list opens it in a Modal/Dialog overlay.
-  - **Intercepting Routes**: The URL updates to `/notes/[slug]` when the dialog opens, but the list page remains visible in the background.
-  - **Deep Linking**: Refreshing or visiting `/notes/[slug]` directly should still show the note in a dialog context.
+  - **Query-Parameter Modals**: The URL updates to `/notes?note=[slug]` when the dialog opens. This ensures the list page always remains visible in the background and is more robust than intercepting routes.
+  - **Deep Linking**: Refreshing or visiting `/notes?note=[slug]` directly opens the list with the dialog context pre-active. Full paths like `/notes/[slug]` are reserved for direct/SEO access with a "Back" button.
   - **In-Dialog Navigation**: "Previous" and "Next" buttons inside the dialog to cycle through the filtered list of notes.
   - **Infinite Scroll**: "Load More" or auto-scroll for the main feed.
 - **Accessibility**:
@@ -53,7 +53,7 @@ The Snippets & Notes System is an extension of the existing blog platform design
 ## 5. Technical Considerations
 - **Data Model**: Extend `PostMetadata` in `lib/content.ts` to include snippet-specific fields like `collection`.
 - **Backend/Logic**:
-  - **Parallel & Intercepting Routes**: Utilize Next.js 14 `@modal/(.)notes/[slug]` to handle the dialog-over-list pattern.
+  - **Query-Parameter State**: Utilize Next.js 14 `searchParams` to handle the dialog-over-list pattern. This avoids the complexity and occasional inconsistencies of parallel/intercepting routes.
   - **Grouped Sorting**: Helper functions to fetch notes and group them by date or collection.
 - **Libraries/Tools**: 
   - `react-masonry-css` or Tailwind `columns-` for the masonry layout.
