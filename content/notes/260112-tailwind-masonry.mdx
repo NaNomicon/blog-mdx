@@ -1,0 +1,19 @@
+export const metadata = {
+  title: "Tailwind Masonry with columns",
+  publishDate: "2026-01-12",
+  collection: "Web Tips",
+  type: "idea",
+  description: "Using CSS columns for a quick and easy masonry layout.",
+  tags: ["tailwind", "css"],
+  category: "Web Dev"
+};
+
+Tailwind's `columns-` utilities are great for simple masonry.
+
+```html
+<div class="columns-1 md:columns-2 lg:columns-3 gap-4">
+  <div class="mb-4 break-inside-avoid">...</div>
+</div>
+```
+
+The `break-inside-avoid` is crucial to prevent cards from splitting between columns.

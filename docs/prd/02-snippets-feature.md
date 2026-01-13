@@ -29,7 +29,11 @@ The Snippets & Notes System is an extension of the existing blog platform design
 
 ### 3.3 Viewing & Grouping
 - **Main Notes Page**: A chronological feed of all snippets using a Masonry/Grid-lane layout.
-- **Filtering**: Ability to filter by `collection`, `category`, and `tags` via a sticky sidebar or top bar.
+- **Advanced Filtering**: 
+  - **Collection**: Single-select dropdown to filter by collection.
+  - **Tags**: Multi-select combobox (AND logic) to filter by one or more tags.
+  - **Date Range**: Date picker to filter notes published between specific dates.
+- **Sorting**: Toggle between "Newest First" (default) and "Oldest First".
 - **Collection Archives**: Dedicated pages for each collection (e.g., `/notes/collection/daily-log`) that show only snippets from that collection.
 - **Daily Digest**: Group snippets from the same `publishDate` under a single date heading.
 - **Sequential Navigation**: Ability to navigate to the "Previous" or "Next" note directly from the current note view.

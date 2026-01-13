@@ -1,8 +1,9 @@
 import { type Metadata } from "next";
+import { Suspense } from "react";
 import { getAllPosts, getPostBySlug, getAdjacentPosts, isPreviewMode, type NoteMetadata, type Post } from "@/lib/content";
 import { NoteCard } from "@/components/notes/note-card";
 import { generateSEOMetadata } from "@/lib/seo";
-import { StickyHeader } from "@/components/notes/sticky-header";
+import { NotesFilter } from "@/components/notes/notes-filter";
 import { NoteDialog } from "@/components/notes/note-dialog";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,7 +18,14 @@ export const revalidate = 1800; // 30 minutes
 export default async function NotesPage({
   searchParams,
 }: {
-  searchParams: { collection?: string; tag?: string; note?: string };
+  searchParams: { 
+    collection?: string; 
+    tag?: string; 
+    note?: string;
+    from?: string;
+    to?: string;
+    sort?: "asc" | "desc";
+  };
 }) {
   let notes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
 
@@ -44,14 +52,36 @@ export default async function NotesPage({
   
   const tagFilter = searchParams.tag;
   if (tagFilter) {
-    notes = notes.filter(n => n.metadata.tags?.includes(tagFilter));
+    const selectedTags = tagFilter.split(",");
+    notes = notes.filter(n => 
+      selectedTags.every(tag => n.metadata.tags?.includes(tag))
+    );
   }
+
+  // Date range filter
+  if (searchParams.from || searchParams.to) {
+    const fromDate = searchParams.from ? new Date(searchParams.from) : null;
+    const toDate = searchParams.to ? new Date(searchParams.to) : null;
+    
+    notes = notes.filter(n => {
+      const publishDate = new Date(n.metadata.publishDate);
+      if (fromDate && publishDate < fromDate) return false;
+      if (toDate && publishDate > toDate) return false;
+      return true;
+    });
+  }
+
+  // Sort
+  const sortOrder = searchParams.sort || "desc";
+  notes = notes.sort((a, b) => {
+    const dateA = new Date(a.metadata.publishDate).getTime();
+    const dateB = new Date(b.metadata.publishDate).getTime();
+    return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
+  });
 
   return (
     <div className="space-y-0 min-h-screen bg-muted/20">
-      <StickyHeader collections={allCollections} tags={allTags} />
-      
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 space-y-12">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-24 pb-12 space-y-12">
         {/* Header Section */}
         <section className="text-center space-y-6">
           <div className="space-y-4">
@@ -64,6 +94,12 @@ export default async function NotesPage({
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             A stream of short-form thoughts, quick tips, and discoveries.
           </p>
+
+          <div className="pt-8">
+            <Suspense fallback={<div className="h-10 w-full animate-pulse bg-muted/20 rounded-lg max-w-md mx-auto" />}>
+              <NotesFilter collections={allCollections} tags={allTags} />
+            </Suspense>
+          </div>
         </section>
 
         {/* Masonry Feed */}

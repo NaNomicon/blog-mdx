@@ -1,0 +1,17 @@
+export const metadata = {
+  title: "React useEffect Cleanup",
+  publishDate: "2026-01-13",
+  collection: "Development",
+  description: "A quick reminder about memory leaks.",
+  category: "Coding",
+  tags: ["react", "javascript"]
+};
+
+Always remember to return a cleanup function in your `useEffect` to avoid unexpected behavior!
+
+```javascript
+useEffect(() => {
+  const timer = setInterval(() => console.log('tick'), 1000);
+  return () => clearInterval(timer);
+}, []);
+```
