@@ -1,5 +1,5 @@
 import { type Metadata } from "next";
-import { getAllPosts, getPostBySlug, getAdjacentPosts, isPreviewMode, type NoteMetadata } from "@/lib/content";
+import { getAllPosts, getPostBySlug, getAdjacentPosts, isPreviewMode, type NoteMetadata, type Post } from "@/lib/content";
 import { NoteCard } from "@/components/notes/note-card";
 import { generateSEOMetadata } from "@/lib/seo";
 import { notFound } from "next/navigation";
