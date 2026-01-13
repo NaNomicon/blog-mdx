@@ -1,0 +1,44 @@
+export const metadata = {
+    title: "Killing the Local-First Dream (So I Can Finally Ship)",
+    publishDate: "2026-01-13",
+    description: "Reflecting on the trade-offs between local-first architecture and development velocity, and choosing a hybrid path forward.",
+    category: "Architecture",
+    cover_image: "/covers/260113-killing-the-local-first-dream.png",
+};
+
+*Photo by <a href="https://unsplash.com/@stenslens?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Sten Ritterfeld</a> on <a href="https://unsplash.com/photos/black-remote-control-on-white-surface-eFgjzZ0FeXs?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+
+I've been stuck in a loop for weeks.
+
+On one hand, I'm obsessed with the idea of [Local-First](https://www.inkandswitch.com/local-first/). I want to build apps that respect the user—apps where the data and computation stay on their machine. It's "free" for me to host (the ultimate scale-to-zero), and it's a better experience for the user. No more "dead zones" in the subway, no more spinning loaders when 5G gets flaky. It feels like the "right" way to build software.
+
+On the other hand, the complexity is killing me. Trying to build a robust sync engine or a [CRDT-based system](https://automerge.org/) as an indie dev feels like I'm doing "perfect surgery on a dead patient." I'm so worried about the architecture that I'm not actually shipping any features.
+
+I'm finally realizing that I might be overthinking this.
+
+## The 1-Billion-Person Reality Check
+
+I started looking at the numbers. There are over a billion people globally who have smartphones but don't have regular, reliable internet. That's a massive market I'd be ignoring if I went cloud-only.
+
+But I also realized that even for the person with the best 5G plan, connectivity is fragile. A "Cloud-Only" app is essentially a lease on an application's life. If the connection drops or the provider changes their tier, the app is a brick. I still want that "instant" feel. I want my app to be like [Linear](https://linear.app/method/scaling-the-linear-sync-engine) or [Notion](https://www.localfirst.fm/)—tools that don't just work offline, but feel "memory-speed" because the UI isn't waiting on a round-trip to a server.
+
+## The "Cost of Success" Anxiety
+
+The other thing holding me back from the cloud was the "Success Tax." As an indie dev, the thought of a surprise $500 bill from a managed service because of a spike in users is terrifying.
+
+But I've realized that 2026 isn't 2016. The tools have changed. Services like Convex or Supabase have generous free tiers, and "scale-to-zero" is the new standard. If I don't have users, I don't have a bill. And if I do have enough users to trigger a bill, I have a "high-quality problem"—one I can actually monetize.
+
+## My New Action Plan: The Hybrid Path
+
+I've decided to stop trying to build a local-first masterpiece in a vacuum. Here is how I'm moving forward:
+
+1. **Stop solving for the "Canyon Case"**: I'm not going to spend months on a sync engine for the 0.1% of time a user is in a total dead zone. If they lose 5G, it's okay if they just see a "Syncing..." toast for a minute.
+2. **Velocity first with [Convex](https://www.convex.dev/blog/what-is-sync)**: I'm going to use Convex to get the backend out of the way. It gives me that \"live\" reactive feel and [optimistic updates](https://docs.convex.dev/client/react/optimistic-updates) out of the box. It's "pseudo-local" enough to keep the UI snappy without the architectural nightmare.
+3. **The "Good Enough" Offline**: I'll use [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/guides/persist-query-client) with IndexedDB persistence. The app will load instantly and show the last-known data even if the phone is in airplane mode. That solves 90% of the frustration for 10% of the effort.
+4. **Monetize for Sustainability**: I'll probably go with a "Sync-as-a-Service" model. Keep the core local experience free and charge for the convenience of cloud sync. This keeps my costs aligned with my revenue.
+
+## The Bottom Line
+
+I can always add a deeper local-sync layer later if the app actually gains traction. But right now, my biggest risk isn't a lack of offline support—it's a lack of users.
+
+It's time to stop architecting and start shipping. The 5G might expire, but the project shouldn't.
