@@ -1,6 +1,8 @@
 import { getPostBySlug, getAllPosts, getAdjacentPosts, isPreviewMode, type NoteMetadata } from "@/lib/content";
 import { notFound } from "next/navigation";
 import { NoteDetail } from "@/components/notes/note-detail";
+import { InlineEngagement } from "@/components/mdx/inline-engagement";
+import { ViewTracker } from "@/components/mdx/view-tracker";
 import { generateSEOMetadata } from "@/lib/seo";
 import { BlogPostStructuredData } from "@/components/seo/structured-data";
 import { seoConfig } from "@/config/seo.config";
@@ -37,6 +39,7 @@ export default async function NotePage({ params }: { params: { slug: string } })
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-16">
+      <ViewTracker slug={params.slug} mode="immediate" />
       <BlogPostStructuredData
         title={note.metadata.title}
         description={note.metadata.description || ""}
@@ -54,7 +57,12 @@ export default async function NotePage({ params }: { params: { slug: string } })
           </Link>
         </Button>
       </div>
+      
+      <InlineEngagement slug={params.slug} className="border-t-0 mb-8" />
+
       <NoteDetail note={note} prev={adjacent.prev} next={adjacent.next} />
+
+      <InlineEngagement slug={params.slug} className="mt-16" />
     </div>
   );
 }

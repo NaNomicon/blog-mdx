@@ -39,7 +39,14 @@ This project is a static-first blog built with Next.js 14, leveraging the App Ro
 - Initialized via `lib/telegram/init.ts`.
 - Supports various notification types (new posts, server status, etc.).
 
-### 4. Deployment & Versioning
+### 4. Real-time Engagement (Convex)
+- **Database**: Uses Convex for real-time views and reactions.
+- **Authentication**: Implements `@convex-dev/auth` with an **Anonymous Provider** to track unique user sessions without login friction.
+- **View Tracking**: Headless `ViewTracker` component handles unique view recording. Supports `"scroll"` mode using `IntersectionObserver` for lists.
+- **Reactions**: `InlineEngagement` component allows users to react with predefined icons or arbitrary emojis via `emoji-picker-react`.
+- **Atomic Operations**: All interactions are handled as atomic mutations in `convex/engagement.ts` to ensure data consistency.
+
+### 5. Deployment & Versioning
 - **Versioning**: `scripts/version-bump.js` handles semver updates and updates `package.json`.
 - **Docker**: A multi-stage `Dockerfile` builds the Next.js app and serves it using the standalone output mode for efficiency.
 - **CI/CD**: Designed to be deployed on Dokploy or similar VPS-based deployment platforms.

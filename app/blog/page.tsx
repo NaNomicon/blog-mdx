@@ -4,6 +4,8 @@ import type {Metadata} from "next";
 import { generateSEOMetadata } from "@/lib/seo";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { EngagementStats } from "@/components/mdx/engagement-stats";
+import { ViewTracker } from "@/components/mdx/view-tracker";
 import { getAllPosts, isPreviewMode, type BlogPostMetadata } from "@/lib/content";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -63,15 +65,18 @@ export default async function Home() {
                     
                     {/* Content */}
                     <div className={`space-y-4 ${post.metadata.cover_image ? 'md:col-span-3' : 'md:col-span-4'}`}>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Calendar className="w-4 h-4" />
-                        <time dateTime={post.metadata.publishDate}>
-                          {new Date(post.metadata.publishDate).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                          })}
-                        </time>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4" />
+                          <time dateTime={post.metadata.publishDate}>
+                            {new Date(post.metadata.publishDate).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            })}
+                          </time>
+                        </div>
+                        <EngagementStats slug={post.slug} />
                       </div>
                       
                       <h2 className="text-2xl font-medium leading-tight group-hover:text-foreground/80 transition-colors">
@@ -108,6 +113,7 @@ export default async function Home() {
                     </div>
                   </div>
                 </Link>
+                <ViewTracker slug={post.slug} mode="scroll" />
               </article>
             ))}
           </div>

@@ -6,3 +6,4 @@ builtDependencies:
 
 onlyBuiltDependencies:
   - '@vercel/speed-insights'
+  - esbuild

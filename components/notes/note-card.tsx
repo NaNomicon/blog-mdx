@@ -3,6 +3,8 @@ import dynamic from "next/dynamic";
 import { type Post, type NoteMetadata } from "@/lib/content";
 import { Calendar, Tag, Folder, Link as LinkIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { EngagementStats } from "@/components/mdx/engagement-stats";
+import { ViewTracker } from "@/components/mdx/view-tracker";
 
 export function NoteCard({ note }: { note: Post<NoteMetadata> }) {
   const { slug, type, metadata } = note;
@@ -18,15 +20,18 @@ export function NoteCard({ note }: { note: Post<NoteMetadata> }) {
         <div className="p-7 space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between gap-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Calendar className="h-3.5 w-3.5 text-primary" />
-              <time dateTime={publishDate}>
-                {new Date(publishDate).toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </time>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-3.5 w-3.5 text-primary" />
+                <time dateTime={publishDate}>
+                  {new Date(publishDate).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </time>
+              </div>
+              <EngagementStats slug={slug} />
             </div>
             {collection && (
               <Link 
@@ -82,6 +87,7 @@ export function NoteCard({ note }: { note: Post<NoteMetadata> }) {
             </div>
           )}
         </div>
+        <ViewTracker slug={slug} mode="scroll" />
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import { ErrorBoundary } from "@/components/error-boundary";
 import { TelegramClientInit } from "@/components/telegram-client-init";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { generateSEOMetadata, defaultSEOConfig } from "@/lib/seo";
 import { WebsiteStructuredData } from "@/components/seo/structured-data";
 import { Analytics } from "@vercel/analytics/react";
@@ -87,14 +88,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ErrorBoundary>
-            <div className="relative flex min-h-screen flex-col">
-              <SiteHeader />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
-          </ErrorBoundary>
-          <Toaster />
+          <ConvexClientProvider>
+            <ErrorBoundary>
+              <div className="relative flex min-h-screen flex-col">
+                <SiteHeader />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+            </ErrorBoundary>
+            <Toaster />
+          </ConvexClientProvider>
         </ThemeProvider>
         {/* Analytics components */}
         <Analytics />

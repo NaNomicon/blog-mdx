@@ -5,6 +5,8 @@ import {format} from "date-fns";
 import { generateSEOMetadata, extractSEOFromBlogMetadata, defaultSEOConfig } from "@/lib/seo";
 import { BlogPostStructuredData, BreadcrumbStructuredData } from "@/components/seo/structured-data";
 import { BlogLayout } from "@/components/mdx/blog-layout";
+import { InlineEngagement } from "@/components/mdx/inline-engagement";
+import { ViewTracker } from "@/components/mdx/view-tracker";
 import { getPostBySlug, getAllPosts, isPreviewMode, type BlogPostMetadata } from "@/lib/content";
 import { notFound } from "next/navigation";
 
@@ -70,6 +72,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         ]}
       />
     <div className="max-w-4xl mx-auto px-4 py-16">
+      <ViewTracker slug={slug} mode="immediate" />
       <div className="w-full space-y-8">
         <article className="space-y-8">
           <div>
@@ -85,9 +88,14 @@ export default async function Page({ params }: { params: { slug: string } }) {
               {post.metadata.title}
             </h1>
           </div>
+          
+          <InlineEngagement slug={slug} className="border-t-0 pb-0" />
+
           <BlogLayout metadata={post.metadata}>
             <MDXContent />
           </BlogLayout>
+
+          <InlineEngagement slug={slug} className="mt-16" />
         </article>
       </div>
     </div>
