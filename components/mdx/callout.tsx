@@ -6,6 +6,7 @@ import { AlertTriangle, Info, CheckCircle, XCircle, Quote } from 'lucide-react';
 interface CalloutProps {
   type?: 'info' | 'warning' | 'success' | 'error' | 'quote';
   title?: string;
+  author?: string;
   children: React.ReactNode;
   className?: string;
 }
@@ -43,7 +44,7 @@ const calloutConfig = {
   },
 };
 
-export function Callout({ type = 'info', title, children, className }: CalloutProps) {
+export function Callout({ type = 'info', title, author, children, className }: CalloutProps) {
   const config = calloutConfig[type];
   const Icon = config.icon;
 
@@ -63,6 +64,11 @@ export function Callout({ type = 'info', title, children, className }: CalloutPr
             </div>
           </div>
         </div>
+        {author && (
+          <div className="text-sm text-muted-foreground text-right mt-2 italic">
+            - {author}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
