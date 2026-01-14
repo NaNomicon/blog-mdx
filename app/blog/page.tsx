@@ -5,7 +5,6 @@ import { generateSEOMetadata } from "@/lib/seo";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EngagementStats } from "@/components/mdx/engagement-stats";
-import { ViewTracker } from "@/components/mdx/view-tracker";
 import { getAllPosts, isPreviewMode, type BlogPostMetadata } from "@/lib/content";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -113,7 +112,6 @@ export default async function Home() {
                     </div>
                   </div>
                 </Link>
-                <ViewTracker slug={post.slug} mode="scroll" />
               </article>
             ))}
           </div>
