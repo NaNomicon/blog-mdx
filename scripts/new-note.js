@@ -2,12 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const readline = require("readline");
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+const { AutoComplete, Input } = require("enquirer");
 
 function formatDate(date) {
   const year = date.getFullYear().toString().slice(-2);
@@ -54,40 +49,125 @@ Write your note content here...
 `;
 }
 
-async function promptUser(question) {
-  return new Promise((resolve) => {
-    rl.question(question, (answer) => {
-      resolve(answer.trim());
-    });
+function getExistingMetadata() {
+  const notesDir = path.join(process.cwd(), "content", "notes");
+  if (!fs.existsSync(notesDir)) return { collections: [], types: [], tags: [] };
+
+  const files = fs.readdirSync(notesDir).filter(f => f.endsWith(".mdx"));
+  const collections = new Set();
+  const types = new Set(["thought", "link", "book", "idea"]); // Default types
+  const allTags = new Set();
+
+  files.forEach(file => {
+    const content = fs.readFileSync(path.join(notesDir, file), "utf8");
+    
+    const collectionMatch = content.match(/collection:\s*"([^"]+)"/);
+    if (collectionMatch) collections.add(collectionMatch[1]);
+
+    const typeMatch = content.match(/type:\s*"([^"]+)"/);
+    if (typeMatch) types.add(typeMatch[1]);
+
+    // Better tag extraction to handle multi-line and different quotes
+    const tagsMatch = content.match(/tags:\s*\[([\s\S]*?)\]/);
+    if (tagsMatch) {
+      const tagsStr = tagsMatch[1];
+      const tags = tagsStr
+        .split(",")
+        .map(t => t.trim().replace(/['"]/g, ""))
+        .filter(Boolean);
+      tags.forEach(t => allTags.add(t));
+    }
   });
+
+  return {
+    collections: Array.from(collections).sort(),
+    types: Array.from(types).sort(),
+    tags: Array.from(allTags).sort()
+  };
 }
 
 async function main() {
   console.log("📝 Note Generator\n");
 
   try {
-    const title = await promptUser("Enter note title: ");
-    if (!title) {
-      console.log("❌ Title is required!");
-      process.exit(1);
-    }
+    const { collections, types, tags: existingTags } = getExistingMetadata();
 
-    const collection = await promptUser("Enter collection (e.g. Show your work, Journal, Meta): ");
-    if (!collection) {
-      console.log("❌ Collection is required!");
-      process.exit(1);
-    }
+    const titlePrompt = new Input({
+      message: "Enter note title:",
+      validate: (value) => (value ? true : "Title is required!"),
+    });
+    const title = await titlePrompt.run();
 
-    const type = (await promptUser("Enter type (thought, link, book, idea - default: thought): ")) || "thought";
-    
+    const collectionPrompt = new AutoComplete({
+      name: "collection",
+      message: "Select or type collection:",
+      choices: collections,
+      limit: 10,
+      suggest(input, choices) {
+        const filtered = choices.filter(choice => 
+          choice.message.toLowerCase().includes(input.toLowerCase())
+        );
+        if (input && !filtered.find(c => c.message.toLowerCase() === input.toLowerCase())) {
+          filtered.unshift({ name: input, message: `[New] ${input}` });
+        }
+        return filtered;
+      },
+      result(value) {
+        return this.input || value;
+      }
+    });
+    const collection = await collectionPrompt.run();
+
+    const typePrompt = new AutoComplete({
+      name: "type",
+      message: "Select or type type (thought, link, book, idea):",
+      choices: types,
+      suggest(input, choices) {
+        const filtered = choices.filter(choice => 
+          choice.message.toLowerCase().includes(input.toLowerCase())
+        );
+        if (input && !filtered.find(c => c.message.toLowerCase() === input.toLowerCase())) {
+          filtered.unshift({ name: input, message: `[New] ${input}` });
+        }
+        return filtered;
+      },
+      result(value) {
+        return this.input || value;
+      }
+    });
+    const type = (await typePrompt.run()) || "thought";
+
     let book_title = "";
     if (type === "book") {
-      book_title = (await promptUser("Enter book title: ")) || collection;
+      const bookTitlePrompt = new Input({
+        message: "Enter book title (defaults to collection):",
+        initial: collection
+      });
+      book_title = await bookTitlePrompt.run();
     }
 
-    const description = (await promptUser("Enter brief description: ")) || "";
-    const tagsInput = await promptUser("Enter tags (comma separated): ");
-    const tags = tagsInput ? tagsInput.split(",").map(t => t.trim()) : [];
+    const descriptionPrompt = new Input({
+      message: "Enter brief description:",
+    });
+    const description = await descriptionPrompt.run();
+
+    const tagsPrompt = new AutoComplete({
+      name: "tags",
+      message: "Select tags (Space to toggle, start typing to filter/add):",
+      choices: existingTags,
+      multiple: true,
+      limit: 10,
+      suggest(input, choices) {
+        const filtered = choices.filter(choice => 
+          choice.message.toLowerCase().includes(input.toLowerCase())
+        );
+        if (input && !filtered.find(c => c.message.toLowerCase() === input.toLowerCase())) {
+          filtered.unshift({ name: input, message: `[New Tag] ${input}` });
+        }
+        return filtered;
+      }
+    });
+    const tags = await tagsPrompt.run();
 
     const now = new Date();
     const datePrefix = formatDate(now);
@@ -95,7 +175,6 @@ async function main() {
     const fileName = `${datePrefix}-${slug}.mdx`;
     const filePath = path.join(process.cwd(), "content", "notes", fileName);
 
-    // Check if file already exists
     if (fs.existsSync(filePath)) {
       console.log(`❌ File ${fileName} already exists!`);
       process.exit(1);
@@ -113,13 +192,11 @@ async function main() {
 
     const noteContent = generateNoteTemplate(metadata);
 
-    // Ensure the notes directory exists
     const notesDir = path.join(process.cwd(), "content", "notes");
     if (!fs.existsSync(notesDir)) {
       fs.mkdirSync(notesDir, { recursive: true });
     }
 
-    // Write the file
     fs.writeFileSync(filePath, noteContent);
 
     console.log("\n✅ Note created successfully!");
@@ -127,10 +204,12 @@ async function main() {
     console.log(`📍 Path: ${filePath}`);
     console.log("\n📝 You can now edit the file and add your content!");
   } catch (error) {
-    console.error("❌ Error creating note:", error.message);
+    if (error === "") {
+      console.log("\n👋 Cancelled.");
+    } else {
+      console.error("\n❌ Error creating note:", error.message || error);
+    }
     process.exit(1);
-  } finally {
-    rl.close();
   }
 }
 
