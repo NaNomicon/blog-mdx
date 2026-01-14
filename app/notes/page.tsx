@@ -2,14 +2,31 @@ import { type Metadata } from "next";
 import { Suspense } from "react";
 import { getAllPosts, getPostBySlug, getAdjacentPosts, isPreviewMode, type NoteMetadata, type Post } from "@/lib/content";
 import { NoteCard } from "@/components/notes/note-card";
-import { generateSEOMetadata } from "@/lib/seo";
+import { generateSEOMetadata, defaultSEOConfig, extractSEOFromNoteMetadata } from "@/lib/seo";
 import { NotesFilter } from "@/components/notes/notes-filter";
 import { NoteDialog } from "@/components/notes/note-dialog";
+import { BreadcrumbStructuredData } from "@/components/seo/structured-data";
 import { cn } from "@/lib/utils";
 import { getFilteredNotes, getPaginatedNotes, type NoteFilters } from "@/lib/notes";
 import { InfiniteNotesStream } from "@/components/notes/infinite-notes-stream";
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: { note?: string };
+}): Promise<Metadata> {
+  if (searchParams.note) {
+    const note = await getPostBySlug<NoteMetadata>("notes", searchParams.note, isPreviewMode());
+    if (note) {
+      const seoConfig = extractSEOFromNoteMetadata(note.metadata, searchParams.note);
+      return generateSEOMetadata({
+        ...seoConfig,
+        // Override canonical to avoid duplicate content if needed, 
+        // but for sharing purposes we want the specific note title/desc
+      });
+    }
+  }
+
   return generateSEOMetadata({
     title: "Notes & Snippets",
     description: "Short-form thoughts, quick tips, and web discoveries.",
@@ -64,6 +81,12 @@ export default async function NotesPage({
 
   return (
     <div className="space-y-0 min-h-screen bg-muted/20">
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Home", url: defaultSEOConfig.siteUrl! },
+          { name: "Notes", url: `${defaultSEOConfig.siteUrl}/notes` },
+        ]}
+      />
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 space-y-12">
         {/* Header Section */}
         <section className="space-y-12">

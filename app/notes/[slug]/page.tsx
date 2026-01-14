@@ -3,9 +3,8 @@ import { notFound } from "next/navigation";
 import { NoteDetail } from "@/components/notes/note-detail";
 import { InlineEngagement } from "@/components/mdx/inline-engagement";
 import { ViewTracker } from "@/components/mdx/view-tracker";
-import { generateSEOMetadata } from "@/lib/seo";
-import { BlogPostStructuredData } from "@/components/seo/structured-data";
-import { seoConfig } from "@/config/seo.config";
+import { generateSEOMetadata, extractSEOFromNoteMetadata, defaultSEOConfig } from "@/lib/seo";
+import { BlogPostStructuredData, BreadcrumbStructuredData } from "@/components/seo/structured-data";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -15,11 +14,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const note = await getPostBySlug<NoteMetadata>("notes", params.slug, isPreviewMode());
   if (!note) return {};
   
-  return generateSEOMetadata({
-    title: note.metadata.title,
-    description: note.metadata.description || `Read ${note.metadata.title} in my notes.`,
-    pathPrefix: "/notes",
-  });
+  const seoConfig = extractSEOFromNoteMetadata(note.metadata, params.slug);
+  return generateSEOMetadata(seoConfig);
 }
 
 export async function generateStaticParams() {
@@ -28,6 +24,9 @@ export async function generateStaticParams() {
     slug: note.slug,
   }));
 }
+
+// 🚀 ISR Magic - Revalidate every hour!
+export const revalidate = 3600; // 1 hour in seconds
 
 export default async function NotePage({ params }: { params: { slug: string } }) {
   const [note, adjacent] = await Promise.all([
@@ -42,12 +41,20 @@ export default async function NotePage({ params }: { params: { slug: string } })
       <ViewTracker slug={params.slug} mode="immediate" />
       <BlogPostStructuredData
         title={note.metadata.title}
-        description={note.metadata.description || ""}
+        description={note.metadata.description || `Read ${note.metadata.title} in my notes.`}
         publishDate={note.metadata.publishDate}
-        author={seoConfig.author}
+        author={defaultSEOConfig.author!}
         slug={note.slug}
         category={note.metadata.collection}
         pathPrefix="/notes"
+        siteUrl={defaultSEOConfig.siteUrl}
+      />
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Home", url: defaultSEOConfig.siteUrl! },
+          { name: "Notes", url: `${defaultSEOConfig.siteUrl}/notes` },
+          { name: note.metadata.title, url: `${defaultSEOConfig.siteUrl}/notes/${params.slug}` }
+        ]}
       />
       <div className="mb-8">
         <Button variant="ghost" asChild className="pl-0 text-muted-foreground hover:text-primary">

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { type Metadata } from "next";
 import { getAllPosts, getPostBySlug, getAdjacentPosts, isPreviewMode, type NoteMetadata, type Post } from "@/lib/content";
-import { generateSEOMetadata } from "@/lib/seo";
+import { generateSEOMetadata, defaultSEOConfig, extractSEOFromNoteMetadata } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -10,9 +10,28 @@ import { NoteDialog } from "@/components/notes/note-dialog";
 import { getPaginatedNotes, type NoteFilters } from "@/lib/notes";
 import { InfiniteNotesStream } from "@/components/notes/infinite-notes-stream";
 import { NotesFilter } from "@/components/notes/notes-filter";
+import { BreadcrumbStructuredData } from "@/components/seo/structured-data";
 
-export async function generateMetadata({ params }: { params: { name: string } }): Promise<Metadata> {
+export async function generateMetadata({ 
+  params,
+  searchParams,
+}: { 
+  params: { name: string };
+  searchParams: { note?: string };
+}): Promise<Metadata> {
   const collectionName = decodeURIComponent(params.name);
+
+  if (searchParams.note) {
+    const note = await getPostBySlug<NoteMetadata>("notes", searchParams.note, isPreviewMode());
+    if (note) {
+      const seoConfig = extractSEOFromNoteMetadata(note.metadata, searchParams.note);
+      return generateSEOMetadata({
+        ...seoConfig,
+        title: `${note.metadata.title} | ${collectionName}`,
+      });
+    }
+  }
+
   return generateSEOMetadata({
     title: `${collectionName} - Notes Collection`,
     description: `Browse all notes in the ${collectionName} collection.`,
@@ -80,6 +99,13 @@ export default async function CollectionPage({
 
   return (
     <div className="min-h-screen bg-muted/20">
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Home", url: defaultSEOConfig.siteUrl! },
+          { name: "Notes", url: `${defaultSEOConfig.siteUrl}/notes` },
+          { name: collectionName, url: `${defaultSEOConfig.siteUrl}/notes/collection/${params.name}` }
+        ]}
+      />
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12 space-y-12">
         {/* Header Section */}
         <section className="space-y-8">

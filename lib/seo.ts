@@ -200,4 +200,19 @@ export function extractSEOFromBlogMetadata(metadata: any, slug: string): SEOConf
         coverImage: metadata.cover_image,
         slug,
     };
+}
+
+/**
+ * Utility function to extract SEO data from note post metadata
+ */
+export function extractSEOFromNoteMetadata(metadata: any, slug: string): SEOConfig {
+    return {
+        ...defaultSEOConfig,
+        title: metadata.title,
+        description: metadata.description || `Read ${metadata.title} in my notes.`,
+        publishDate: metadata.publishDate,
+        category: metadata.collection,
+        slug,
+        pathPrefix: "/notes",
+    };
 } 
