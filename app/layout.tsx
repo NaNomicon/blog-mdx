@@ -16,6 +16,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { initializeTelegramErrorNotifications } from "@/lib/telegram";
 import Script from "next/script";
 import { Toaster } from "sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -89,13 +90,15 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ConvexClientProvider>
-            <ErrorBoundary>
-              <div className="relative flex min-h-screen flex-col">
-                <SiteHeader />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </div>
-            </ErrorBoundary>
+            <TooltipProvider>
+              <ErrorBoundary>
+                <div className="relative flex min-h-screen flex-col">
+                  <SiteHeader />
+                  <main className="flex-1">{children}</main>
+                  <Footer />
+                </div>
+              </ErrorBoundary>
+            </TooltipProvider>
             <Toaster />
           </ConvexClientProvider>
         </ThemeProvider>
