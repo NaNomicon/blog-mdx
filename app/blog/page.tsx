@@ -43,7 +43,7 @@ export default async function Home() {
             {posts.map((post, index) => (
               <article 
                 key={post.slug} 
-                className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card/50 transition-all duration-300 hover:border-border hover:bg-card/80 hover:shadow-lg"
+                className="group relative overflow-hidden rounded-2xl border border-border/40 bg-card transition-all duration-300 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1"
               >
                 <Link href={`/blog/${post.slug}`} className="block">
                   <div className="grid md:grid-cols-4 gap-6 p-8">

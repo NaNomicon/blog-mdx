@@ -72,21 +72,21 @@ function SiteHeader() {
         <nav className="hidden md:flex items-center space-x-8">
           <Link 
             href="/about" 
-            className="text-sm font-medium transition-all duration-300 hover:text-primary text-foreground/60 relative group"
+            className="text-sm font-medium transition-all duration-300 hover:text-primary text-foreground/70 relative group"
           >
             About
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full"></span>
           </Link>
           <Link 
             href="/blog" 
-            className="text-sm font-medium transition-all duration-300 hover:text-primary text-foreground/60 relative group"
+            className="text-sm font-medium transition-all duration-300 hover:text-primary text-foreground/70 relative group"
           >
             Blog
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full"></span>
           </Link>
           <Link 
             href="/notes" 
-            className="text-sm font-medium transition-all duration-300 hover:text-primary text-foreground/60 relative group"
+            className="text-sm font-medium transition-all duration-300 hover:text-primary text-foreground/70 relative group"
           >
             Notes
             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 group-hover:w-full"></span>

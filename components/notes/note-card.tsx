@@ -62,7 +62,7 @@ export function NoteCard({ note }: { note: Post<NoteMetadata> }) {
           </div>
 
           {/* Content Area with background */}
-          <div className="relative rounded-lg bg-muted/30 p-4 ring-1 ring-border/50">
+          <div className="relative rounded-lg bg-secondary/50 p-4 ring-1 ring-border/50">
             <div className="prose prose-sm prose-neutral dark:prose-invert max-w-none overflow-hidden">
               <MDXContent />
             </div>

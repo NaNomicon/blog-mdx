@@ -319,7 +319,7 @@ export function NotesFilter({
             </Badge>
           ))}
           {dateRange?.from && (
-            <Badge variant="secondary" className="flex items-center gap-1 py-1 px-2 bg-accent/5 hover:bg-accent/10 transition-colors border-none text-[10px] font-bold uppercase tracking-widest text-accent">
+            <Badge variant="secondary" className="flex items-center gap-1 py-1 px-2 bg-primary/5 hover:bg-primary/10 transition-colors border-none text-[10px] font-bold uppercase tracking-widest text-primary">
               <CalendarIcon className="h-3 w-3 mr-1" />
               {format(dateRange.from, "MMM dd")} 
               {dateRange.to ? ` - ${format(dateRange.to, "MMM dd")}` : ""}
@@ -331,7 +331,7 @@ export function NotesFilter({
                   setDateRange(undefined);
                 }}
               >
-                <X className="h-3 w-3 text-muted-foreground hover:text-accent" />
+                <X className="h-3 w-3 text-muted-foreground hover:text-primary" />
               </button>
             </Badge>
           )}

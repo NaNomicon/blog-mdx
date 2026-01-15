@@ -19,10 +19,10 @@ export default function Home() {
           <div className="relative">
             <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light tracking-tight gradient-text">
               Hello there
-              <span className="text-accent">.</span>
+              <span className="text-primary">.</span>
             </h1>
             <div className="absolute -top-4 -right-4 float-animation">
-              <Sparkles className="w-8 h-8 text-accent opacity-60" />
+              <Sparkles className="w-8 h-8 text-primary opacity-60" />
             </div>
           </div>
           <div className="w-16 h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto" />
@@ -55,8 +55,8 @@ export default function Home() {
 
           <div className="card-enhanced space-y-6">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-accent/10">
-                <BookOpen className="w-5 h-5 text-accent" />
+              <div className="p-2 rounded-lg bg-primary/10">
+                <BookOpen className="w-5 h-5 text-primary" />
               </div>
               <h2 className="text-2xl font-medium gradient-text">Purpose</h2>
             </div>

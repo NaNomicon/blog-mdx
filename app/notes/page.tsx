@@ -80,7 +80,7 @@ export default async function NotesPage({
   const currentLayout = searchParams.view || "masonry";
 
   return (
-    <div className="space-y-0 min-h-screen bg-muted/20">
+    <div className="space-y-0 min-h-screen bg-background">
       <BreadcrumbStructuredData
         items={[
           { name: "Home", url: defaultSEOConfig.siteUrl! },
@@ -123,7 +123,7 @@ export default async function NotesPage({
               currentLayout={currentLayout}
             />
           ) : (
-            <div className="text-center py-24 border rounded-2xl bg-muted/30">
+            <div className="text-center py-24 border rounded-2xl bg-muted/20">
               <p className="text-muted-foreground">No notes found matching your filters.</p>
             </div>
           )}

@@ -7,26 +7,26 @@
 
 @layer base {
   :root {
-    /* Enhanced light mode with subtle, sophisticated colors inspired by modern design trends */
-    --background: 210 20% 98%; /* Subtle blue-gray tint - very light and sophisticated */
-    --foreground: 224 71.4% 4.1%; /* Rich dark blue-gray */
-    --card: 210 25% 99%; /* Slightly cooler card background */
-    --card-foreground: 224 71.4% 4.1%;
-    --popover: 210 25% 99%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 262.1 83.3% 57.8%; /* Vibrant purple primary */
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%; /* Cool gray secondary */
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 12 76% 61%; /* Warm coral accent */
-    --accent-foreground: 12 76% 15%;
+    /* Premium light mode with better balance and contrast */
+    --background: 0 0% 100%; /* Pure white background for maximum content focus */
+    --foreground: 222.2 47.4% 11.2%; /* Slightly softer than pure black */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --primary: 262.1 83.3% 57.8%; /* Rich Purple */
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 40%; 
+    --accent: 262.1 83.3% 96%; /* Very subtle purple tint */
+    --accent-foreground: 262.1 83.3% 30%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 220 13% 91%; /* Subtle warm border */
-    --input: 220 13% 91%;
-    --ring: 262.1 83.3% 57.8%; /* Purple focus ring */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 262.1 83.3% 57.8%;
     --radius: 0.75rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
@@ -71,10 +71,10 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    /* Subtle texture pattern - more refined and less noticeable */
+    /* Improved dot pattern for both modes */
     background-image: radial-gradient(
       circle at 1px 1px,
-      rgba(255, 255, 255, 0.08) 1px,
+      hsl(var(--foreground) / 0.05) 1px,
       transparent 0
     );
     background-size: 24px 24px;
@@ -144,25 +144,24 @@
 .prose h4,
 .prose h5,
 .prose h6 {
-  @apply font-medium tracking-tight;
-  /* Removed gradient from prose headings to fix icon issues */
+  @apply font-semibold tracking-tight text-foreground;
 }
 
 .prose p {
-  @apply leading-relaxed text-muted-foreground;
+  @apply leading-relaxed text-foreground/80;
 }
 
 .prose a {
-  @apply text-primary underline underline-offset-4 decoration-primary/30 hover:decoration-primary transition-all duration-300;
+  @apply text-primary font-medium underline underline-offset-4 decoration-primary/30 hover:decoration-primary transition-all duration-300;
 }
 
 .prose blockquote {
-  @apply border-l-4 border-accent pl-6 italic text-muted-foreground bg-accent/5 py-4 rounded-r-lg;
+  @apply border-l-4 border-primary pl-6 italic text-foreground/70 bg-primary/5 py-4 rounded-r-lg;
 }
 
 .prose ul,
 .prose ol {
-  @apply text-muted-foreground;
+  @apply text-foreground/80;
 }
 
 .prose li {
@@ -203,30 +202,34 @@
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Add some visual flair to cards and interactive elements */
+/* Improved card styling for a cleaner look */
 .card-enhanced {
-  @apply bg-card border border-border/50 rounded-lg p-6;
-  background: linear-gradient(
-    135deg,
-    hsl(var(--card)) 0%,
-    hsl(var(--muted)) 100%
-  );
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
+  @apply bg-card border border-border/50 rounded-xl p-6 transition-all duration-300;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 1px 2px 0 rgba(0, 0, 0, 0.01);
 }
 
 .card-enhanced:hover {
+  @apply border-primary/20 bg-accent/5;
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.05);
 }
 
-/* Gradient text utility - now opt-in only */
+/* Gradient text utility - optimized for light/dark */
 .gradient-text {
-  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(
+    135deg,
+    hsl(var(--primary)) 0%,
+    hsl(var(--foreground)) 100%
+  );
+}
+
+.dark .gradient-text {
+  background-image: linear-gradient(
+    135deg,
+    hsl(var(--primary)) 0%,
+    hsl(var(--foreground) / 0.7) 100%
+  );
 }
 
 /* Subtle animation for interactive elements */
