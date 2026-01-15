@@ -4,9 +4,10 @@ import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { Button } from "./ui/button";
-import { BriefcaseBusiness, Mail } from "lucide-react";
+import { BriefcaseBusiness } from "lucide-react";
 import { SiFreelancer, SiTelegram } from "@icons-pack/react-simple-icons";
 import { SiLinkedin } from "react-icons/si";
+import { IoMail } from "react-icons/io5";
 import { toast } from "sonner";
 import { usePathname } from "next/dist/client/components/navigation";
 
@@ -46,7 +47,7 @@ export default function HireButton() {
                                 navigator.clipboard.writeText("lecongnhan29@gmail.com");
                                 toast.info("My email has been copied to your clipboard!");
                             }} data-umami-event="clicked_email" data-umami-event-path={pathname}>
-                                <Mail className="w-4 h-4 fill-current" />
+                                <IoMail className="w-4 h-4" />
                                 Email
                             </DropdownMenuItem>
                         </DropdownMenuContent>
