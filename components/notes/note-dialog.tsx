@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { NoteDetail } from "./note-detail";
 import { type Post, type NoteMetadata } from "@/lib/content";
 
@@ -29,6 +29,10 @@ export function NoteDialog({
       }
     }}>
       <DialogContent className="max-w-4xl w-[95vw] md:w-full h-fit max-h-[95vh] md:max-h-[90vh] overflow-y-auto p-4 md:p-12">
+        <DialogTitle className="sr-only">Note: {note.metadata.title}</DialogTitle>
+        <DialogDescription className="sr-only">
+          {note.metadata.description || `Reading note about ${note.metadata.title}`}
+        </DialogDescription>
         <NoteDetail note={note} prev={prev} next={next} />
       </DialogContent>
     </Dialog>
