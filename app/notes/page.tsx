@@ -1,13 +1,13 @@
 import { type Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { getAllPosts, getPostBySlug, getAdjacentPosts, isPreviewMode, type NoteMetadata, type Post } from "@/lib/content";
+import { getAllPosts, getPostBySlug, isPreviewMode, type NoteMetadata } from "@/lib/content";
 import { NoteCard } from "@/components/notes/note-card";
 import { generateSEOMetadata, defaultSEOConfig, extractSEOFromNoteMetadata } from "@/lib/seo";
 import { NotesFilter } from "@/components/notes/notes-filter";
 import { BreadcrumbStructuredData } from "@/components/seo/structured-data";
 import { cn } from "@/lib/utils";
-import { getFilteredNotes, getPaginatedNotes, type NoteFilters } from "@/lib/notes";
+import { applyNoteFilters, type NoteFilters } from "@/lib/notes";
 import { InfiniteNotesStream } from "@/components/notes/infinite-notes-stream";
 
 export async function generateMetadata({
@@ -63,12 +63,17 @@ export default async function NotesPage({
     sort: searchParams.sort,
   };
 
-  const { notes: initialNotes, hasMore } = await getPaginatedNotes(filters, 1, 10);
-  
-  // Get ALL notes just for filter counts/lists (this is still fast as it's just reading metadata)
+  // Get ALL notes ONCE (cached in lib/content)
   const allNotes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
+  
+  // Extract filter data from ALL notes
   const allCollections = Array.from(new Set(allNotes.map(n => n.metadata.collection).filter(Boolean))) as string[];
   const allTags = Array.from(new Set(allNotes.flatMap(n => n.metadata.tags || []))) as string[];
+
+  // Apply filters and pagination locally from the already-fetched notes
+  const filteredNotes = applyNoteFilters(allNotes, filters);
+  const initialNotes = filteredNotes.slice(0, 10);
+  const hasMore = filteredNotes.length > 10;
 
   const currentLayout = searchParams.view || "masonry";
 
@@ -99,8 +104,25 @@ export default async function NotesPage({
             </div>
 
             <div className="flex-shrink-0">
-              <Suspense fallback={<div className="h-10 w-full animate-pulse bg-muted/20 rounded-lg max-w-md mx-auto" />}>
-                <NotesFilter collections={allCollections} tags={allTags} />
+              <Suspense fallback={
+                <div className="flex flex-wrap items-center justify-end gap-3 py-2">
+                  <div className="h-10 w-[160px] bg-muted/20 animate-pulse rounded-md" />
+                  <div className="h-10 w-[180px] bg-muted/20 animate-pulse rounded-md" />
+                  <div className="h-10 w-[220px] bg-muted/20 animate-pulse rounded-md" />
+                </div>
+              }>
+                <NotesFilter 
+                  collections={allCollections} 
+                  tags={allTags} 
+                  initialFilters={{
+                    collection: searchParams.collection,
+                    tag: searchParams.tag,
+                    from: searchParams.from,
+                    to: searchParams.to,
+                    sort: searchParams.sort,
+                    view: searchParams.view,
+                  }}
+                />
               </Suspense>
             </div>
           </div>

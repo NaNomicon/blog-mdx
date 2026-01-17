@@ -8,17 +8,17 @@ export interface NoteFilters {
   sort?: "asc" | "desc";
 }
 
-export async function getFilteredNotes(filters: NoteFilters) {
-  let notes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
+export function applyNoteFilters(notes: Post<NoteMetadata>[], filters: NoteFilters) {
+  let filteredNotes = [...notes];
 
   // Apply filters
   if (filters.collection) {
-    notes = notes.filter(n => n.metadata.collection === filters.collection);
+    filteredNotes = filteredNotes.filter(n => n.metadata.collection === filters.collection);
   }
   
   if (filters.tag) {
     const selectedTags = filters.tag.split(",");
-    notes = notes.filter(n => 
+    filteredNotes = filteredNotes.filter(n => 
       selectedTags.every(tag => n.metadata.tags?.includes(tag))
     );
   }
@@ -28,7 +28,7 @@ export async function getFilteredNotes(filters: NoteFilters) {
     const fromDate = filters.from ? new Date(filters.from) : null;
     const toDate = filters.to ? new Date(filters.to) : null;
     
-    notes = notes.filter(n => {
+    filteredNotes = filteredNotes.filter(n => {
       const publishDate = new Date(n.metadata.publishDate);
       if (fromDate && publishDate < fromDate) return false;
       if (toDate && publishDate > toDate) return false;
@@ -38,13 +38,18 @@ export async function getFilteredNotes(filters: NoteFilters) {
 
   // Sort
   const sortOrder = filters.sort || "desc";
-  notes = notes.sort((a, b) => {
+  filteredNotes = filteredNotes.sort((a, b) => {
     const dateA = new Date(a.metadata.publishDate).getTime();
     const dateB = new Date(b.metadata.publishDate).getTime();
     return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
   });
 
-  return notes;
+  return filteredNotes;
+}
+
+export async function getFilteredNotes(filters: NoteFilters) {
+  const notes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
+  return applyNoteFilters(notes, filters);
 }
 
 export async function getPaginatedNotes(

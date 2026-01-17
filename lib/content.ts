@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
 
 // --- Schemas ---
 
@@ -45,7 +47,7 @@ const CONTENT_PATH = path.join(process.cwd(), "content");
 /**
  * Get all posts of a specific type
  */
-export async function getAllPosts<T extends BlogPostMetadata | NoteMetadata>(
+export const getAllPosts = cache(async function getAllPosts<T extends BlogPostMetadata | NoteMetadata>(
   type: ContentType,
   includeDrafts: boolean = false,
   _intendedType?: "blogs" | "notes"
@@ -113,7 +115,7 @@ export async function getAllPosts<T extends BlogPostMetadata | NoteMetadata>(
       new Date(b.metadata.publishDate).getTime() -
       new Date(a.metadata.publishDate).getTime()
   );
-}
+});
 
 /**
  * Get a single post by slug

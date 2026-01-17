@@ -34,11 +34,20 @@ import { Calendar } from "@/components/ui/calendar";
 export function NotesFilter({ 
   collections, 
   tags,
-  hideCollection = false
+  hideCollection = false,
+  initialFilters = {}
 }: { 
   collections: string[]; 
   tags: string[];
   hideCollection?: boolean;
+  initialFilters?: {
+    collection?: string;
+    tag?: string;
+    from?: string;
+    to?: string;
+    sort?: string;
+    view?: string;
+  };
 }) {
   const [mounted, setMounted] = React.useState(false);
   const searchParams = useSearchParams();
@@ -52,11 +61,11 @@ export function NotesFilter({
     setMounted(true);
   }, []);
 
-  const currentCollection = searchParams.get("collection") || "all";
-  const currentSort = (searchParams.get("sort") as "asc" | "desc") || "desc";
-  const currentLayout = (searchParams.get("view") as "masonry" | "list") || "masonry";
-  const fromParam = searchParams.get("from");
-  const toParam = searchParams.get("to");
+  const currentCollection = (mounted ? searchParams.get("collection") : initialFilters.collection) || "all";
+  const currentSort = ((mounted ? searchParams.get("sort") : initialFilters.sort) as "asc" | "desc") || "desc";
+  const currentLayout = ((mounted ? searchParams.get("view") : initialFilters.view) as "masonry" | "list") || "masonry";
+  const fromParam = mounted ? searchParams.get("from") : initialFilters.from;
+  const toParam = mounted ? searchParams.get("to") : initialFilters.to;
   
   const dateRange: DateRange | undefined = React.useMemo(() => {
     if (!fromParam && !toParam) return undefined;
@@ -67,9 +76,9 @@ export function NotesFilter({
   }, [fromParam, toParam]);
 
   const currentTags = React.useMemo(() => {
-    const tagParam = searchParams.get("tag");
+    const tagParam = mounted ? searchParams.get("tag") : initialFilters.tag;
     return tagParam ? tagParam.split(",") : [];
-  }, [searchParams]);
+  }, [mounted, searchParams, initialFilters.tag]);
 
   const setFilter = (key: string, value: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -124,15 +133,6 @@ export function NotesFilter({
   const clearFilters = () => {
     router.push(pathname, { scroll: false });
   };
-
-  if (!mounted) {
-    return (
-      <div className="flex flex-wrap items-center justify-end gap-4 py-4 min-h-[72px]">
-        <div className="h-10 w-[120px] bg-muted/20 animate-pulse rounded-md" />
-        <div className="h-10 w-[150px] bg-muted/20 animate-pulse rounded-md" />
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-4">
