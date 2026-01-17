@@ -6,6 +6,7 @@ import { type Post, type NoteMetadata } from "@/lib/content";
 import { Calendar, Folder, Tag, ExternalLink, Book, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ShareNote } from "./share-note";
 
 export function NoteDetail({ 
   note,
@@ -33,22 +34,25 @@ export function NoteDetail({
     <article className="space-y-6 md:space-y-8">
       {/* Header */}
       <div className="space-y-4 border-b pb-6 md:pb-8">
-        <div className="flex flex-wrap items-center gap-3 md:gap-4 text-sm text-muted-foreground">
-          <div className="flex items-center gap-1.5">
-            <Calendar className="h-4 w-4" />
-            <time dateTime={publishDate}>{formattedDate}</time>
-          </div>
-          {collection && (
-            <div className="flex items-center gap-1.5 font-medium text-primary">
-              <Folder className="h-4 w-4" />
-              <span>{collection}</span>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-3 md:gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1.5">
+              <Calendar className="h-4 w-4" />
+              <time dateTime={publishDate}>{formattedDate}</time>
             </div>
-          )}
-          {category && (
-            <Badge variant="outline" className="text-[10px] uppercase tracking-wider px-2 py-0">
-              {category}
-            </Badge>
-          )}
+            {collection && (
+              <div className="flex items-center gap-1.5 font-medium text-primary">
+                <Folder className="h-4 w-4" />
+                <span>{collection}</span>
+              </div>
+            )}
+            {category && (
+              <Badge variant="outline" className="text-[10px] uppercase tracking-wider px-2 py-0">
+                {category}
+              </Badge>
+            )}
+          </div>
+          <ShareNote slug={slug} />
         </div>
 
         <h1 className="text-2xl md:text-4xl font-medium leading-tight">
@@ -100,7 +104,7 @@ export function NoteDetail({
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-4 border-t border-dashed">
             {prev ? (
               <Button variant="ghost" asChild className="pl-2 hover:bg-primary/10 hover:text-primary transition-all group justify-start h-auto py-3">
-                <Link href={`?note=${prev.slug}`} scroll={false} className="flex items-center gap-2">
+                <Link href={`/notes/${prev.slug}`} scroll={false} className="flex items-center gap-2">
                   <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                   <div className="flex flex-col items-start">
                     <span className="text-[10px] uppercase text-muted-foreground">Previous</span>
@@ -112,7 +116,7 @@ export function NoteDetail({
 
             {next ? (
               <Button variant="ghost" asChild className="pr-2 hover:bg-primary/10 hover:text-primary transition-all group justify-end h-auto py-3">
-                <Link href={`?note=${next.slug}`} scroll={false} className="flex items-center gap-2 text-right">
+                <Link href={`/notes/${next.slug}`} scroll={false} className="flex items-center gap-2 text-right">
                   <div className="flex flex-col items-end">
                     <span className="text-[10px] uppercase text-muted-foreground">Next</span>
                     <span className="text-xs md:text-sm font-medium line-clamp-1 max-w-[200px] sm:max-w-[150px]">{next.metadata.title}</span>

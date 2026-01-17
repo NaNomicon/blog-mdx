@@ -46,13 +46,13 @@ export function NoteCard({ note }: { note: Post<NoteMetadata> }) {
 
           {/* Title & Link */}
           <div className="flex items-start justify-between gap-4">
-            <Link href={`?note=${slug}`} scroll={false} className="block group/title">
+            <Link href={`/notes/${slug}`} scroll={false} className="block group/title">
               <h3 className="text-2xl font-semibold leading-tight tracking-tight group-hover/title:text-primary transition-colors">
                 {title}
               </h3>
             </Link>
             <Link 
-              href={`?note=${slug}`} 
+              href={`/notes/${slug}`} 
               scroll={false}
               className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-muted/50 text-muted-foreground transition-all hover:bg-primary hover:text-primary-foreground"
               title="View full note"

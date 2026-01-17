@@ -1,10 +1,10 @@
 import { type Metadata } from "next";
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 import { getAllPosts, getPostBySlug, getAdjacentPosts, isPreviewMode, type NoteMetadata, type Post } from "@/lib/content";
 import { NoteCard } from "@/components/notes/note-card";
 import { generateSEOMetadata, defaultSEOConfig, extractSEOFromNoteMetadata } from "@/lib/seo";
 import { NotesFilter } from "@/components/notes/notes-filter";
-import { NoteDialog } from "@/components/notes/note-dialog";
 import { BreadcrumbStructuredData } from "@/components/seo/structured-data";
 import { cn } from "@/lib/utils";
 import { getFilteredNotes, getPaginatedNotes, type NoteFilters } from "@/lib/notes";
@@ -50,6 +50,11 @@ export default async function NotesPage({
     view?: "masonry" | "list";
   };
 }) {
+  // Redirect old query parameter links to the new path-based clean URLs
+  if (searchParams.note) {
+    redirect(`/notes/${searchParams.note}`);
+  }
+
   const filters: NoteFilters = {
     collection: searchParams.collection,
     tag: searchParams.tag,
@@ -64,18 +69,6 @@ export default async function NotesPage({
   const allNotes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
   const allCollections = Array.from(new Set(allNotes.map(n => n.metadata.collection).filter(Boolean))) as string[];
   const allTags = Array.from(new Set(allNotes.flatMap(n => n.metadata.tags || []))) as string[];
-
-  // Handle selected note for dialog
-  let selectedNote = null;
-  let adjacentNotes: { prev: Post<NoteMetadata> | null; next: Post<NoteMetadata> | null } = { prev: null, next: null };
-  if (searchParams.note) {
-    const [note, adjacent] = await Promise.all([
-      getPostBySlug<NoteMetadata>("notes", searchParams.note, isPreviewMode()),
-      getAdjacentPosts<NoteMetadata>("notes", searchParams.note, isPreviewMode()),
-    ]);
-    selectedNote = note;
-    adjacentNotes = adjacent;
-  }
 
   const currentLayout = searchParams.view || "masonry";
 
@@ -129,15 +122,6 @@ export default async function NotesPage({
           )}
         </section>
       </div>
-
-      {/* Note Dialog */}
-      {selectedNote && (
-        <NoteDialog 
-          note={selectedNote} 
-          prev={adjacentNotes.prev} 
-          next={adjacentNotes.next} 
-        />
-      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { NoteDetail } from "./note-detail";
 import { type Post, type NoteMetadata } from "@/lib/content";
@@ -15,14 +15,11 @@ export function NoteDialog({
   next?: Post<NoteMetadata> | null;
 }) {
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const handleClose = () => {
-    // Clear the note parameter from the URL
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("note");
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    // We use router.push("/notes") to ensure we return to the list 
+    // and clear the modal slot. This works for both intercepted and direct loads.
+    router.push("/notes", { scroll: false });
   };
 
   return (

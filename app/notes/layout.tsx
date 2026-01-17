@@ -1,14 +1,11 @@
 export default function NotesLayout({
   children,
-  modal,
 }: {
   children: React.ReactNode;
-  modal: React.ReactNode;
 }) {
   return (
-    <>
+    <section className="notes-layout">
       {children}
-      {modal}
-    </>
+    </section>
   );
 }
