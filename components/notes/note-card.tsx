@@ -7,8 +7,9 @@ import { EngagementStats } from "@/components/mdx/engagement-stats";
 import { ViewTracker } from "@/components/mdx/view-tracker";
 
 export function NoteCard({ note }: { note: Post<NoteMetadata> }) {
-  const { slug, type, metadata } = note;
-  const { title, publishDate, collection, tags, category } = metadata;
+    const { slug, type, metadata } = note;
+  const { title, publishDate, collection, tags, category, spoiler } = metadata;
+  const isSpoiler = spoiler === true;
 
   const MDXContent = dynamic(() => import(`@/content/${type}/${slug}.mdx`), {
     loading: () => <div className="h-20 bg-muted/20 rounded-md animate-pulse" />
@@ -69,11 +70,16 @@ export function NoteCard({ note }: { note: Post<NoteMetadata> }) {
           </div>
 
           {/* Footer */}
-          {(category || (tags && tags.length > 0)) && (
+          {(category || (tags && tags.length > 0) || isSpoiler) && (
             <div className="flex flex-wrap items-center gap-3 pt-2">
               {category && (
                 <Badge variant="secondary" className="rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest bg-primary/10 text-primary border-none">
                   {category}
+                </Badge>
+              )}
+              {isSpoiler && (
+                <Badge variant="secondary" className="rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest bg-amber-500/10 text-amber-600 dark:text-amber-500 border-none">
+                  Spoiler
                 </Badge>
               )}
               <div className="flex flex-wrap gap-2">

@@ -5,6 +5,7 @@ import { getAllPosts, getPostBySlug, isPreviewMode, type NoteMetadata } from "@/
 import { NoteCard } from "@/components/notes/note-card";
 import { generateSEOMetadata, defaultSEOConfig, extractSEOFromNoteMetadata } from "@/lib/seo";
 import { NotesFilter } from "@/components/notes/notes-filter";
+import { SpoilerToggleButton } from "@/components/notes/spoiler-toggle-button";
 import { BreadcrumbStructuredData } from "@/components/seo/structured-data";
 import { cn } from "@/lib/utils";
 import { applyNoteFilters, type NoteFilters } from "@/lib/notes";
@@ -48,6 +49,7 @@ export default async function NotesPage({
     to?: string;
     sort?: "asc" | "desc";
     view?: "masonry" | "list";
+    spoilers?: string;
   };
 }) {
   // Redirect old query parameter links to the new path-based clean URLs
@@ -55,12 +57,14 @@ export default async function NotesPage({
     redirect(`/notes/${searchParams.note}`);
   }
 
+  const showSpoilers = searchParams.spoilers === "true";
   const filters: NoteFilters = {
     collection: searchParams.collection,
     tag: searchParams.tag,
     from: searchParams.from,
     to: searchParams.to,
     sort: searchParams.sort,
+    showSpoilers,
   };
 
   // Get ALL notes ONCE (cached in lib/content)
@@ -72,6 +76,11 @@ export default async function NotesPage({
 
   // Apply filters and pagination locally from the already-fetched notes
   const filteredNotes = applyNoteFilters(allNotes, filters);
+
+  // Calculate hidden spoilers count
+  const notesWithSpoilers = applyNoteFilters(allNotes, { ...filters, showSpoilers: true });
+  const hiddenCount = notesWithSpoilers.length - filteredNotes.length;
+
   const initialNotes = filteredNotes.slice(0, 10);
   const hasMore = filteredNotes.length > 10;
 
@@ -114,6 +123,7 @@ export default async function NotesPage({
                 <NotesFilter 
                   collections={allCollections} 
                   tags={allTags} 
+                  hiddenCount={hiddenCount}
                   initialFilters={{
                     collection: searchParams.collection,
                     tag: searchParams.tag,
@@ -121,6 +131,7 @@ export default async function NotesPage({
                     to: searchParams.to,
                     sort: searchParams.sort,
                     view: searchParams.view,
+                    spoilers: searchParams.spoilers,
                   }}
                 />
               </Suspense>
@@ -138,8 +149,16 @@ export default async function NotesPage({
               currentLayout={currentLayout}
             />
           ) : (
-            <div className="text-center py-24 border rounded-2xl bg-muted/20">
+            <div className="text-center py-24 border rounded-2xl bg-muted/20 flex flex-col items-center justify-center space-y-4">
               <p className="text-muted-foreground">No notes found matching your filters.</p>
+              {!showSpoilers && hiddenCount > 0 && (
+                <div className="animate-in fade-in slide-in-from-top-2 duration-700 flex flex-col items-center gap-4">
+                  <p className="text-sm text-muted-foreground/60 max-w-md">
+                    Note: The spoiler toggle is currently on, hiding {hiddenCount} contents.
+                  </p>
+                  <SpoilerToggleButton />
+                </div>
+              )}
             </div>
           )}
         </section>

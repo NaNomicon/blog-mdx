@@ -28,6 +28,7 @@ export const NoteMetadataSchema = z.object({
   book_title: z.string().optional(),
   tags: z.array(z.string()).optional(),
   category: z.string().optional(),
+  spoiler: z.boolean().optional(),
 });
 
 export type NoteMetadata = z.infer<typeof NoteMetadataSchema>;

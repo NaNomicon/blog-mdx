@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Check, ChevronsUpDown, X, Calendar as CalendarIcon, ArrowDownWideNarrow, ArrowUpWideNarrow, LayoutGrid, List } from "lucide-react";
+import { Check, ChevronsUpDown, X, Calendar as CalendarIcon, ArrowDownWideNarrow, ArrowUpWideNarrow, LayoutGrid, List, Eye, EyeOff } from "lucide-react";
 import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
 
@@ -30,16 +30,24 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export function NotesFilter({ 
   collections, 
   tags,
   hideCollection = false,
+  hiddenCount = 0,
   initialFilters = {}
 }: { 
   collections: string[]; 
   tags: string[];
   hideCollection?: boolean;
+  hiddenCount?: number;
   initialFilters?: {
     collection?: string;
     tag?: string;
@@ -47,6 +55,7 @@ export function NotesFilter({
     to?: string;
     sort?: string;
     view?: string;
+    spoilers?: string;
   };
 }) {
   const [mounted, setMounted] = React.useState(false);
@@ -64,6 +73,7 @@ export function NotesFilter({
   const currentCollection = (mounted ? searchParams.get("collection") : initialFilters.collection) || "all";
   const currentSort = ((mounted ? searchParams.get("sort") : initialFilters.sort) as "asc" | "desc") || "desc";
   const currentLayout = ((mounted ? searchParams.get("view") : initialFilters.view) as "masonry" | "list") || "masonry";
+  const showSpoilers = (mounted ? searchParams.get("spoilers") : initialFilters.spoilers) === "true";
   const fromParam = mounted ? searchParams.get("from") : initialFilters.from;
   const toParam = mounted ? searchParams.get("to") : initialFilters.to;
   
@@ -114,6 +124,10 @@ export function NotesFilter({
   const toggleLayout = () => {
     const nextLayout = currentLayout === "masonry" ? "list" : "masonry";
     setFilter("view", nextLayout);
+  };
+
+  const toggleSpoilers = () => {
+    setFilter("spoilers", showSpoilers ? null : "true");
   };
 
   const toggleTag = (tag: string) => {
@@ -251,6 +265,44 @@ export function NotesFilter({
 
         <div className="w-px h-6 bg-border mx-1" />
 
+        {/* Spoiler Toggle */}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className={cn(
+                  "h-10 px-3 bg-background border-dashed relative",
+                  showSpoilers && "border-primary/50 bg-primary/5"
+                )}
+                onClick={toggleSpoilers}
+              >
+                {showSpoilers ? (
+                  <Eye className="h-4 w-4 mr-2 text-primary" />
+                ) : (
+                  <EyeOff className="h-4 w-4 mr-2 text-muted-foreground" />
+                )}
+                <span className="text-xs font-medium uppercase tracking-wider">
+                  Spoilers
+                </span>
+                {!showSpoilers && hiddenCount > 0 && (
+                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground shadow-sm">
+                    {hiddenCount}
+                  </span>
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-xs">
+                {showSpoilers 
+                  ? "Hide book summaries and spoilers" 
+                  : `Show ${hiddenCount} hidden book summaries and spoilers`}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
         {/* Sort Toggle */}
         <Button
           variant="outline"
@@ -287,7 +339,7 @@ export function NotesFilter({
           </span>
         </Button>
 
-        {(currentCollection !== "all" || currentTags.length > 0 || dateRange || currentSort !== "desc" || currentLayout !== "masonry") && (
+        {(currentCollection !== "all" || currentTags.length > 0 || dateRange || currentSort !== "desc" || currentLayout !== "masonry" || showSpoilers) && (
           <Button 
             variant="ghost" 
             size="sm" 
@@ -301,8 +353,24 @@ export function NotesFilter({
       </div>
 
       {/* Active Filters Summary */}
-      {(currentTags.length > 0 || dateRange) && (
+      {(currentTags.length > 0 || dateRange || showSpoilers) && (
         <div className="flex flex-wrap gap-2 items-center justify-end w-full">
+          {showSpoilers && (
+            <Badge variant="secondary" className="flex items-center gap-1 py-1 px-2 bg-primary/5 hover:bg-primary/10 transition-colors border-none text-[10px] font-bold uppercase tracking-widest text-primary">
+              <Eye className="h-3 w-3 mr-1" />
+              Showing Spoilers
+              <button 
+                className="ml-1 rounded-full outline-none focus:ring-1 focus:ring-ring"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  toggleSpoilers();
+                }}
+              >
+                <X className="h-3 w-3 text-muted-foreground hover:text-primary" />
+              </button>
+            </Badge>
+          )}
           {currentTags.map((tag) => (
             <Badge key={tag} variant="secondary" className="flex items-center gap-1 py-1 px-2 bg-primary/5 hover:bg-primary/10 transition-colors border-none text-[10px] font-bold uppercase tracking-widest text-primary">
               #{tag}

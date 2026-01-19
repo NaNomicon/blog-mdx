@@ -6,12 +6,21 @@ export interface NoteFilters {
   from?: string;
   to?: string;
   sort?: "asc" | "desc";
+  showSpoilers?: boolean;
 }
 
 export function applyNoteFilters(notes: Post<NoteMetadata>[], filters: NoteFilters) {
   let filteredNotes = [...notes];
 
-  // Apply filters
+  // Spoiler filter - by default hide spoilers (book summaries or explicit spoilers)
+  if (!filters.showSpoilers) {
+    filteredNotes = filteredNotes.filter(n => {
+      const isSpoiler = n.metadata.spoiler === true;
+      return !isSpoiler;
+    });
+  }
+
+  // Apply other filters
   if (filters.collection) {
     filteredNotes = filteredNotes.filter(n => n.metadata.collection === filters.collection);
   }
