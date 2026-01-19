@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { AutoComplete, Input } = require("enquirer");
+const { AutoComplete, Input, Toggle } = require("enquirer");
 
 function formatDate(date) {
   const year = date.getFullYear().toString().slice(-2);
@@ -41,11 +41,8 @@ function generateNoteTemplate(metadata) {
   ${metadata.book_title ? `book_title: "${metadata.book_title}",` : ""}
   ${tagsString}
   description: "${metadata.description}",
+  ${metadata.spoiler ? `spoiler: true,` : ""}
 };
-
-# ${metadata.title}
-
-Write your note content here...
 `;
 }
 
@@ -151,6 +148,14 @@ async function main() {
     });
     const description = await descriptionPrompt.run();
 
+    const spoilerPrompt = new Toggle({
+      message: "Is this a spoiler?",
+      enabled: "Yes",
+      disabled: "No",
+      initial: type === "book" // Default to spoiler if it's a book summary
+    });
+    const spoiler = await spoilerPrompt.run();
+
     const tagsPrompt = new AutoComplete({
       name: "tags",
       message: "Select tags (Space to toggle, start typing to filter/add):",
@@ -188,6 +193,7 @@ async function main() {
       book_title,
       tags,
       description,
+      spoiler,
     };
 
     const noteContent = generateNoteTemplate(metadata);
