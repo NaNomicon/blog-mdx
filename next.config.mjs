@@ -10,6 +10,9 @@ const nextConfig = {
   // Enable standalone output for minimal Docker images
   output: "standalone",
 
+  // Enable SWC minification for faster builds
+  swcMinify: true,
+
   // Build optimizations for speed
   experimental: {
     // Optimize package imports for better tree shaking
@@ -18,17 +21,6 @@ const nextConfig = {
       "react-icons",
       "@radix-ui/react-icons",
     ],
-    // Disable turbo temporarily for stability
-    // turbo: {
-    //   rules: {
-    //     "*.svg": {
-    //       loaders: ["@svgr/webpack"],
-    //       as: "*.js",
-    //     },
-    //   },
-    // },
-    // Enable SWC minification for faster builds
-    swcMinify: true,
     // Faster builds with reduced type checking
     typedRoutes: false,
   },
@@ -75,6 +67,17 @@ const nextConfig = {
 
   // Simplified webpack optimizations for faster builds
   webpack: (config, { dev, isServer }) => {
+    // Optimize for production builds
+    if (!dev) {
+      // Enable persistent caching for faster builds
+      config.cache = {
+        type: "filesystem",
+        buildDependencies: {
+          config: [import.meta.url],
+        },
+      };
+    }
+
     // Optimize module resolution
     config.resolve.symlinks = false;
 
