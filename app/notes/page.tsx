@@ -114,10 +114,17 @@ export default async function NotesPage({
 
             <div className="flex-shrink-0">
               <Suspense fallback={
-                <div className="flex flex-wrap items-center justify-end gap-3 py-2">
-                  <div className="h-10 w-[160px] bg-muted/20 animate-pulse rounded-md" />
-                  <div className="h-10 w-[180px] bg-muted/20 animate-pulse rounded-md" />
-                  <div className="h-10 w-[220px] bg-muted/20 animate-pulse rounded-md" />
+                <div className="flex flex-col items-end gap-3 py-2">
+                  <div className="flex flex-wrap items-center justify-end gap-3">
+                    <div className="h-10 w-[160px] bg-muted/20 animate-pulse rounded-md" />
+                    <div className="h-10 w-[180px] bg-muted/20 animate-pulse rounded-md" />
+                    <div className="h-10 w-[220px] bg-muted/20 animate-pulse rounded-md" />
+                  </div>
+                  <div className="flex items-center justify-end gap-2">
+                    <div className="h-10 w-[100px] bg-muted/20 animate-pulse rounded-md" />
+                    <div className="h-10 w-[80px] bg-muted/20 animate-pulse rounded-md" />
+                    <div className="h-10 w-[80px] bg-muted/20 animate-pulse rounded-md" />
+                  </div>
                 </div>
               }>
                 <NotesFilter 

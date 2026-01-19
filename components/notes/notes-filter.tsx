@@ -150,206 +150,208 @@ export function NotesFilter({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-end gap-3 py-2 relative">
-        {/* Collection Select */}
-        {!hideCollection && (
-          <div className="flex items-center gap-2">
-            <Select
-              value={currentCollection}
-              onValueChange={(value) => setFilter("collection", value)}
-            >
-              <SelectTrigger className="h-10 w-[160px] bg-background">
-                <SelectValue placeholder="Collection" />
-              </SelectTrigger>
-              <SelectContent className="z-40">
-                <SelectItem value="all">All Collections</SelectItem>
-                {collections.map((collection) => (
-                  <SelectItem key={collection} value={collection}>
-                    {collection}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-
-        {/* Tags Multi-Select */}
-        <div className="flex items-center gap-2">
-          <Popover open={openTags} onOpenChange={setOpenTags}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={openTags}
-                className="h-10 w-[180px] justify-between bg-background font-normal"
+      <div className="flex flex-col items-end gap-3 py-2 relative">
+        <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3 w-full sm:w-auto">
+          {/* Collection Select */}
+          {!hideCollection && (
+            <div className="flex-1 sm:flex-none min-w-[140px]">
+              <Select
+                value={currentCollection}
+                onValueChange={(value) => setFilter("collection", value)}
               >
-                <span className="truncate text-xs uppercase tracking-wider font-medium">
-                  {currentTags.length > 0
-                    ? `${currentTags.length} Tags`
-                    : "Filter Tags"}
-                </span>
-                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0 z-40" align="end">
-              <Command>
-                <CommandInput placeholder="Search tags..." />
-                <CommandList>
-                  <CommandEmpty>No tag found.</CommandEmpty>
-                  <CommandGroup>
-                    {tags.map((tag) => (
-                      <CommandItem
-                        key={tag}
-                        value={tag}
-                        onSelect={() => {
-                          toggleTag(tag);
-                        }}
-                      >
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            currentTags.includes(tag) ? "opacity-100" : "opacity-0"
-                          )}
-                        />
-                        {tag}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
-        </div>
+                <SelectTrigger className="h-10 w-full sm:w-[160px] bg-background">
+                  <SelectValue placeholder="Collection" />
+                </SelectTrigger>
+                <SelectContent className="z-40">
+                  <SelectItem value="all">All Collections</SelectItem>
+                  {collections.map((collection) => (
+                    <SelectItem key={collection} value={collection}>
+                      {collection}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
-        {/* Date Range Picker */}
-        <div className="flex items-center gap-2">
-          <Popover open={openDate} onOpenChange={setOpenDate}>
-            <PopoverTrigger asChild>
-              <Button
-                id="date"
-                variant="outline"
-                className={cn(
-                  "h-10 w-[220px] justify-start text-left font-normal bg-background",
-                  !dateRange && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-                <span className="text-xs uppercase tracking-wider font-medium truncate">
-                  {dateRange?.from ? (
-                    dateRange.to ? (
-                      <>
-                        {format(dateRange.from, "LLL dd, y")} -{" "}
-                        {format(dateRange.to, "LLL dd, y")}
-                      </>
-                    ) : (
-                      format(dateRange.from, "LLL dd, y")
-                    )
-                  ) : (
-                    "Pick a date"
-                  )}
-                </span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 z-40" align="end">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={dateRange?.from}
-                selected={dateRange}
-                onSelect={setDateRange}
-                numberOfMonths={1}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-
-        <div className="w-px h-6 bg-border mx-1" />
-
-        {/* Spoiler Toggle */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className={cn(
-                  "h-10 px-3 bg-background border-dashed relative",
-                  showSpoilers && "border-primary/50 bg-primary/5"
-                )}
-                onClick={toggleSpoilers}
-              >
-                {showSpoilers ? (
-                  <Eye className="h-4 w-4 mr-2 text-primary" />
-                ) : (
-                  <EyeOff className="h-4 w-4 mr-2 text-muted-foreground" />
-                )}
-                <span className="text-xs font-medium uppercase tracking-wider">
-                  Spoilers
-                </span>
-                {!showSpoilers && hiddenCount > 0 && (
-                  <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground shadow-sm">
-                    {hiddenCount}
+          {/* Tags Multi-Select */}
+          <div className="flex-1 sm:flex-none min-w-[140px]">
+            <Popover open={openTags} onOpenChange={setOpenTags}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openTags}
+                  className="h-10 w-full sm:w-[180px] justify-between bg-background font-normal"
+                >
+                  <span className="truncate text-xs uppercase tracking-wider font-medium">
+                    {currentTags.length > 0
+                      ? `${currentTags.length} Tags`
+                      : "Filter Tags"}
                   </span>
-                )}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-xs">
-                {showSpoilers 
-                  ? "Hide book summaries and spoilers" 
-                  : `Show ${hiddenCount} hidden book summaries and spoilers`}
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[200px] p-0 z-40" align="end">
+                <Command>
+                  <CommandInput placeholder="Search tags..." />
+                  <CommandList>
+                    <CommandEmpty>No tag found.</CommandEmpty>
+                    <CommandGroup>
+                      {tags.map((tag) => (
+                        <CommandItem
+                          key={tag}
+                          value={tag}
+                          onSelect={() => {
+                            toggleTag(tag);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              currentTags.includes(tag) ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {tag}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </div>
 
-        {/* Sort Toggle */}
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-10 px-3 bg-background border-dashed"
-          onClick={toggleSort}
-          title={currentSort === "desc" ? "Newest first" : "Oldest first"}
-        >
-          {currentSort === "desc" ? (
-            <ArrowDownWideNarrow className="h-4 w-4 mr-2 text-primary" />
-          ) : (
-            <ArrowUpWideNarrow className="h-4 w-4 mr-2 text-primary" />
-          )}
-          <span className="text-xs font-medium uppercase tracking-wider">
-            {currentSort === "desc" ? "Newest" : "Oldest"}
-          </span>
-        </Button>
+          {/* Date Range Picker */}
+          <div className="flex-[2] sm:flex-none min-w-[200px]">
+            <Popover open={openDate} onOpenChange={setOpenDate}>
+              <PopoverTrigger asChild>
+                <Button
+                  id="date"
+                  variant="outline"
+                  className={cn(
+                    "h-10 w-full sm:w-[220px] justify-start text-left font-normal bg-background",
+                    !dateRange && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
+                  <span className="text-xs uppercase tracking-wider font-medium truncate">
+                    {dateRange?.from ? (
+                      dateRange.to ? (
+                        <>
+                          {format(dateRange.from, "LLL dd, y")} -{" "}
+                          {format(dateRange.to, "LLL dd, y")}
+                        </>
+                      ) : (
+                        format(dateRange.from, "LLL dd, y")
+                      )
+                    ) : (
+                      "Pick a date"
+                    )}
+                  </span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 z-40" align="end">
+                <Calendar
+                  initialFocus
+                  mode="range"
+                  defaultMonth={dateRange?.from}
+                  selected={dateRange}
+                  onSelect={setDateRange}
+                  numberOfMonths={1}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
 
-        {/* Layout Toggle */}
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-10 px-3 bg-background border-dashed"
-          onClick={toggleLayout}
-          title={currentLayout === "masonry" ? "Switch to list view" : "Switch to masonry view"}
-        >
-          {currentLayout === "masonry" ? (
-            <LayoutGrid className="h-4 w-4 mr-2 text-primary" />
-          ) : (
-            <List className="h-4 w-4 mr-2 text-primary" />
-          )}
-          <span className="text-xs font-medium uppercase tracking-wider">
-            {currentLayout === "masonry" ? "Masonry" : "List"}
-          </span>
-        </Button>
+        <div className="flex flex-wrap items-center justify-end gap-2 w-full sm:w-auto">
+          {/* Spoiler Toggle */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className={cn(
+                    "h-10 px-3 flex-1 sm:flex-none bg-background border-dashed relative",
+                    showSpoilers && "border-primary/50 bg-primary/5"
+                  )}
+                  onClick={toggleSpoilers}
+                >
+                  {showSpoilers ? (
+                    <Eye className="h-4 w-4 mr-2 text-primary" />
+                  ) : (
+                    <EyeOff className="h-4 w-4 mr-2 text-muted-foreground" />
+                  )}
+                  <span className="text-xs font-medium uppercase tracking-wider">
+                    Spoilers
+                  </span>
+                  {!showSpoilers && hiddenCount > 0 && (
+                    <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground shadow-sm">
+                      {hiddenCount}
+                    </span>
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">
+                  {showSpoilers 
+                    ? "Hide book summaries and spoilers" 
+                    : `Show ${hiddenCount} hidden book summaries and spoilers`}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
-        {(currentCollection !== "all" || currentTags.length > 0 || dateRange || currentSort !== "desc" || currentLayout !== "masonry" || showSpoilers) && (
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-10 px-3 text-xs uppercase tracking-widest hover:bg-destructive/10 hover:text-destructive transition-colors font-bold"
-            onClick={clearFilters}
+          {/* Sort Toggle */}
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-10 px-3 flex-1 sm:flex-none bg-background border-dashed"
+            onClick={toggleSort}
+            title={currentSort === "desc" ? "Newest first" : "Oldest first"}
           >
-            <X className="mr-1 h-3.5 w-3.5" />
-            Reset
+            {currentSort === "desc" ? (
+              <ArrowDownWideNarrow className="h-4 w-4 mr-2 text-primary" />
+            ) : (
+              <ArrowUpWideNarrow className="h-4 w-4 mr-2 text-primary" />
+            )}
+            <span className="text-xs font-medium uppercase tracking-wider">
+              {currentSort === "desc" ? "Newest" : "Oldest"}
+            </span>
           </Button>
-        )}
+
+          {/* Layout Toggle */}
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-10 px-3 flex-1 sm:flex-none bg-background border-dashed"
+            onClick={toggleLayout}
+            title={currentLayout === "masonry" ? "Switch to list view" : "Switch to masonry view"}
+          >
+            {currentLayout === "masonry" ? (
+              <LayoutGrid className="h-4 w-4 mr-2 text-primary" />
+            ) : (
+              <List className="h-4 w-4 mr-2 text-primary" />
+            )}
+            <span className="text-xs font-medium uppercase tracking-wider">
+              {currentLayout === "masonry" ? "Masonry" : "List"}
+            </span>
+          </Button>
+
+          {(currentCollection !== "all" || currentTags.length > 0 || dateRange || currentSort !== "desc" || currentLayout !== "masonry" || showSpoilers) && (
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-10 px-3 text-xs uppercase tracking-widest hover:bg-destructive/10 hover:text-destructive transition-colors font-bold"
+              onClick={clearFilters}
+            >
+              <X className="mr-1 h-3.5 w-3.5" />
+              Reset
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Active Filters Summary */}
