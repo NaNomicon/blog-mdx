@@ -72,23 +72,40 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
   // Memoize split notes for masonry layout to avoid re-filtering on every render
   const masonryNotes = useMemo(() => {
     if (currentLayout !== "masonry") return { left: [], right: [] };
-    return {
-      left: notes.filter((_, i) => i % 2 === 0),
-      right: notes.filter((_, i) => i % 2 !== 0),
-    };
+    
+    const left: Post<NoteMetadata>[] = [];
+    const right: Post<NoteMetadata>[] = [];
+    let leftHeight = 0;
+    let rightHeight = 0;
+
+    notes.forEach((note) => {
+      // Use contentLength as a proxy for height, with a base value for card overhead
+      // This ensures more balanced columns by putting the next note in the shortest column
+      const estimatedHeight = (note.contentLength || 0) + 300; // 300 is base overhead for title, padding, etc.
+
+      if (leftHeight <= rightHeight) {
+        left.push(note);
+        leftHeight += estimatedHeight;
+      } else {
+        right.push(note);
+        rightHeight += estimatedHeight;
+      }
+    });
+
+    return { left, right };
   }, [notes, currentLayout]);
 
   return (
     <div className="space-y-12">
       {currentLayout === "masonry" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-          {/* Column 1: Even indices */}
+          {/* Column 1 */}
           <div className="flex flex-col gap-8">
             {masonryNotes.left.map((note) => (
               <NoteCard key={note.slug} note={note} />
             ))}
           </div>
-          {/* Column 2: Odd indices */}
+          {/* Column 2 */}
           <div className="flex flex-col gap-8">
             {masonryNotes.right.map((note) => (
               <NoteCard key={note.slug} note={note} />

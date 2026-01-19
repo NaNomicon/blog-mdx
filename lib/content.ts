@@ -39,6 +39,7 @@ export interface Post<T> {
   slug: string;
   metadata: T;
   type: ContentType;
+  contentLength: number;
 }
 
 // --- Content Library ---
@@ -66,7 +67,9 @@ export const getAllPosts = cache(async function getAllPosts<T extends BlogPostMe
   const posts = await Promise.all(
     files.map(async (filename) => {
       const slug = filename.replace(".mdx", "");
+      const mdxPath = path.join(dir, filename);
       try {
+        const stats = fs.statSync(mdxPath);
         // Use dynamic import for metadata
         const mdxModule = await import(`@/content/${type}/${filename}`);
         const metadata = mdxModule.metadata;
@@ -93,6 +96,7 @@ export const getAllPosts = cache(async function getAllPosts<T extends BlogPostMe
           slug,
           metadata: validatedMetadata as T,
           type,
+          contentLength: stats.size,
         };
       } catch (error) {
         // Silently skip if metadata doesn't match the schema (e.g. blog draft when looking for notes)
@@ -139,6 +143,7 @@ export async function getPostBySlug<T extends BlogPostMetadata | NoteMetadata>(
       const isDraft = mdxPath.includes("/drafts/");
       const actualType = isDraft ? "drafts" : type;
       try {
+        const stats = fs.statSync(mdxPath);
         const { metadata } = await import(`@/content/${actualType}/${slug}.mdx`);
         
         // Use the original requested type to determine schema, even if it's a draft
@@ -150,6 +155,7 @@ export async function getPostBySlug<T extends BlogPostMetadata | NoteMetadata>(
           slug,
           metadata: validatedMetadata as T,
           type: actualType as ContentType,
+          contentLength: stats.size,
         };
       } catch (error) {
         // Only log error if it's not a schema mismatch for a draft
