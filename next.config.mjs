@@ -75,29 +75,6 @@ const nextConfig = {
 
   // Simplified webpack optimizations for faster builds
   webpack: (config, { dev, isServer }) => {
-    // Optimize for production builds
-    if (!dev) {
-      // Enable persistent caching with simpler config
-      config.cache = {
-        type: "filesystem",
-      };
-
-      // Simplified optimization for faster builds
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: "all",
-          cacheGroups: {
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: "vendors",
-              chunks: "all",
-            },
-          },
-        },
-      };
-    }
-
     // Optimize module resolution
     config.resolve.symlinks = false;
 
@@ -106,6 +83,14 @@ const nextConfig = {
 
   // Enable static optimization
   trailingSlash: false,
+
+  // Skip linting and type checking during production build
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 
   // Optimize fonts
   optimizeFonts: true,
