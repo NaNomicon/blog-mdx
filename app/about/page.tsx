@@ -10,8 +10,8 @@ import { generateSEOMetadata } from "@/lib/seo";
 // Define the metadata generation function
 export async function generateMetadata(): Promise<Metadata> {
   return generateSEOMetadata({
-    title: "About",
-    description: "Learn more about NaN, a developer with a passion for learning and exploring new technologies. Discover my journey, values, and approach to web development and programming.",
+    title: "About | Software Development & Productivity",
+    description: "Learn more about NaN, a software developer exploring the intersection of productivity, self-development, and technology. Discover how I use AI and self-hosting as tools for growth.",
   });
 }
 
@@ -21,7 +21,7 @@ export default function About() {
       <PersonStructuredData
         name="NaNomicon"
         siteUrl="https://nanomicon.com"
-        description="Developer with a passion for learning and exploring new technologies"
+        description="Software developer interested in self-development, productivity, and leveraging technology for growth."
       />
       <div className="max-w-4xl mx-auto px-4 py-16 space-y-24">
         {/* Hero Section */}
@@ -36,7 +36,7 @@ export default function About() {
           
           <div className="max-w-2xl mx-auto space-y-6">
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Developer, learner, and explorer of digital possibilities
+              Building systems, improving self, and exploring the digital garden
             </p>
           </div>
         </section>
@@ -45,9 +45,16 @@ export default function About() {
         <section className="space-y-16">
           <div className="prose prose-lg max-w-none">
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Hey there! Thanks for visiting my corner of the internet. I&apos;m NaN, a developer with an insatiable 
-              curiosity for learning and exploring new technologies. This space serves as my digital garden where 
-              I document discoveries, share insights, and connect with fellow explorers.
+              Hey there! Thanks for visiting my corner of the internet. I&apos;m NaN, a software developer 
+              who views code not just as a profession, but as a tool for personal and digital evolution. 
+              My journey is defined by a deep interest in **self-development** and **productivity**, 
+              always looking for ways to optimize my life and my work.
+            </p>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              I believe that modern technology—when used intentionally—can be a massive force multiplier. 
+              Whether it&apos;s integrating **AI** to amplify my thinking or **self-hosting** my own tools 
+              to ensure privacy and control, I see these as vital steps in building a sustainable 
+              and efficient digital life.
             </p>
           </div>
 

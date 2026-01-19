@@ -2,23 +2,33 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen, User, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PersonStructuredData } from "@/components/seo/structured-data";
+import { seoConfig } from "@/config/seo.config";
+import { generateSEOMetadata } from "@/lib/seo";
 
 // Define the metadata generation function
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: "Home | NaN",
-  };
+  return generateSEOMetadata({
+    title: "NaN's Blog | Software Development, Productivity & Growth",
+    description: "Personal blog of NaNomicon - Exploring software development, productivity, and personal growth through the lens of modern technology like AI and self-hosting.",
+  });
 }
 
 export default function Home() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-16 space-y-24">
+    <>
+      <PersonStructuredData
+        name={seoConfig.author}
+        siteUrl={seoConfig.siteUrl}
+        description="Software developer interested in self-development, productivity, and leveraging technology for growth."
+      />
+      <div className="max-w-4xl mx-auto px-4 py-16 space-y-24">
       {/* Hero Section */}
       <section className="text-center space-y-8">
         <div className="space-y-6">
           <div className="relative">
             <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light tracking-tight gradient-text">
-              Hello there
+              Build & Grow
               <span className="text-primary">.</span>
             </h1>
             <div className="absolute -top-4 -right-4 float-animation">
@@ -30,7 +40,8 @@ export default function Home() {
 
         <div className="max-w-2xl mx-auto space-y-6">
           <p className="text-xl text-muted-foreground leading-relaxed">
-            Developer with a passion for learning and exploring new things
+            Software developer exploring the intersection of technology, 
+            productivity, and self-development.
           </p>
         </div>
       </section>
@@ -43,13 +54,12 @@ export default function Home() {
               <div className="p-2 rounded-lg bg-primary/10">
                 <User className="w-5 h-5 text-primary" />
               </div>
-              <h2 className="text-2xl font-medium gradient-text">About</h2>
+              <h2 className="text-2xl font-medium gradient-text">The Journey</h2>
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              I&apos;m always looking for ways to expand my knowledge, try out
-              fresh ideas, and tackle challenges head-on. I started this blog as
-              a way to document what I&apos;ve learned, keep track of my
-              progress, and share insights with others.
+              I believe technology should serve our personal growth. Whether it&apos;s 
+              leveraging AI to expand our capabilities or self-hosting tools to reclaim our 
+              digital sovereignty, it&apos;s all part of becoming a better developer and a better self.
             </p>
           </div>
 
@@ -61,9 +71,9 @@ export default function Home() {
               <h2 className="text-2xl font-medium gradient-text">Purpose</h2>
             </div>
             <p className="text-muted-foreground leading-relaxed">
-              Whether it&apos;s coding tips, problem-solving, or things
-              I&apos;ve discovered along the way, I hope my posts can help and
-              inspire others on their own journeys.
+              I started this blog to document my progress and share insights on 
+              building efficient systems—both in code and in life. Here, you&apos;ll find 
+              thoughts on productivity, technical deep-dives, and occasional discoveries.
             </p>
           </div>
         </div>
@@ -90,5 +100,6 @@ export default function Home() {
         </div>
       </section>
     </div>
+    </>
   );
 }

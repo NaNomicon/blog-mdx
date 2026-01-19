@@ -78,6 +78,12 @@ export default function RootLayout({
           siteUrl={defaultSEOConfig.siteUrl!}
           author={defaultSEOConfig.author!}
         />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={`RSS Feed for ${defaultSEOConfig.siteName}`}
+          href="/feed.xml"
+        />
       </head>
       <body
         className={`${inter.className} min-h-screen bg-background font-sans antialiased`}
