@@ -8,6 +8,28 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ShareNote } from "./share-note";
 
+// Cache dynamic components globally to prevent re-loading on state changes
+const mdxCache = new Map<string, React.ComponentType>();
+
+function getMDXComponent(type: string, slug: string) {
+  const key = `${type}:${slug}`;
+  if (!mdxCache.has(key)) {
+    mdxCache.set(
+      key,
+      dynamic(() => import(`@/content/${type}/${slug}.mdx`), {
+        loading: () => (
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 bg-muted rounded w-3/4"></div>
+            <div className="h-4 bg-muted rounded w-full"></div>
+            <div className="h-4 bg-muted rounded w-5/6"></div>
+          </div>
+        ),
+      })
+    );
+  }
+  return mdxCache.get(key)!;
+}
+
 export function NoteDetail({ 
   note,
   prev,
@@ -20,13 +42,7 @@ export function NoteDetail({
   const { slug, type, metadata } = note;
   const { title, publishDate, collection, tags, category, source_url, book_title } = metadata;
 
-  const MDXContent = dynamic(() => import(`@/content/${type}/${slug}.mdx`), {
-    loading: () => <div className="animate-pulse space-y-4">
-      <div className="h-4 bg-muted rounded w-3/4"></div>
-      <div className="h-4 bg-muted rounded w-full"></div>
-      <div className="h-4 bg-muted rounded w-5/6"></div>
-    </div>
-  });
+  const MDXContent = getMDXComponent(type, slug);
 
   const formattedDate = format(new Date(publishDate), "MMMM dd, yyyy");
 

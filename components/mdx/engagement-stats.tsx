@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Eye, Heart, ThumbsUp, Rocket } from "lucide-react";
@@ -11,7 +12,7 @@ const REACTION_ICONS = {
   rocket: Rocket,
 } as const;
 
-export function EngagementStats({ slug, className }: { slug: string; className?: string }) {
+export const EngagementStats = memo(function EngagementStats({ slug, className }: { slug: string; className?: string }) {
   const engagement = useQuery(api.engagement.getEngagement, { slug });
 
   if (!engagement) return (
@@ -46,4 +47,4 @@ export function EngagementStats({ slug, className }: { slug: string; className?:
       })}
     </div>
   );
-}
+});

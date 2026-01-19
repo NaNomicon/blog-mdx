@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { type Post, type NoteMetadata } from "@/lib/content";
 import { NoteCard } from "./note-card";
 import { fetchNotesAction } from "@/app/notes/actions";
@@ -15,7 +15,7 @@ interface InfiniteNotesStreamProps {
   currentLayout: string;
 }
 
-export function InfiniteNotesStream({
+export const InfiniteNotesStream = memo(function InfiniteNotesStream({
   initialNotes,
   filters,
   hasMore: initialHasMore,
@@ -69,25 +69,30 @@ export function InfiniteNotesStream({
     };
   }, [hasMore, isPending, loadMore]);
 
+  // Memoize split notes for masonry layout to avoid re-filtering on every render
+  const masonryNotes = useMemo(() => {
+    if (currentLayout !== "masonry") return { left: [], right: [] };
+    return {
+      left: notes.filter((_, i) => i % 2 === 0),
+      right: notes.filter((_, i) => i % 2 !== 0),
+    };
+  }, [notes, currentLayout]);
+
   return (
     <div className="space-y-12">
       {currentLayout === "masonry" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           {/* Column 1: Even indices */}
           <div className="flex flex-col gap-8">
-            {notes
-              .filter((_, i) => i % 2 === 0)
-              .map((note) => (
-                <NoteCard key={note.slug} note={note} />
-              ))}
+            {masonryNotes.left.map((note) => (
+              <NoteCard key={note.slug} note={note} />
+            ))}
           </div>
           {/* Column 2: Odd indices */}
           <div className="flex flex-col gap-8">
-            {notes
-              .filter((_, i) => i % 2 !== 0)
-              .map((note) => (
-                <NoteCard key={note.slug} note={note} />
-              ))}
+            {masonryNotes.right.map((note) => (
+              <NoteCard key={note.slug} note={note} />
+            ))}
           </div>
         </div>
       ) : (
@@ -116,5 +121,5 @@ export function InfiniteNotesStream({
       )}
     </div>
   );
-}
+});
 

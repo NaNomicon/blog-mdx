@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { type Post, type NoteMetadata } from "@/lib/content";
@@ -6,14 +7,28 @@ import { Badge } from "@/components/ui/badge";
 import { EngagementStats } from "@/components/mdx/engagement-stats";
 import { ViewTracker } from "@/components/mdx/view-tracker";
 
-export function NoteCard({ note }: { note: Post<NoteMetadata> }) {
+// Cache dynamic components globally to prevent re-loading on state changes
+const mdxCache = new Map<string, React.ComponentType>();
+
+function getMDXComponent(type: string, slug: string) {
+  const key = `${type}:${slug}`;
+  if (!mdxCache.has(key)) {
+    mdxCache.set(
+      key,
+      dynamic(() => import(`@/content/${type}/${slug}.mdx`), {
+        loading: () => <div className="h-20 bg-muted/20 rounded-md animate-pulse" />,
+      })
+    );
+  }
+  return mdxCache.get(key)!;
+}
+
+export const NoteCard = memo(function NoteCard({ note }: { note: Post<NoteMetadata> }) {
     const { slug, type, metadata } = note;
   const { title, publishDate, collection, tags, category, spoiler } = metadata;
   const isSpoiler = spoiler === true;
 
-  const MDXContent = dynamic(() => import(`@/content/${type}/${slug}.mdx`), {
-    loading: () => <div className="h-20 bg-muted/20 rounded-md animate-pulse" />
-  });
+  const MDXContent = getMDXComponent(type, slug);
 
   return (
     <div className="mb-8 break-inside-avoid animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out fill-mode-both">
@@ -97,4 +112,4 @@ export function NoteCard({ note }: { note: Post<NoteMetadata> }) {
       </div>
     </div>
   );
-}
+});
