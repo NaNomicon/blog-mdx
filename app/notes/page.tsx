@@ -87,7 +87,7 @@ export default async function NotesPage({
   const currentLayout = searchParams.view || "masonry";
 
   return (
-    <div className="space-y-0 min-h-screen bg-background">
+    <div className="space-y-0 min-h-screen">
       <BreadcrumbStructuredData
         items={[
           { name: "Home", url: defaultSEOConfig.siteUrl! },
