@@ -102,20 +102,20 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
           {/* Column 1 */}
           <div className="flex flex-col gap-8">
             {masonryNotes.left.map((note) => (
-              <NoteCard key={note.slug} note={note} />
+              <NoteCard key={note.slug} note={note} layout="masonry" />
             ))}
           </div>
           {/* Column 2 */}
           <div className="flex flex-col gap-8">
             {masonryNotes.right.map((note) => (
-              <NoteCard key={note.slug} note={note} />
+              <NoteCard key={note.slug} note={note} layout="masonry" />
             ))}
           </div>
         </div>
       ) : (
-        <div className="flex flex-col max-w-3xl mx-auto w-full gap-8">
+        <div className="flex flex-col max-w-5xl mx-auto w-full gap-8">
           {notes.map((note) => (
-            <NoteCard key={note.slug} note={note} />
+            <NoteCard key={note.slug} note={note} layout="list" />
           ))}
         </div>
       )}

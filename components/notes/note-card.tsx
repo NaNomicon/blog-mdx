@@ -6,6 +6,7 @@ import { Calendar, Tag, Folder, Link as LinkIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { EngagementStats } from "@/components/mdx/engagement-stats";
 import { ViewTracker } from "@/components/mdx/view-tracker";
+import { cn } from "@/lib/utils";
 
 // Cache dynamic components globally to prevent re-loading on state changes
 const mdxCache = new Map<string, React.ComponentType>();
@@ -23,17 +24,33 @@ function getMDXComponent(type: string, slug: string) {
   return mdxCache.get(key)!;
 }
 
-export const NoteCard = memo(function NoteCard({ note }: { note: Post<NoteMetadata> }) {
+export const NoteCard = memo(function NoteCard({ 
+  note, 
+  layout = "masonry" 
+}: { 
+  note: Post<NoteMetadata>;
+  layout?: "masonry" | "list";
+}) {
     const { slug, type, metadata } = note;
   const { title, publishDate, collection, tags, category, spoiler } = metadata;
   const isSpoiler = spoiler === true;
+  const isList = layout === "list";
 
   const MDXContent = getMDXComponent(type, slug);
 
   return (
-    <div className="mb-8 break-inside-avoid animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out fill-mode-both">
-      <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-        <div className="p-7 space-y-6">
+    <div className={cn(
+      "break-inside-avoid animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out fill-mode-both",
+      isList ? "mb-0" : "mb-8"
+    )}>
+      <div className={cn(
+        "group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1",
+        isList && "hover:-translate-y-0.5"
+      )}>
+        <div className={cn(
+          "p-7 space-y-6",
+          isList && "md:p-10 md:space-y-8"
+        )}>
           {/* Header */}
           <div className="flex items-center justify-between gap-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
             <div className="flex items-center gap-4">
@@ -63,7 +80,10 @@ export const NoteCard = memo(function NoteCard({ note }: { note: Post<NoteMetada
           {/* Title & Link */}
           <div className="flex items-start justify-between gap-4">
             <Link href={`/notes/${slug}`} scroll={false} className="block group/title">
-              <h3 className="text-2xl font-semibold leading-tight tracking-tight group-hover/title:text-primary transition-colors">
+              <h3 className={cn(
+                "font-semibold leading-tight tracking-tight group-hover/title:text-primary transition-colors",
+                isList ? "text-3xl md:text-4xl" : "text-2xl"
+              )}>
                 {title}
               </h3>
             </Link>
@@ -78,8 +98,14 @@ export const NoteCard = memo(function NoteCard({ note }: { note: Post<NoteMetada
           </div>
 
           {/* Content Area with background */}
-          <div className="relative rounded-lg bg-secondary/50 p-4 ring-1 ring-border/50">
-            <div className="prose prose-sm prose-neutral dark:prose-invert max-w-none overflow-hidden">
+          <div className={cn(
+            "relative rounded-lg bg-secondary/50 p-4 ring-1 ring-border/50",
+            isList && "md:p-8"
+          )}>
+            <div className={cn(
+              "prose prose-neutral dark:prose-invert max-w-none overflow-hidden",
+              isList ? "prose-base md:prose-lg" : "prose-sm"
+            )}>
               <MDXContent />
             </div>
           </div>

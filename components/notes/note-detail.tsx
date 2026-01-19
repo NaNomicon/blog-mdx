@@ -98,7 +98,7 @@ export function NoteDetail({
       </div>
 
       {/* Content */}
-      <div className="prose prose-neutral dark:prose-invert max-w-none min-h-[100px] text-sm md:text-base">
+      <div className="prose prose-base md:prose-lg prose-neutral dark:prose-invert max-w-none min-h-[100px]">
         <MDXContent />
       </div>
 

@@ -28,7 +28,7 @@ export function NoteDialog({
         handleClose();
       }
     }}>
-      <DialogContent className="max-w-4xl w-[95vw] md:w-full h-fit max-h-[95vh] md:max-h-[90vh] overflow-y-auto p-4 md:p-12">
+      <DialogContent className="max-w-5xl w-[95vw] md:w-full h-fit max-h-[95vh] md:max-h-[90vh] overflow-y-auto p-4 md:p-12">
         <DialogTitle className="sr-only">Note: {note.metadata.title}</DialogTitle>
         <DialogDescription className="sr-only">
           {note.metadata.description || `Reading note about ${note.metadata.title}`}
