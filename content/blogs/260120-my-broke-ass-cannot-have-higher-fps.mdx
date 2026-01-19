@@ -1,0 +1,66 @@
+export const metadata = {
+    title: "My Broke Ass Cannot Have Higher FPS: A KVM Horror Story",
+    publishDate: "2026-01-20",
+    description: "Solving a mysterious case of display flickering and signal loss on a Windows machine connected via a budget KVM switch.",
+    category: "Hardware",
+    cover_image: "/covers/260120-kvm-flicker-saga.jpg",
+    tldr: "Budget KVMs + monitor overclocks = a digital haunting. I had to kill my 72Hz dream and crawl back to 60Hz to stop the mid-combat PUBG black screens, but I'm still out here 'massaging' the ports to keep the signal alive.",
+};
+
+*Photo by [Mathias Reding](https://www.pexels.com/photo/abstract-colorful-glitch-art-11774186/)*
+
+It started with a flicker. Then a black screen. Then a "No Optimal Resolution" message that felt like my monitor was judging my life choices.
+
+I have a fairly standard setup: a MacBook Air M2 for work and a Windows 11 machine (powered by an NVIDIA RTX 3050) for gaming. Both are connected to a single Samsung monitor via a generic "4K 60Hz" KVM switch. Honestly, aside from the MacBook Air and the GPU, everything else in my setup is pretty budget.
+
+For months, my Windows machine was acting like a haunted radio.
+
+## The Symptoms (A.K.A. The Nightmare)
+
+If you're reading this because your screen is doing weird things through a KVM (or even directly via HDMI), see if any of these sound familiar:
+- **The Random Flicker:** The screen blacks out for a second, then comes back. Usually happens 3-4 times in a row before stabilizing.
+- **The Signal Death:** After a few cycles of flickering, the screen goes black and just... stays there. "No Signal."
+- **The Judgemental Pop-up:** A "Not Optimum Mode. Recommended Mode: 1920x1080 60Hz" message, even though I'm literally *at* that resolution. 
+
+    *Foreshadowing: I was so annoyed by the resolution part that I completely ignored the "60Hz" suggestion for way too long — until the very moment of writing this blog.*
+- **The Static Glitch:** Occasionally, the screen would turn into a mosaic of static or "glitch" artifacts, looking like a cursed VHS tape.
+
+The weirdest part? It only happened on the Windows machine. The MacBook was perfectly fine.
+
+## The "Magic" Touch
+
+Before I found the actual technical fix, I discovered something bizarre. When the screen went black, I could "fix" it by **lightly touching the KVM near the cable area**. 
+
+A gentle massage of the HDMI ports would cause the screen to refresh and jump back to life. I felt like a "KVM Whisperer," or maybe just someone who bought a piece of hardware held together by prayers and loose solder.
+
+## The Investigation
+
+Figuring this out felt like being a detective in a very boring, very frustrating movie. 
+
+At first, I blamed the HDMI cables. I swapped them, bought new ones, tried every combination of "high speed" and "ultra high speed" labels. Nothing changed. Then I updated the GPU drivers to the latest NVIDIA release—still flickering. I even checked if the KVM was getting enough power, plugging it into a dedicated power cube instead of a random USB port. Still haunted.
+
+After some back-and-forth with an AI assistant (thanks, Gemini!), we started digging into the math.
+
+1. **Bandwidth Limits:** The KVM is advertised as 4K 60Hz. While that *should* handle 1080p easily, budget brands often have "optimistic" marketing. Their actual throughput is often much lower than the box claims.
+2. **The 72Hz Overclock:** Here was the "Aha!" moment. My monitor natively supports 60Hz. At some point, I had manually bumped it to 71.91Hz in the Windows settings because, well, I wanted those extra frames. This meant the GPU was pushing a non-standard signal through a device already struggling with its own build quality.
+3. **The EDID Handshake:** KVMs use something called EDID (Extended Display Identification Data) to tell the computer what the monitor can do. When I pushed 72Hz, the KVM likely couldn't reconcile that with its internal "standard" 60Hz profile, causing the signal to drop and the monitor to throw a "No Optimal Resolution" tantrum.
+4. **The Physical Confirmation:** The final clue was the "Magic Touch." The fact that a physical tap could fix a digital signal drop proved this wasn't just a software bug—it was hardware fragility. The 72Hz signal was the "stress test" that the KVM's poor soldering simply couldn't pass.
+
+## The "Fix" (For Now)
+
+The solution was as painful as the title suggests: **I had to give up my 72Hz dream and crawl back to 60Hz.** Honestly, I don't even know why I wanted 72Hz in the first place—probably just because I (theoretically) could. 
+
+By setting the Windows display refresh rate back to its native 60Hz, the signal became "cleaner" and less demanding. The KVM, despite its physical fragility, could finally handle the data stream without having a panic attack every time a game of *League of Legends* got intense. And maybe no more mid-combat panic in PUBG as the screen decides to go on a coffee break.
+
+## Status: Monitoring
+
+It's been a few games and... no flickering. It seems stable. 
+
+However, I'm not declaring total victory yet. The KVM is still physically sensitive, if I bump the desk too hard, I might still need to give it a little "massage." It's clear that budget hardware has its limits, and mine is currently living on the edge.
+
+**Lessons learned:**
+1. If you're using a KVM especially if it's a budget one, stick to native refresh rates.
+2. "4K 60Hz" on the box often means "1080p 60Hz if you're lucky" in reality.
+3. Sometimes, your broke ass really cannot have higher FPS, accept the reality and move on.
+
+If you're having similar issues, try dropping your refresh rate by even 10Hz. It might just save your sanity (and your KVM's life).
