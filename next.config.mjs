@@ -67,17 +67,6 @@ const nextConfig = {
 
   // Simplified webpack optimizations for faster builds
   webpack: (config, { dev, isServer }) => {
-    // Optimize for production builds
-    if (!dev) {
-      // Enable persistent caching for faster builds
-      config.cache = {
-        type: "filesystem",
-        buildDependencies: {
-          config: [import.meta.url],
-        },
-      };
-    }
-
     // Optimize module resolution
     config.resolve.symlinks = false;
 
