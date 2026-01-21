@@ -2,7 +2,7 @@ import { memo, useMemo } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { type Post, type NoteMetadata } from "@/lib/content";
-import { Calendar, Tag, Folder, Link as LinkIcon } from "lucide-react";
+import { Calendar, Tag, Folder, Link as LinkIcon, Pin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { EngagementStats } from "@/components/mdx/engagement-stats";
 import { ViewTracker } from "@/components/mdx/view-tracker";
@@ -32,8 +32,9 @@ export const NoteCard = memo(function NoteCard({
   layout?: "masonry" | "list";
 }) {
     const { slug, type, metadata } = note;
-  const { title, publishDate, collection, tags, category, spoiler } = metadata;
+  const { title, publishDate, collection, tags, category, spoiler, pinned } = metadata;
   const isSpoiler = spoiler === true;
+  const isPinned = pinned === true;
   const isList = layout === "list";
 
   const MDXContent = getMDXComponent(type, slug);
@@ -45,8 +46,10 @@ export const NoteCard = memo(function NoteCard({
     )}>
       <div className={cn(
         "group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1",
+        isPinned && "ring-2 ring-primary/50",
         isList && "hover:-translate-y-0.5"
       )}>
+
         <div className={cn(
           "p-7 space-y-6",
           isList && "md:p-10 md:space-y-8"
@@ -54,6 +57,12 @@ export const NoteCard = memo(function NoteCard({
           {/* Header */}
           <div className="flex items-center justify-between gap-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
             <div className="flex items-center gap-4">
+              {isPinned && (
+                <div className="flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground shadow-lg">
+                  <Pin className="h-3 w-3 fill-current" />
+                  <span>Pinned</span>
+                </div>
+              )}
               <div className="flex items-center gap-2">
                 <Calendar className="h-3.5 w-3.5 text-primary" />
                 <time dateTime={publishDate}>

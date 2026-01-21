@@ -29,6 +29,7 @@ export const NoteMetadataSchema = z.object({
   tags: z.array(z.string()).optional(),
   category: z.string().optional(),
   spoiler: z.boolean().optional(),
+  pinned: z.boolean().optional(),
 });
 
 export type NoteMetadata = z.infer<typeof NoteMetadataSchema>;

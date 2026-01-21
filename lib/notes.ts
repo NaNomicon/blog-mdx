@@ -45,9 +45,16 @@ export function applyNoteFilters(notes: Post<NoteMetadata>[], filters: NoteFilte
     });
   }
 
-  // Sort
+  // Sort: pinned notes first, then by date
   const sortOrder = filters.sort || "desc";
   filteredNotes = filteredNotes.sort((a, b) => {
+    const pinnedA = a.metadata.pinned === true ? 1 : 0;
+    const pinnedB = b.metadata.pinned === true ? 1 : 0;
+    
+    if (pinnedA !== pinnedB) {
+      return pinnedB - pinnedA;
+    }
+    
     const dateA = new Date(a.metadata.publishDate).getTime();
     const dateB = new Date(b.metadata.publishDate).getTime();
     return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
