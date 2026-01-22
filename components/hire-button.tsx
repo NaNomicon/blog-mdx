@@ -25,28 +25,28 @@ export default function HireButton() {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="bg-background border border-border/50 shadow-lg flex flex-col">
-                            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer transition-all duration-300 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary" onSelect={() => { 
+                            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer transition-all duration-300 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary" onSelect={() => {
                                 window.open("https://www.freelancer.com/u/Linkmez", "_blank");
-                            }} data-umami-event="clicked_freelancer" data-umami-event-path={pathname}>
+                            }}>
                                 <SiFreelancer className="w-4 h-4" />
                                 Freelancer
                             </DropdownMenuItem>
                             <DropdownMenuItem className="flex items-center gap-2 cursor-pointer transition-all duration-300 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary" onSelect={() => {
                                 window.open("https://www.linkedin.com/in/NaNomicon", "_blank");
-                            }} data-umami-event="clicked_linkedin" data-umami-event-path={pathname}>
+                            }}>
                                 <SiLinkedin className="w-4 h-4" />
                                 LinkedIn
                             </DropdownMenuItem>
                             <DropdownMenuItem className="flex items-center gap-2 cursor-pointer transition-all duration-300 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary" onSelect={() => {
                                 window.open("https://t.me/NaNomicon", "_blank");
-                            }} data-umami-event="clicked_telegram" data-umami-event-path={pathname}>
+                            }}>
                                 <SiTelegram className="w-4 h-4" />
                                 Telegram
                             </DropdownMenuItem>
                             <DropdownMenuItem className="flex items-center gap-2 cursor-pointer transition-all duration-300 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary" onSelect={() => {
                                 navigator.clipboard.writeText("lecongnhan29@gmail.com");
                                 toast.info("My email has been copied to your clipboard!");
-                            }} data-umami-event="clicked_email" data-umami-event-path={pathname}>
+                            }}>
                                 <IoMail className="w-4 h-4" />
                                 Email
                             </DropdownMenuItem>

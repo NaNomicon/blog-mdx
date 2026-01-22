@@ -111,30 +111,6 @@ export default function RootLayout({
         {/* Analytics components */}
         <Analytics />
         <SpeedInsights />
-        <Script
-          defer
-          src="https://umami.nanomicon.com/script.js"
-          data-website-id="a7d10e27-6883-4bd4-8f16-ba202d552abd"
-          data-before-send="umamiBeforeSendHandler"
-        />
-        <Script
-          id="umami-outbound-links"
-          src="/scripts/umami-outbound.js"
-          strategy="afterInteractive"
-        />
-        <Script
-          id="umami-before-send-handler"
-          dangerouslySetInnerHTML={{
-            __html: `
-              function umamiBeforeSendHandler(type, payload) {
-                if (!location.search.includes("ref")) return payload;
-                payload.ref = location.search.split("ref=")[1];
-                
-                return payload;
-              }
-            `,
-          }}
-        />
       </body>
     </html>
   );
