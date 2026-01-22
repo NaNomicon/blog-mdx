@@ -34,9 +34,6 @@ export const seoConfig = {
         follow: true,
     },
 
-    // Google Analytics ID (optional)
-    googleAnalyticsId: "", // e.g., "G-XXXXXXXXXX"
-
     // Cloudflare Analytics token (optional)
     cloudflareAnalyticsToken: env.NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN || "", // e.g., "your-token-here"
 
@@ -61,7 +58,6 @@ export const {
     locale,
     defaultOGImage,
     robots,
-    googleAnalyticsId,
     cloudflareAnalyticsToken,
     googleSiteVerification,
     bingSiteVerification,
