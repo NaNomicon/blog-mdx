@@ -46,7 +46,6 @@
     "date-fns": "^3.6.0",
     "emoji-picker-react": "^4.16.1",
     "framer-motion": "^12.26.2",
-    "grammy": "^1.36.3",
     "gray-matter": "^4.0.3",
     "highlight.js": "10.7.2",
     "lucide-react": "^0.408.0",

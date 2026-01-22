@@ -5,7 +5,6 @@ import "./globals.css";
 import SiteHeader from "@/components/nav/site-header";
 import Footer from "@/components/nav/footer";
 import { ErrorBoundary } from "@/components/error-boundary";
-import { TelegramClientInit } from "@/components/telegram-client-init";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
@@ -13,17 +12,11 @@ import { generateSEOMetadata, defaultSEOConfig } from "@/lib/seo";
 import { WebsiteStructuredData } from "@/components/seo/structured-data";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { initializeTelegramErrorNotifications } from "@/lib/telegram";
 import Script from "next/script";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
-
-// Initialize Telegram error notifications on server startup
-if (typeof window === "undefined") {
-  initializeTelegramErrorNotifications();
-}
 
 export const metadata: Metadata = {
   ...generateSEOMetadata(defaultSEOConfig),
@@ -88,7 +81,6 @@ export default function RootLayout({
       <body
         className={`${inter.className} min-h-screen bg-background font-sans antialiased`}
       >
-        <TelegramClientInit />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
