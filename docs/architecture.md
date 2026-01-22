@@ -7,7 +7,7 @@ This project is a static-first blog built with Next.js 14, leveraging the App Ro
 - `app/`: Next.js App Router pages and layouts.
 - `components/`: UI components, MDX-specific components, and layout wrappers.
 - `content/`: MDX source files for blogs, notes, and static pages.
-- `lib/`: Shared logic, utilities, and integrations (Telegram, SEO).
+- `lib/`: Shared logic, utilities, and SEO.
 - `public/`: Static assets like images and manifest files.
 - `scripts/`: CLI tools for managing the blog workflow.
 
@@ -26,18 +26,6 @@ This project is a static-first blog built with Next.js 14, leveraging the App Ro
 2. **Taxonomy**: Grouped by `type`, `tags`, or `book_title`.
 3. **Daily Digest**: Logic in `lib/content.ts` to group snippets by `publishDate` for chronological browsing.
 4. **Integration**: Related snippets are cross-referenced on blog posts using shared tags.
-
-### 3. Post Creation Workflow
-1. User runs `pnpm new-blog` or `pnpm new-note`.
-2. `scripts/new-blog.js` or `scripts/new-note.js` prompts for post details.
-3. A new MDX file is created in `content/blogs/` or `content/notes/` with a timestamped filename (YYMMDD-slug.mdx).
-4. Assets like covers are placed in `public/covers/`. Post-specific images can be stored in `public/YYMMDD-slug/`.
-
-### 3. Telegram Bot Integration
-- Located in `lib/telegram/`.
-- Uses `grammY` library.
-- Initialized via `lib/telegram/init.ts`.
-- Supports various notification types (new posts, server status, etc.).
 
 ### 4. Real-time Engagement (Convex)
 - **Database**: Uses Convex for real-time views and reactions.

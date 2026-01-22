@@ -90,9 +90,6 @@ Server components by default. Use `'use client'` for interactivity. Use `dynamic
 ### Convex
 `convex deploy` runs during build. Types in `convex/`, Provider in `components/convex-client-provider.tsx`.
 
-### Telegram
-Error notifications in `lib/telegram/`. See `lib/telegram/README.md`.
-
 ## Tech Stack
 Next.js 14 (App Router), Tailwind CSS + Shadcn UI, MDX, Convex, Lucide/Simple Icons, Zod, pnpm
 
@@ -109,7 +106,7 @@ content/
   blogs/         # Production posts (YYMMDD-slug.mdx)
   drafts/        # Draft posts
   notes/         # Notes
-lib/             # Utilities, helpers, Telegram
+lib/             # Utilities, helpers
 scripts/         # Development tools
 convex/          # Backend functions
 public/          # Static assets
