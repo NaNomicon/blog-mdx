@@ -1,0 +1,96 @@
+export const metadata = {
+    title: "The Cost of Autonomy: Reclaiming Your AI Workflow",
+    publishDate: "2026-01-25",
+    description: "How 'autopilot' features in AI coding tools can drive up costs and noise, and why switching to manual control is a game-changer.",
+    category: "Dev",
+    cover_image: "/covers/260125-the-cost-of-autonomy.png",
+    tldr: "Automated 'enforcer' hooks in AI tools often create expensive, repetitive prompts. By switching to manual control, you can save 30-50% on token costs and regain focus.",
+    tags: ["AI", "OpenCode", "Optimization", "Workflow"]
+};
+
+## The Ecosystem: OpenCode & OMO
+
+Before we dive in, let's look at the tools behind this shift. I've been spending a lot of time in the **[OpenCode](https://opencode.ai)** ecosystem—an open-source, terminal-based alternative to tools like Claude Code. 
+
+To take it further, I use **[oh-my-opencode](https://ohmyopencode.com)** (OMO), a powerful plugin that turns a solo AI assistant into an orchestrated "team." It lets you delegate tasks to specialized sub-agents, like *Sisyphus* for project management or *Oracle* for deep architectural logic. It’s powerful, but as I recently discovered, "power" often comes with a hidden tax.
+
+## The Ghost in the Shell
+
+Have you ever felt like your AI was operating on a hidden frequency?
+
+During a recent session, I noticed a strange pattern. The AI kept starting its responses with variations of: *"The user asked me to continue..."* or *"Continuing with the next task as requested..."* 
+
+The problem? I hadn't said a word. 
+
+When I finally asked the agent why it kept hallucinating these "requests" from me, it revealed the hidden plumbing of the system—a recurring directive injected into its context:
+
+<Callout type="quote" title="System Injection">
+**[SYSTEM DIRECTIVE: OH-MY-OPENCODE - TODO CONTINUATION]**  
+*Incomplete tasks remain in your todo list. Continue working on the next pending task.*
+</Callout>
+
+At first, it seemed helpful—like a digital project manager keeping the agent on track. But as the session went on, I realized I was seeing a "Ghost in the Shell." These messages were firing automatically behind the scenes, forcing the AI to re-read the entire conversation history every few minutes. In high-stakes coding sessions, these "ghosts" weren't just noisy; they were expensive—costing anywhere from **$0.10 to $0.50 per injection**.
+
+## The Automation Trap
+
+The culprit was an "enforcer" hook inside OMO. Its job is to ensure the AI doesn't stall. If there's an unfinished item on the TODO list, the hook nudges the AI to keep moving.
+
+While well-intentioned, this "Autopilot" mode creates a few problems for experienced users:
+- **The Token Tax**: Every automated nudge burns tokens, quickly stacking up your bill.
+- **Lost Focus**: Sometimes you *want* to pause, discuss a design choice, or pivot. The enforcer doesn't care about your pivot; it only cares about the list.
+- **Context Bloat**: These repetitive prompts fill up the AI's "memory" (context window) with redundant instructions, eventually making the model less sharp.
+
+## Finding the Fix
+
+Discovering this wasn't a manual "grep and hope" mission. It was a coordinated investigation that started with a simple question to the AI: *"Why do you think I asked you to continue?"*
+
+1.  **Questioning the Agent**: By interrogating the AI about its own internal state, it revealed the `[SYSTEM DIRECTIVE]` injections that were driving its behavior.
+2.  **Librarian Search**: Once the directive was identified, I deployed a **Librarian Agent** to scour the **[Oh My OpenCode Documentation](https://ohmyopencode.com/hooks/)**. This revealed the `disabled_hooks` feature—the master switch for silencing these automated "nudges."
+3.  **Community Correlation**: The Librarian agent also flagged community-reported frustrations. Discussions like **[GitHub Issue #89](https://github.com/code-yeongyu/oh-my-opencode/issues/89)** and **[Issue #577](https://github.com/code-yeongyu/oh-my-opencode/issues/577)** confirmed that the `todo-continuation-enforcer` was a known pain point for power users, often overriding explicit instructions to wait.
+4.  **Deep Dive Documentation**: Technical deep-dives on **[Todo Management](https://deepwiki.com/code-yeongyu/oh-my-opencode/4.2.2-todo-management)** and the **[Continuation Enforcer](https://deepwiki.com/code-yeongyu/oh-my-opencode/7.4-todo-continuation-enforcer)** confirmed that these nudges are hardcoded into the agent's state-machine, requiring a proactive configuration override to reclaim autonomy.
+
+## Switching to Manual Transmission
+
+The solution was simple but profound: disable the autopilot and take the wheel. 
+
+By modifying my `oh-my-opencode.json` configuration to silence these automated enforcers, I transitioned from a system that guesses what I want to one that waits for my command. 
+
+<Callout type="info" title="The Configuration Fix">
+Add the following to your `~/.config/opencode/oh-my-opencode.json`:
+
+```json
+{
+  "disabled_hooks": [
+    "todo-continuation-enforcer",
+    "auto_resume",
+    "session-recovery",
+    "empty-task-response-detector",
+    "compaction-context-injector",
+    "thinking-block-validator",
+    "preemptive-compaction",
+    "startup-toast"
+  ]
+}
+```
+</Callout>
+
+We disabled several "token-hungry" hooks:
+- **Task Enforcers**: No more automated "keep working" nudges.
+- **Auto-Recovery**: No more silent attempts to fix errors that I might want to debug myself.
+- **Aggressive Compaction**: Stopping the system from silently summarizing my history without my say-so.
+
+## The Philosophical Pivot
+
+Disabling these features might sound like a downgrade, but it’s actually the opposite. It moves the relationship from **Autopilot** to **Manual Transmission**.
+
+1.  **Intentionality**: I (or the AI) now consciously decide when to move to the next task.
+2.  **Disciplined Context**: Instead of letting a generic algorithm "clean up" the conversation, we use tools like `extract` and `discard` to manually keep the context clean. This is "lossless" optimization—we only keep what matters.
+3.  **Significant Savings**: Since making the switch, I've seen **30-50% lower token costs**.
+
+## Summary
+
+In the rush to make AI "more autonomous," we've accidentally made it more expensive and less predictable. By silencing the "ghosts" and embracing a more disciplined, manual workflow, you don't just save money—you gain a sharper, more focused partner in your development.
+
+---
+*Technical Source: Antigravity (Sisyphus Orchestrator)*
+*Context: dotfiles / opencode optimization session (2026-01-25)*

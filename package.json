@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node scripts/startup-info.js && next dev -p 3001",
     "build": "convex deploy && next build",
+    "build:local": "next build",
     "build:analyze": "convex deploy && ANALYZE=true next build",
     "start": "node scripts/startup-info.js && next start -p 3001",
     "lint": "next lint",

@@ -8,6 +8,7 @@ This guide provides essential information for agentic coding assistants working 
 ```bash
 pnpm dev                    # Start dev server on port 3001
 pnpm build                  # Build for production (deploys convex)
+pnpm build:local            # Build for production without deploying convex
 pnpm start                  # Start production server
 pnpm lint                   # Run ESLint
 pnpm type-check             # Run TypeScript type checking
