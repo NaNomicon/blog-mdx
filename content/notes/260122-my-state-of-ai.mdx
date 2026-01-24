@@ -21,23 +21,27 @@ I use a combination of flagship models for complex reasoning and "free" models f
 - **[Claude 3.5 Sonnet](https://www.anthropic.com/news/claude-3-5-sonnet)**: Still the king for complex tasks and deep architecture reviews.
 
 ### OpenCode Models (Free Tier)
-[OpenCode](https://opencode.ai/) supports a pay-as-you-go model, but also provides several [free models](https://opencode.ai/docs/zen/#pricing) that are surprisingly capable:
+[OpenCode](https://opencode.ai/) supports a pay-as-you-go model. Recently, 3 out of 4 free models became paid, leaving only one option:
 
-- **[Big Pickle](https://www.crackedaiengineering.com/ai-models/opencode-big-pickle)**: Large context window, good for reading documentation.
-- **[Grok Code Fast 1](https://x.ai/news/grok-code-fast-1)**: Ultra-low latency, decent for quick snippets.
-- **[MiniMax M2.1](https://huggingface.co/MiniMaxAI/MiniMax-M2.1)**: Balanced performance.
-- **[GLM 4.7](https://huggingface.co/zai-org/GLM-4.7)**: Strong logic, though it can feel a bit robotic in style.
+- **[Big Pickle](https://www.crackedaiengineering.com/ai-models/opencode-big-pickle)**: The only remaining free model. Large context window, good for reading documentation.
+
+*(Grok Code Fast 1, MiniMax M2.1, and GLM 4.7 are no longer free)*
 
 ## My Thoughts & Observations
 
 The free models provided by OpenCode don't feel as polished as the flagship models yet, but the gap is closing.
 
-- **Usage Strategy**: I use OpenCode's free models for "weird experiments" or tasks where I need to iterate many times without worrying about cost.
+- **Big Pickle Maturity**: Being the only free option left, I don't think it's as mature as the others. It works, but feels a step behind the ones that got paywalled.
+- **Usage Strategy**: I use OpenCode's free model (Big Pickle) for "weird experiments" or tasks where I need to iterate many times without worrying about cost.
 - **Speed vs. Accuracy**: **Grok Code Fast 1** is incredibly fast but often breaks the code by failing to edit files properly (missing semicolons, multiple closing brackets, etc). It feels like early Copilot—great for autocomplete, risky for reliable refactoring.
 - **Coding with GLM**: I've been using **GLM 4.7** heavily recently. It's surprisingly good at understanding context, though it lacks the "creativity" or nuance that Claude brings to the table.
 
 <details>
 <summary>📝 Changelog</summary>
+
+### 2026-01-25
+- Updated OpenCode free tier status (3/4 models no longer free).
+- Added observation about Big Pickle maturity.
 
 ### 2026-01-22
 - Initial note created.
