@@ -1,0 +1,108 @@
+export const metadata = {
+  title: "Critical Security Advisory: Dokploy Vulnerabilities Patched",
+  publishDate: "2026-01-28",
+  description: "Remediation guide for CVE-2026-24839, CVE-2026-24840, and CVE-2026-24841. Update immediately.",
+  category: "Dev",
+  cover_image: "/covers/260128-dokploy-security-advisory.jpg",
+  tldr: "Critical vulnerabilities found in Dokploy. Update to 0.26.6 and rotate database credentials using the automated script.",
+};
+
+*Photo by <a href="https://unsplash.com/@studiostarling?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Jenn</a> on <a href="https://unsplash.com/photos/selective-photo-of-red-bulb-lights-W1FvES4U07I?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+
+import { Callout } from "@/components/mdx/callout";
+
+<Callout type="warning" title="Urgent Action Required">
+  If you are running a self-hosted Dokploy instance, you are likely vulnerable to **CVE-2026-24839**, **CVE-2026-24840**, and **CVE-2026-24841**.
+  
+  **Remediation**: Update to version `0.26.6` immediately AND manually rotate your database passwords.
+</Callout>
+
+## The Vulnerabilities
+
+Three significant vulnerabilities were disclosed this week affecting earlier versions of Dokploy:
+
+1.  **CVE-2026-24839 (Clickjacking)**: The web interface lacked `X-Frame-Options` and `Content-Security-Policy` headers, allowing the dashboard to be embedded in malicious iframes.
+2.  **CVE-2026-24840 (Hardcoded Credentials)**: The default `install.sh` script used a hardcoded password string to initialize the PostgreSQL container, leaving the database exposed if the port was accessible or if an attacker gained local access.
+3.  **CVE-2026-24841 (Command Injection)**: A critical vulnerability in the `/docker-container-terminal` WebSocket endpoint allowed authenticated attackers to execute arbitrary commands on the host server via unsanitized `containerId` parameters.
+
+## Remediation Guide
+
+Updating the software is step one, but it is **not sufficient** to fully secure your instance. Follow these steps.
+
+### 1. Update Dokploy
+Navigate to your dashboard settings and click **"Update Server"**. Ensure you are running version `0.26.6` or later.
+
+### 2. Rotate Database Credentials (The Easy Way)
+
+The Dokploy team has released an automated security configuration tool that handles the complex process of rotating credentials and migrating them to Docker Secrets.
+
+Run the security setup script (check the [official announcement](https://github.com/Dokploy/dokploy/security/advisories) for the latest command):
+
+```bash
+curl -sSL https://dokploy.com/security.sh | bash
+```
+
+**What this does:**
+1.  Generates strong, random credentials.
+2.  Encrypts them using Docker Secrets (in-memory only).
+3.  Updates both the PostgreSQL and Application services.
+4.  Removes the reliance on the old, hardcoded values.
+
+<details>
+<summary>Expected output</summary>
+
+```text
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Dokploy Security Configuration
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👋 Hey! I noticed your Dokploy installation doesn't have
+   secure credentials configured yet.
+
+📝 I'll set up unique, secure credentials for your database
+   automatically. This will only take a few seconds.
+
+🔐 Generating secure credentials...
+[REDACTED]]
+✅ Credentials saved securely in Docker Secrets (encrypted)
+🔄 Updating database...
+ALTER ROLE
+🔄 Updating PostgreSQL service...
+dokploy-postgres
+overall progress: 1 out of 1 tasks
+1/1: running   [==================================================>]
+verify: Service dokploy-postgres converged
+🔄 Updating Dokploy service...
+dokploy
+overall progress: 1 out of 1 tasks
+1/1: running   [==================================================>]
+verify: Service dokploy converged
+⏳ Waiting for services to restart...
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ All done! Your database is now secured with unique credentials.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 What was configured:
+   • Unique secure password generated
+   • Password stored in Docker Secrets (encrypted, in-memory only)
+   • PostgreSQL service updated to use secrets
+   • Dokploy service updated to use secrets
+
+💡 Security features:
+   • Password stored encrypted in Docker Swarm
+   • Mounted in memory (tmpfs) - not accessible via bind mounts
+   • Only accessible by authorized services
+   • Cannot be read by user containers
+
+💡 Next steps:
+   • Your Dokploy should be accessible shortly
+   • No action needed - everything is configured automatically
+```
+
+</details>
+<br/>
+
+## Conclusion
+
+Security is an ongoing process. While auto-updates handle application code, stateful components like databases often require manual intervention or specialized scripts. Always verify your security posture after major vulnerability disclosures.
