@@ -1,3 +1,6 @@
+import { getLogger } from '@/lib/logger/wide-event-logger';
+import type { LogContext } from '@/lib/logger/types';
+
 // Error Context Interface
 interface ErrorContext {
     severity?: 'low' | 'medium' | 'high' | 'critical';
@@ -18,6 +21,36 @@ export async function logError(
     // Optional: Log context if provided
     if (context) {
         console.error('Error context:', context);
+    }
+
+    // Send to Axiom if available (server-side only)
+    if (typeof window === 'undefined' && process.env.AXIOM_TOKEN) {
+        try {
+            const logger = getLogger();
+            const logContext: LogContext = {
+                environment: context?.environment || process.env.NODE_ENV,
+                userAgent: context?.userAgent,
+                route: context?.url,
+            };
+
+            await logger.logEvent({
+                eventName: 'application_error',
+                timestamp: new Date().toISOString(),
+                status: 'error',
+                error: {
+                    message: error.message,
+                    stack: error.stack,
+                    code: (error as any).code,
+                    details: context?.additionalData,
+                },
+                context: logContext,
+                tags: ['error', context?.severity || 'medium'],
+            });
+
+            await logger.flush();
+        } catch (axiomError) {
+            console.error('[Axiom] Failed to log error:', axiomError);
+        }
     }
 }
 
