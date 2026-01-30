@@ -73,6 +73,8 @@ try { /* code */ } catch (error) {
 }
 ```
 
+**Axiom Logging**: Errors are automatically sent to Axiom (if configured) for wide-event logging. See `docs/prd/04-wide-event-logging.md` for details and `docs/architecture.md` for implementation overview.
+
 ### MDX Content
 All posts need metadata:
 ```typescript
@@ -115,6 +117,38 @@ public/          # Static assets
 
 ## Linting & Type Checking
 Always run before committing: `pnpm lint` (ESLint) and `pnpm type-check` (TypeScript strict)
+
+## Logging & Observability
+
+### Wide-Event Logging with Axiom
+This project uses Axiom for structured logging with the "wide-event" pattern - single JSON events with full context.
+
+**Setup**: See `docs/AXIOM_SETUP.md` for configuration instructions.
+
+**What Gets Logged**:
+- HTTP errors (4xx/5xx) via middleware
+- Application errors via `logError()` in `lib/error-handler.ts`
+- Convex engagement events (views, reactions) via `convex/axiom-logger.ts`
+
+**Manual Logging**:
+```typescript
+import { getLogger } from '@/lib/logger/wide-event-logger';
+
+const logger = getLogger();
+await logger.logEvent({
+  eventName: 'custom_event',
+  status: 'success',
+  durationMs: 100,
+  input: { key: 'value' },
+});
+```
+
+**Decorator Pattern**:
+```typescript
+const wrapped = logger.wrap('operation_name', async (arg) => {
+  // Your logic
+}, { context: { userId: 'user_123' } });
+```
 
 ## Important Notes
 Never commit secrets (.env.local). Blog posts use ISR (1 hour). Dark mode required for UI. Mobile-first design. Semantic HTML. Client/server compatible.

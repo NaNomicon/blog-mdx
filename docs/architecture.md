@@ -51,3 +51,28 @@ This project is a static-first blog built with Next.js 14, leveraging the App Ro
 - **Image Optimization**: `next/image` is used for all cover and content images.
 - **Dynamic Imports**: MDX files are loaded only when requested.
 - **Draft Preview**: Integrated mechanism in `lib/content.ts` to preview drafts in development mode without impacting production.
+
+## Observability & Logging
+
+### Wide-Event Logging with Axiom
+Implements the "wide-event" logging pattern: single JSON events with full context for debugging without reproduction.
+
+**Architecture**:
+- **Server-Side**: `instrumentation.ts` initializes Axiom on server startup
+- **Middleware**: `middleware.ts` logs HTTP errors (4xx/5xx) with request correlation
+- **Application Errors**: `lib/error-handler.ts` captures exceptions with stack traces
+- **Convex Events**: `convex/axiom-logger.ts` logs backend operations via HTTP API
+- **Wide-Event Logger**: `lib/logger/wide-event-logger.ts` provides decorator pattern for automatic logging
+
+**What Gets Logged**:
+1. HTTP errors with request/trace IDs, timing, headers, and bodies
+2. Application errors with stack traces, severity, and context
+3. Convex mutations (views, reactions) with performance metrics and session tracking
+4. Structured user-agent parsing for device/browser filtering
+
+**Free Tier Optimization**:
+- Only logs error responses (4xx/5xx) for HTTP
+- Async logging for Convex (non-blocking)
+- Automatic sensitive field redaction (passwords, tokens)
+
+**Setup**: See `docs/prd/04-wide-event-logging.md` for requirements and configuration details.
