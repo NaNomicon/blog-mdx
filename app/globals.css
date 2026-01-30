@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import the Dracula theme for Highlight.js */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/dracula.min.css");
+/* Import syntax highlighting themes - dual theme support */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css") (prefers-color-scheme: light);
+@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css") (prefers-color-scheme: dark);
 
 @layer base {
   :root {
@@ -122,15 +123,63 @@
   max-width: 100%;
   overflow-x: auto;
   word-break: break-word;
-  @apply rounded-lg border bg-gradient-to-br from-muted/30 to-muted/60 backdrop-blur-sm;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .code-block code {
-  white-space: pre-wrap;
-  word-break: break-word;
-  @apply text-sm;
+  white-space: pre;
+  word-break: normal;
+  @apply text-sm font-mono;
+}
+
+/* Syntax highlighting adjustments for better theme integration */
+.hljs {
+  @apply bg-transparent;
+}
+
+/* Light mode syntax highlighting overrides */
+:root:not(.dark) .hljs {
+  @apply text-gray-900;
+}
+
+:root:not(.dark) .hljs-comment,
+:root:not(.dark) .hljs-quote {
+  @apply text-gray-500;
+}
+
+:root:not(.dark) .hljs-keyword,
+:root:not(.dark) .hljs-selector-tag {
+  @apply text-purple-600;
+}
+
+:root:not(.dark) .hljs-string {
+  @apply text-green-700;
+}
+
+:root:not(.dark) .hljs-number {
+  @apply text-blue-600;
+}
+
+/* Dark mode syntax highlighting overrides */
+.dark .hljs {
+  @apply text-gray-100;
+}
+
+.dark .hljs-comment,
+.dark .hljs-quote {
+  @apply text-gray-500;
+}
+
+.dark .hljs-keyword,
+.dark .hljs-selector-tag {
+  @apply text-purple-400;
+}
+
+.dark .hljs-string {
+  @apply text-green-400;
+}
+
+.dark .hljs-number {
+  @apply text-blue-400;
 }
 
 /* Enhanced prose styling for MDX content */

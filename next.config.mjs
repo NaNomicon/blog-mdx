@@ -93,7 +93,15 @@ const nextConfig = {
 const withMDX = createMDX({
   options: {
     remarkPlugins: [remarkGfm, remarkFrontmatter],
-    rehypePlugins: [rehypeHighlight],
+    rehypePlugins: [
+      [
+        rehypeHighlight,
+        {
+          detect: true,
+          ignoreMissing: true,
+        },
+      ],
+    ],
     format: "mdx",
   },
 });
