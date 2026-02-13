@@ -1,0 +1,58 @@
+---
+title: Identifying AI-Generated Content
+date: 2026-02-13
+tags: [AI, Writing, Research]
+description: A comprehensive guide to the linguistic, statistical, and structural markers of AI-generated text.
+---
+
+As of early 2026, the proliferation of Large Language Models (LLMs) has led to a "linguistic drift" in digital communication. This guide provides a deep dive into the technical and behavioral markers used to identify synthetic text.
+
+## 1. Statistical Foundations: Perplexity and Burstiness
+
+Modern AI detectors primarily rely on two mathematical measurements to evaluate the probability that a machine produced a text segment.
+
+### **Perplexity: The "Surprise" Factor**
+Perplexity measures how well a probability distribution or probability model predicts a sample. In simple terms, it is a measure of "uncertainty" or "predictability."
+
+*   **Human Text:** High Perplexity. Humans are unpredictable. We use rare metaphors, idiosyncratic phrasing, and non-linear logic that "surprises" the model.
+*   **AI Text:** Low Perplexity. Models are trained to predict the most likely next word. Their output is statistically probable, making it "less surprising."
+
+### **Burstiness: The "Rhythm" of Writing**
+Burstiness refers to the variance in sentence structure and length across a document.
+
+*   **Human Writing:** High Burstiness. Humans write with a "rhythm." We might follow a very long, descriptive sentence with a short, punchy one.
+*   **AI Writing:** Low Burstiness. AI models tend to produce uniform, mid-length sentences. This creates a "monotone" cadence that feels "flat" to human readers.
+
+## 2. The "Uncanny Valley" of Text
+The **Uncanny Valley** describes the psychological discomfort humans feel when an entity looks or acts almost—but not quite—human. In text, this manifests as:
+
+*   **Hyper-Politeness:** AI often defaults to an overly formal, servile tone. It lacks the "edge" or occasional bluntness found in genuine human interaction.
+*   **Lack of "Proof of Life":** Human writing is often anchored in sensory experience or specific anecdotes (e.g., "the smell of rain on hot asphalt"). AI attempts to simulate this with generic descriptions but rarely succeeds in providing "boringly specific" details that verify a lived experience.
+*   **The "Polite Ghost" Effect:** Text that is logically flawless and grammatically perfect, yet feels hollow or devoid of a specific "voice" or perspective.
+
+## 3. The AI Vocabulary: "Linguistic Fingerprints"
+Studies have identified specific words that LLMs favor due to their training data and alignment.
+
+### **The "AI Red Flags" List**
+| Category | "AI-Words" | Why AI Uses Them |
+| :--- | :--- | :--- |
+| **Verbs** | Delve, Embrace, Unlock, Foster | High-frequency "professional" verbs in training data. |
+| **Metaphors** | Tapestry, Journey, Heartbeat | Overused figurative language to sound "poetic." |
+| **Adjectives** | Seamless, Robust, Cutting-edge | Generic corporate jargon used for "positive" summaries. |
+| **Transitions** | "In today's fast-paced world," "Moreover," "In conclusion" | Safe, predictable structural markers. |
+
+**The "Delve" Problem:** The word "delve" saw a massive spike in usage (over 100% in some academic datasets) post-2023, directly correlating with the adoption of ChatGPT.
+
+## 4. Structural Analysis (Sentence Length Variance)
+Structural analysis focuses on the **Standard Deviation** of sentence lengths. 
+
+*   **Human Benchmark:** A typical human essay might have sentence lengths ranging from 3 words to 45 words, with high variance.
+*   **AI Benchmark:** AI-generated text often centers around a 15–25 word average with very low variance (e.g., a standard deviation < 5).
+
+## 5. How 'Watermarking' Works
+AI watermarking is a **cryptographic-statistical** technique where the model's output is subtly modified during generation to leave a detectable signature.
+
+### **The Red-Green List Method**
+1.  **Token Partitioning:** For every word the AI is about to generate, the vocabulary is split into a "Green List" and a "Red List" based on the previous token's hash.
+2.  **Logit Biasing:** The model is "pushed" (via logit biasing) to choose tokens from the **Green List**.
+3.  **Detection:** A human reader cannot see the pattern, but a detector knows the rules used to create the lists. If a text has an "unusually high" number of Green List tokens, it is mathematically proven to be AI-generated.

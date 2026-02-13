@@ -1,0 +1,98 @@
+export const metadata = {
+    title: "The AI Bubble is Good, Actually",
+    publishDate: "2026-02-13",
+    description: "Why the inevitable AI crash will trigger a golden age for builders, based on the Carlota Perez framework and the 'Linux Effect'.",
+    category: "AI",
+    cover_image: "https://images.unsplash.com/photo-1606907568049-4bf98aad871a",
+    tldr: "The AI bubble is real, but unlike the dot-com crash, it leaves behind massive utility. We explore why the 'crash' creates cheap compute, how open weights win, and why junior devs need to become architects.",
+    tags: ["AI", "Career", "Economics"],
+};
+
+*Photo by <a href="https://unsplash.com/@majesticlukas?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Majestic Lukas</a> on <a href="https://unsplash.com/photos/person-holding-white-and-red-hanging-decor-6lWFuyGPkk0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+      
+import { Callout } from "@/components/mdx/callout";
+
+Let's be real. **We are in a bubble.**
+
+[Nvidia](https://www.nvidia.com/) is printing money, startups are raising millions with nothing but a wrapper around [GPT-4](https://openai.com/research/gpt-4), and your [LinkedIn](https://www.linkedin.com/) feed is drowning in "thought leadership" about how AI will fix everything from coding to your love life. It feels exactly like the stories we hear about [1999](https://www.investopedia.com/terms/d/dotcom-bubble.asp).
+
+And like 1999, it's going to burst.
+
+But here is the contrarian take: **The burst is the best thing that could happen to us.**
+
+If you look at history - specifically the **[Carlota Perez framework](https://carlotaperez.org/)** - bubbles aren't just financial accidents. They are a necessary feature of technological revolutions. They are the "Installation Phase" where society over-invests in infrastructure that eventually becomes boring, cheap, and everywhere.
+
+## The Prisoner's Dilemma of $100 Billion
+
+Why are [Google](https://about.google/), [Meta](https://about.meta.com/), and [Microsoft](https://www.microsoft.com/) spending hundreds of billions on [H100](https://www.nvidia.com/en-us/data-center/h100/) clusters they might not be able to make money from?
+
+It's the classic **[Prisoner's Dilemma](https://plato.stanford.edu/entries/prisoner-dilemma/)**.
+
+Imagine you are [Sundar Pichai](https://blog.google/inside-google/company-announcements/sundar-pichai/).
+*   **Scenario A:** You spend $50B on GPUs. It turns out to be a bubble. You lose $50B. **Bad.**
+*   **Scenario B:** You *don't* spend $50B. Microsoft *does*. They achieve [AGI](https://en.wikipedia.org/wiki/Artificial_general_intelligence) or build a search engine that makes Google obsolete. You lose your entire $2 Trillion company. **Catastrophic.**
+
+They are trapped. Even if they know it's a bubble, they *must* participate because the alternative is existential death. This irrational spending is what builds the infrastructure for the next phase.
+
+## The Crash = The Sale
+
+When the bubble finally pops, it won't be because AI stops working. It will be because the "utilization crisis" hits - we simply built too much compute for the demand.
+
+This is our **"[Dark Fiber](https://en.wikipedia.org/wiki/Dark_fiber)" moment.**
+
+In the late 90s, telecom companies spent billions laying fiber optic cables across the oceans, expecting internet traffic to double every 100 days forever. When that didn't happen, they went bankrupt. But the cables didn't get dug up. They stayed there.
+
+The result? **Bandwidth became virtually free.** This cheap infrastructure allowed companies like [YouTube](https://www.youtube.com/) and [Netflix](https://www.netflix.com/) to exist a decade later.
+
+The same thing will happen with AI.
+1.  **The Crash:** GPU cloud providers go bust. Banks seize thousands of H100s.
+2.  **The Auction:** Those GPUs get sold for pennies on the dollar.
+3.  **The Golden Age:** Suddenly, training a 70B parameter model doesn't cost $5M - it costs $50k. Community groups, universities, and individuals get access to supercomputer-level compute.
+
+<Callout emoji="📉">
+  **The Crash doesn't kill the technology; it kills the profit margins.** [Nvidia](https://www.nvidia.com/) stops making 75% margin. [OpenAI](https://openai.com/) stops charging $20/month. Prices race to zero. Investors lose everything, but **users win**.
+</Callout>
+
+## The "Linux Effect" (Or: Why Open Weights Win)
+
+There is a fear that if the big labs fail, the "intelligence" disappears. This is the "Library of Alexandria" mistake.
+
+But we have a safety net: **Open Weights.**
+
+Even if OpenAI shuts down tomorrow, **[Llama 3](https://llama.meta.com/)** and **[DeepSeek](https://www.deepseek.com/)** are already on millions of hard drives. They are on [BitTorrent](https://www.bittorrent.com/). They cannot be deleted. We have "checkpointed" human intelligence at a Summer 2024 level, and that floor is incredibly high.
+
+This mirrors the **[Linux](https://www.kernel.org/) vs. [Solaris](https://www.oracle.com/solaris/)** battle of the 2000s.
+*   **Solaris (Proprietary)** was better, more polished, and more mature.
+*   **Linux (Open)** was "worse" but free.
+
+When the dot-com bubble burst, companies couldn't afford expensive Solaris licenses anymore. They were forced to use Linux. Because *everyone* used the "worse" free thing, all the development effort went into it. Within a few years, Linux became the backbone of the internet.
+
+If the AI giants stumble, developers will flock to open models. Necessity will force us to optimize them to run on consumer hardware. We don't need "God-level" AI; we need "Good Enough" AI that runs locally on our laptops.
+
+## The Real Risks (It's Not the Tech)
+
+While the financial crash is manageable, the *real* risks are the silent killers.
+
+First, **The Legal Nuke.** If the [Supreme Court](https://www.supremecourt.gov/) rules that training on copyrighted data is infringement, the entire industry (open and closed) could be illegal overnight. Then there's **[Model Collapse](https://www.nature.com/articles/s41586-024-07566-y).** As the internet fills with AI-generated slop, future models might start "hallucinating" more because they are training on their own output. And finally, **The [Wall-E](https://en.wikipedia.org/wiki/Cognitive_offloading) Effect.** This is the cognitive crash. If we rely on AI for everything, we lose the ability to think without an assistant. We risk becoming a generation of "Prompt Engineers" who can't debug a system when the AI fails.
+
+## The "Senior Junior" Problem
+
+The most immediate crisis is the **"Broken Bridge" of hiring.**
+
+Companies are burning their own ladder. By using AI to replace junior developers, they are cutting off the pipeline for future seniors. Why hire a junior to write boilerplate when [Copilot](https://github.com/features/copilot) does it for $10/month?
+
+The "Typist" is dead. A developer who relies solely on syntax knowledge is obsolete. We are moving from a world of "writing code" to "assembling logic."
+
+For juniors entering the field now, the game has changed. The **"Coder" is dead.** Knowing syntax is worthless. The **"Architect" is born.** You need to understand *systems*. How does the database talk to the API? How do you deploy?
+
+Your value isn't writing code; it's *verifying* AI code. You are the sober manager reviewing the drunk intern's work. You have to be a "Senior Junior" on Day 1. It's unfair, but it's the only way forward.
+
+---
+
+The bubble is going to burst. Investors will lose trillions. There will be a recession.
+
+But for builders? **It's going to be glorious.**
+
+We will inherit the ruins of the empire - massive clusters of cheap GPUs, highly optimized open models, and a world where intelligence is as cheap and abundant as electricity.
+
+Don't fear the crash. Prepare for the sale.
