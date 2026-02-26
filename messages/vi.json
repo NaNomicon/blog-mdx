@@ -1,1 +1,92 @@
-{}
+{
+  "Nav": {
+    "home": "Trang chủ",
+    "blog": "Blog",
+    "blogs": "Blogs",
+    "notes": "Ghi chú",
+    "about": "Về tôi",
+    "toggleMenu": "Chuyển đổi menu",
+    "connectWithMe": "Kết nối với tôi",
+    "hireMe": "Cần thuê tôi",
+    "privacyPolicy": "Chính sách bảo mật"
+  },
+  "Footer": {
+    "developerAndExplorer": "Lập trình viên & Người khám phá",
+    "poweredBy": "Phát triển bởi",
+    "viewSource": "Xem mã nguồn",
+    "allRightsReserved": "Bản quyền đã được bảo hộ."
+  },
+  "Blog": {
+    "title": "Blog",
+    "description": "Tập hợp các suy nghĩ, kiến thức và khám phá trong hành trình lập trình và hơn thế nữa",
+    "readMore": "Đọc thêm",
+    "noPostsYet": "Chưa có bài viết nào",
+    "checkBackSoon": "Hãy quay lại sớm để xem nội dung mới nhé!",
+    "returnHome": "Quay lại trang chủ",
+    "backToBlog": "Quay lại Blog",
+    "tableOfContents": "Mục lục",
+    "tldr": "TLDR:",
+    "publishedOn": "Đăng ngày {date}",
+    "readingTime": "{minutes} phút đọc"
+  },
+  "Notes": {
+    "title": "Ghi chú",
+    "description": "Dòng suy nghĩ ngắn, mẹo nhanh và những khám phá thú vị.",
+    "knowledgeBase": "Cơ sở kiến thức",
+    "loadMore": "Tải thêm",
+    "noNotesFound": "Không tìm thấy ghi chú nào khớp với bộ lọc.",
+    "noMoreNotes": "Không còn ghi chú nào để hiển thị.",
+    "allCollections": "Tất cả bộ sưu tập",
+    "filterTags": "Lọc thẻ",
+    "searchTags": "Tìm thẻ...",
+    "noTagFound": "Không tìm thấy thẻ.",
+    "pickADate": "Chọn một ngày",
+    "spoilers": "Tiết lộ nội dung",
+    "showSpoilers": "Hiển thị {count} tóm tắt sách bị ẩn và nội dung tiết lộ",
+    "hideSpoilers": "Ẩn tóm tắt sách và nội dung tiết lộ",
+    "showingSpoilers": "Đang hiển thị nội dung tiết lộ",
+    "newest": "Mới nhất",
+    "oldest": "Cũ nhất",
+    "masonry": "Masonry",
+    "list": "Danh sách",
+    "reset": "Đặt lại",
+    "backToAllNotes": "Quay lại tất cả ghi chú",
+    "collection": "Bộ sưu tập",
+    "pinned": "Đã ghim",
+    "viewFullNote": "Xem toàn bộ ghi chú",
+    "spoiler": "Tiết lộ nội dung",
+    "sourceUrl": "URL nguồn",
+    "book": "Sách: {title}",
+    "previous": "Trước",
+    "next": "Tiếp theo",
+    "copyLink": "Sao chép liên kết",
+    "copied": "Đã sao chép!",
+    "turnOffSpoilerToggle": "Tắt hiển thị nội dung tiết lộ",
+    "spoilerNote": "Lưu ý: Chế độ hiển thị nội dung tiết lộ đang bật, đang ẩn {count} nội dung."
+  },
+  "Common": {
+    "loading": "Đang tải...",
+    "synchronizing": "Đang đồng bộ...",
+    "error": "Lỗi",
+    "somethingWentWrong": "Đã có lỗi xảy ra",
+    "unexpectedError": "Đã xảy ra lỗi không mong muốn. Lỗi đã được báo cáo và chúng tôi đang nỗ lực khắc phục.",
+    "errorDetails": "Chi tiết lỗi",
+    "tryAgain": "Thử lại",
+    "notFound": "Không tìm thấy",
+    "back": "Quay lại",
+    "share": "Chia sẻ",
+    "sharePost": "Chia sẻ bài viết",
+    "readMore": "Đọc thêm",
+    "minuteRead": "{minutes} phút đọc",
+    "tags": "Thẻ",
+    "categories": "Danh mục"
+  },
+  "I18n": {
+    "fallbackNotice": "Bài viết này chỉ có bằng tiếng Anh.",
+    "switchLanguage": "Chuyển đổi ngôn ngữ",
+    "locales": {
+      "en": "English",
+      "vi": "Tiếng Việt"
+    }
+  }
+}

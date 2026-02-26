@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export const revalidate = 1800; // 30 minutes in seconds
 
 export default async function Home() {
-  const posts = await getAllPosts<BlogPostMetadata>("blogs", isPreviewMode());
+  const posts = await getAllPosts<BlogPostMetadata>("blogs");
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-16 space-y-16">

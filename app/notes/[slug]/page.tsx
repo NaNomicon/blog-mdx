@@ -1,4 +1,4 @@
-import { getPostBySlug, getAllPosts, getAdjacentPosts, isPreviewMode, type NoteMetadata } from "@/lib/content";
+import { getPostBySlug, getAllPosts, getAdjacentPosts, type NoteMetadata } from "@/lib/content";
 import { notFound } from "next/navigation";
 import { generateSEOMetadata, extractSEOFromNoteMetadata, defaultSEOConfig } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -7,8 +7,9 @@ import { NoteDialog } from "@/components/notes/note-dialog";
 import { BlogPostStructuredData } from "@/components/seo/structured-data";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const note = await getPostBySlug<NoteMetadata>("notes", params.slug, isPreviewMode());
-  if (!note) return {};
+  const result = await getPostBySlug<NoteMetadata>(params.slug, "notes");
+  if (!result) return {};
+  const { post: note } = result;
   
   const seoConfig = extractSEOFromNoteMetadata(note.metadata, params.slug);
   return generateSEOMetadata(seoConfig);
@@ -31,12 +32,13 @@ export default async function NotePage({
   params: { slug: string };
   searchParams: any;
 }) {
-  const [note, adjacent] = await Promise.all([
-    getPostBySlug<NoteMetadata>("notes", params.slug, isPreviewMode()),
-    getAdjacentPosts<NoteMetadata>("notes", params.slug, isPreviewMode()),
+  const [noteResult, adjacent] = await Promise.all([
+    getPostBySlug<NoteMetadata>(params.slug, "notes"),
+    getAdjacentPosts<NoteMetadata>("notes", params.slug),
   ]);
 
-  if (!note) notFound();
+  if (!noteResult) notFound();
+  const { post: note } = noteResult;
 
   return (
     <>

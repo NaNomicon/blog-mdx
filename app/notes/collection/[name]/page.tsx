@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { type Metadata } from "next";
-import { getAllPosts, getPostBySlug, getAdjacentPosts, isPreviewMode, type NoteMetadata, type Post } from "@/lib/content";
+import { getAllPosts, getPostBySlug, getAdjacentPosts, type NoteMetadata, type Post } from "@/lib/content";
 import { generateSEOMetadata, defaultSEOConfig, extractSEOFromNoteMetadata } from "@/lib/seo";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -22,8 +22,9 @@ export async function generateMetadata({
   const collectionName = decodeURIComponent(params.name);
 
   if (searchParams.note) {
-    const note = await getPostBySlug<NoteMetadata>("notes", searchParams.note, isPreviewMode());
-    if (note) {
+    const result = await getPostBySlug<NoteMetadata>(searchParams.note, "notes");
+    if (result) {
+      const { post: note } = result;
       const seoConfig = extractSEOFromNoteMetadata(note.metadata, searchParams.note);
       return generateSEOMetadata({
         ...seoConfig,
@@ -79,7 +80,7 @@ export default async function CollectionPage({
   }
 
   // Get tags specifically for this collection for the filter
-  const allNotes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
+  const allNotes = await getAllPosts<NoteMetadata>("notes");
   const collectionNotes = allNotes.filter(n => n.metadata.collection === collectionName);
   const allTags = Array.from(new Set(collectionNotes.flatMap(n => n.metadata.tags || []))) as string[];
 
@@ -87,11 +88,11 @@ export default async function CollectionPage({
   let selectedNote = null;
   let adjacentNotes: { prev: Post<NoteMetadata> | null; next: Post<NoteMetadata> | null } = { prev: null, next: null };
   if (searchParams.note) {
-    const [note, adjacent] = await Promise.all([
-      getPostBySlug<NoteMetadata>("notes", searchParams.note, isPreviewMode()),
-      getAdjacentPosts<NoteMetadata>("notes", searchParams.note, isPreviewMode()),
+    const [noteResult, adjacent] = await Promise.all([
+      getPostBySlug<NoteMetadata>(searchParams.note, "notes"),
+      getAdjacentPosts<NoteMetadata>("notes", searchParams.note),
     ]);
-    selectedNote = note;
+    selectedNote = noteResult ? noteResult.post : null;
     adjacentNotes = adjacent;
   }
 

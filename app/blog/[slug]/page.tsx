@@ -18,8 +18,9 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const post = await getPostBySlug<BlogPostMetadata>("blogs", params.slug, isPreviewMode());
-  if (!post) return {};
+  const result = await getPostBySlug<BlogPostMetadata>(params.slug, "blogs");
+  if (!result) return {};
+  const { post } = result;
   
   const seoConfig = extractSEOFromBlogMetadata(post.metadata, params.slug);
   return generateSEOMetadata(seoConfig);
@@ -38,14 +39,16 @@ export const revalidate = 3600; // 1 hour in seconds
 export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
-  const post = await getPostBySlug<BlogPostMetadata>("blogs", slug, isPreviewMode());
+  const result = await getPostBySlug<BlogPostMetadata>(slug, "blogs");
   
-  if (!post) {
+  if (!result) {
     notFound();
   }
 
+  const { post } = result;
+
   // Dynamically import the MDX file based on the actual type (could be 'blogs' or 'drafts')
-  const MDXContent = dynamic(() => import(`@/content/${post.type}/${slug}.mdx`));
+  const MDXContent = dynamic(() => import(`@/content/en/${post.type}/${slug}.mdx`));
 
   const formattedDate = format(
     new Date(post.metadata.publishDate),

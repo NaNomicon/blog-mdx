@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { generateSEOMetadata } from "@/lib/seo";
 
 // Dynamically import the MDX file
-const MDXContent = dynamic(() => import("@/content/pages/privacy-policy.mdx"));
+const MDXContent = dynamic(() => import("@/content/en/pages/privacy-policy.mdx"));
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateSEOMetadata({

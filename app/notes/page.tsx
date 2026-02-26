@@ -1,7 +1,7 @@
 import { type Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { getAllPosts, getPostBySlug, isPreviewMode, type NoteMetadata } from "@/lib/content";
+import { getAllPosts, getPostBySlug, type NoteMetadata } from "@/lib/content";
 import { NoteCard } from "@/components/notes/note-card";
 import { generateSEOMetadata, defaultSEOConfig, extractSEOFromNoteMetadata } from "@/lib/seo";
 import { NotesFilter } from "@/components/notes/notes-filter";
@@ -17,8 +17,9 @@ export async function generateMetadata({
   searchParams: { note?: string };
 }): Promise<Metadata> {
   if (searchParams.note) {
-    const note = await getPostBySlug<NoteMetadata>("notes", searchParams.note, isPreviewMode());
-    if (note) {
+    const result = await getPostBySlug<NoteMetadata>(searchParams.note, "notes");
+    if (result) {
+      const { post: note } = result;
       const seoConfig = extractSEOFromNoteMetadata(note.metadata, searchParams.note);
       return generateSEOMetadata({
         ...seoConfig,
@@ -68,7 +69,7 @@ export default async function NotesPage({
   };
 
   // Get ALL notes ONCE (cached in lib/content)
-  const allNotes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
+  const allNotes = await getAllPosts<NoteMetadata>("notes");
   
   // Extract filter data from ALL notes
   const allCollections = Array.from(new Set(allNotes.map(n => n.metadata.collection).filter(Boolean))) as string[];
