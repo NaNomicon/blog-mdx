@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/mdx/callout";
 import { H1, H2, H3, H4, H5, H6 } from "@/components/mdx/heading";
 import TableOfContents from "@/components/mdx/table-of-contents";
+import { LinkTooltip } from "@/components/mdx/link-tooltip";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -41,6 +42,6 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {...props}
       />
     ),
-    a: (props) => <a className="hover:underline font-semibold" {...props} />,
+    a: (props) => <LinkTooltip {...props} />,
   };
 }
