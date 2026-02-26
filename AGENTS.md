@@ -139,6 +139,18 @@ export const metadata = {
 
 **Critical**: Notes **must** have `collection`. Blogs **must not** have `collection`. `lib/content.ts` enforces this — mismatched files are silently skipped.
 
+## i18n (Multi-language)
+
+- **Content structure**: `content/en/` is the source of truth; `content/vi/` holds translations.
+- **Adding posts**: `pnpm new-blog` scaffolds into `content/en/blogs/`.
+- **Vietnamese translations**: Create a matching file in `content/vi/blogs/YYMMDD-slug.mdx`.
+- **Content API**: `getAllPosts(type, locale?)`, `getPostBySlug(slug, type, locale?) → { post, isFallback }`.
+- **Fallback**: If `isFallback === true`, English content is shown with a `FallbackBanner`.
+- **UI translations**: `messages/en.json` (source), `messages/vi.json` (translated).
+- **Locales**: `['en', 'vi']`, defaultLocale `'en'`. English has no URL prefix, Vietnamese uses `/vi/`.
+- **Implementation**: Language switcher in header; `next-intl` middleware in `middleware.ts`.
+- **Adding new locale (e.g., Chinese 'zh')**: Add to `routing.locales`, add `messages/zh.json`, and create `content/zh/`.
+
 ### Link Annotations (Tooltips)
 
 Links in MDX render with hover tooltips. **Always annotate links** so readers get useful context:

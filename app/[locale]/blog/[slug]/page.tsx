@@ -14,6 +14,7 @@ import {
 import { BlogLayout } from "@/components/mdx/blog-layout";
 import { InlineEngagement } from "@/components/mdx/inline-engagement";
 import { ViewTracker } from "@/components/mdx/view-tracker";
+import { FallbackBanner } from "@/components/i18n/fallback-banner";
 import {
   getPostBySlug,
   getAllPosts,
@@ -97,6 +98,7 @@ export default async function Page({ params }: Props) {
       />
       <div className="max-w-4xl mx-auto px-4 py-16">
         <ViewTracker slug={slug} mode="immediate" />
+        {isFallback && <FallbackBanner />}
         <div className="w-full space-y-8">
           <article className="space-y-8">
             <div>

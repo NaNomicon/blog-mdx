@@ -14,6 +14,7 @@ import type { Metadata } from "next";
 import NotesPage from "../page";
 import { NoteDialog } from "@/components/notes/note-dialog";
 import { BlogPostStructuredData } from "@/components/seo/structured-data";
+import { FallbackBanner } from "@/components/i18n/fallback-banner";
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -49,7 +50,7 @@ export default async function NotePage({ params, searchParams }: Props) {
   ]);
 
   if (!noteResult) notFound();
-  const { post: note } = noteResult;
+  const { post: note, isFallback } = noteResult;
 
   return (
     <>
@@ -65,6 +66,7 @@ export default async function NotePage({ params, searchParams }: Props) {
         siteUrl={defaultSEOConfig.siteUrl}
         pathPrefix="/notes"
       />
+      {isFallback && <FallbackBanner />}
       <NotesPage params={params} searchParams={searchParams} />
       <NoteDialog note={note} prev={adjacent.prev} next={adjacent.next} />
     </>
