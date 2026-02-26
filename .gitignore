@@ -48,3 +48,6 @@ next-env.d.ts
 
 # convex
 convex/_generated
+
+# agent working state
+.sisyphus

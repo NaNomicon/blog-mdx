@@ -58,24 +58,26 @@ function TooltipCard({
 
   return (
     <div className="p-3 space-y-1.5 min-w-[200px] max-w-sm">
-      {/* Type badge */}
-      {typeConfig && (
-        <span
-          className={cn(
-            "inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded",
-            typeConfig.tailwindBg,
-            typeConfig.tailwindText
+      {/* Type badge + Domain row */}
+      {(typeConfig || domain) && (
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {typeConfig && (
+            <span
+              className={cn(
+                "inline-flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded",
+                typeConfig.tailwindBg,
+                typeConfig.tailwindText
+              )}
+            >
+              {typeConfig.label}
+            </span>
           )}
-        >
-          {typeConfig.label}
-        </span>
-      )}
-
-      {/* Domain */}
-      {domain && (
-        <span className="text-[10px] text-muted-foreground/60 truncate block">
-          {domain}
-        </span>
+          {domain && (
+            <span className="text-[10px] text-muted-foreground/60 truncate">
+              {domain}
+            </span>
+          )}
+        </div>
       )}
       {/* Title */}
       {title && (
@@ -289,7 +291,7 @@ function LinkTooltipInner({
   return (
     <Tooltip>
       <TooltipTrigger asChild>{linkEl}</TooltipTrigger>
-      <TooltipContent className="z-50 max-w-sm p-0 bg-popover border border-border shadow-lg rounded-lg overflow-hidden">
+      <TooltipContent className="z-[100] max-w-sm p-0 bg-popover border border-border shadow-lg rounded-lg overflow-hidden">
         <TooltipCard
           title={tooltipTitle}
           description={tooltipDescription}

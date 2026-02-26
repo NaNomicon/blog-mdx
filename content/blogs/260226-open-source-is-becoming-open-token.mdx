@@ -32,15 +32,15 @@ But the economics changed underneath everyone and nobody updated the rules.
 
 Generating code got cheap. Reviewing it didn't.
 
-The [2025 Google DORA Report](https://dora.dev/research/2025/dora-report) correlated a 90% increase in AI adoption with a **91% increase in code review time** and a **154% increase in PR size**. The [Cortex 2026 Engineering Benchmark](https://www.cortex.io/report/engineering-in-the-age-of-ai-2026-benchmark-report) found incidents per pull request up 23.5% year over year, even as PR volume grew 20%.
+The [2025 Google DORA Report](https://dora.dev/research/2025/dora-report "reference | Annual DevOps metrics — AI correlated with 91% longer reviews") correlated a 90% increase in AI adoption with a **91% increase in code review time** and a **154% increase in PR size**. The [Cortex 2026 Engineering Benchmark](https://www.cortex.io/report/engineering-in-the-age-of-ai-2026-benchmark-report "reference | Engineering metrics showing incidents per PR up 23.5% YoY") found incidents per pull request up 23.5% year over year, even as PR volume grew 20%.
 
 More code. Larger PRs. Longer reviews. More incidents.
 
-[Rémi Verschelde](https://www.theregister.com/2026/02/18/godot_maintainers_struggle_with_draining/), a maintainer of the [Godot](https://godotengine.org/) game engine, called the flood of AI-generated PRs *"draining and demoralizing"* a few weeks ago. [GitHub](https://github.com/) - the company that ships [Copilot](https://github.com/features/copilot) - opened a [community thread](https://github.com/orgs/community/discussions/185387) in February 2026 about the rising volume of low-quality contributions, and started [discussing](https://www.theregister.com/2026/02/03/github_kill_switch_pull_requests_ai/) what amounts to a kill switch for pull requests on repos.
+[Rémi Verschelde](https://www.theregister.com/2026/02/18/godot_maintainers_struggle_with_draining/ "mention | Godot maintainer on AI PRs being draining and demoralizing"), a maintainer of the [Godot](https://godotengine.org/ "mention | Open-source game engine hit hard by AI PR spam") game engine, called the flood of AI-generated PRs *"draining and demoralizing"* a few weeks ago. [GitHub](https://github.com/ "mention | Platform hosting both Copilot and the PR flood discussion") - the company that ships [Copilot](https://github.com/features/copilot "mention | GitHub's AI coding assistant") - opened a [community thread](https://github.com/orgs/community/discussions/185387 "reference | GitHub's Feb 2026 discussion on low-quality AI contributions") in February 2026 about the rising volume of low-quality contributions, and started [discussing](https://www.theregister.com/2026/02/03/github_kill_switch_pull_requests_ai/ "reference | Register coverage of GitHub's proposed PR kill switch") what amounts to a kill switch for pull requests on repos.
 
 The platform that built the generation tool is now building escape hatches from it.
 
-[Daniel Stenberg](https://daniel.haxx.se/blog/2025/07/14/death-by-a-thousand-slops/), creator of [curl](https://curl.se/), watched AI-generated submissions consume 20% of all vulnerability reports to curl's bug bounty program in 2025. Only 5% described real vulnerabilities. He called it "Death by a Thousand Slops" and ended the bug bounty entirely.
+[Daniel Stenberg](https://daniel.haxx.se/blog/2025/07/14/death-by-a-thousand-slops/ "mention | curl creator on AI slop flooding his bug bounty program"), creator of [curl](https://curl.se/ "reference | Widely-used command-line tool for URL data transfer"), watched AI-generated submissions consume 20% of all vulnerability reports to curl's bug bounty program in 2025. Only 5% described real vulnerabilities. He called it "Death by a Thousand Slops" and ended the bug bounty entirely.
 
 The effort floor was always the filter. That floor is gone.
 
@@ -80,7 +80,7 @@ The worst part? **It might be stable.** If the users are also vibe-coders, "work
 
 It's not software collapsing. It's software that never fails spectacularly enough to reveal nobody's home.
 
-As [Flamehaven](https://flamehaven.substack.com/p/the-pull-request-illusion-how-ai) put it: "understanding stopped traveling with code."
+As [Flamehaven](https://flamehaven.substack.com/p/the-pull-request-illusion-how-ai "reference | Essay arguing AI PRs decouple understanding from code changes") put it: "understanding stopped traveling with code."
 
 ## Intent Doesn't Compress Well
 
@@ -88,7 +88,7 @@ I've been experimenting with this. After every coding session I ask agents to ge
 
 It helps. But I still have to manually point the agent back to those docs half the time. They exist; they're just not first-class yet.
 
-[AGENTS.md](https://agents.md) is a good start - it tells agents how to interact with a repo. [ADRs](https://github.com/joelparkerhenderson/architecture-decision-record) capture architectural decisions. But neither captures the *negative space*: what a project deliberately chose not to become. The approach that was rejected. The scope boundary held against pressure. The tradeoff that made sense three years ago in a context nobody wrote down.
+[AGENTS.md](https://agents.md "reference | Convention for telling AI agents how to interact with a repo") is a good start - it tells agents how to interact with a repo. [ADRs](https://github.com/joelparkerhenderson/architecture-decision-record "reference | Templates for recording architectural decisions and rationale") capture architectural decisions. But neither captures the *negative space*: what a project deliberately chose not to become. The approach that was rejected. The scope boundary held against pressure. The tradeoff that made sense three years ago in a context nobody wrote down.
 
 That knowledge lives in maintainers' heads. When those maintainers leave - or were never there - debugging becomes archaeology.
 
@@ -96,7 +96,7 @@ That knowledge lives in maintainers' heads. When those maintainers leave - or we
 
 You'd think the big tech companies would maintain standards. They have the money, the reputation, the products that can't break.
 
-Partly true. The floor is liability, not craft. [AWS](https://aws.amazon.com/) has had genuinely terrible documentation for over a decade. Still prints money. Switching cost is the moat. Quality only needs to clear the bar of "doesn't cause an expensive failure."
+Partly true. The floor is liability, not craft. [AWS](https://aws.amazon.com/ "aside | Case in point — terrible docs, dominant market position") has had genuinely terrible documentation for over a decade. Still prints money. Switching cost is the moat. Quality only needs to clear the bar of "doesn't cause an expensive failure."
 
 The deeper problem: these same companies sell tools that produce vibe-coded output while running infrastructure that absolutely cannot be vibe-coded - kernels, distributed systems, security primitives. Internally they still need people who understand. But externally they're eroding the pipeline that produces those people. The junior dev who would've learned by grinding through PRs is now prompting their way through.
 
@@ -108,6 +108,6 @@ I don't think open source is broken. The knowledge-plus-agent model, when the hu
 
 But we're watching two things happen at once: the best contributors getting dramatically more capable, and the floor for "contribution" dropping to basically zero. What that equilibrium looks like is still unclear.
 
-The [Potemkin](https://en.wikipedia.org/wiki/Potemkin_village) codebases don't exist at scale yet.
+The [Potemkin](https://en.wikipedia.org/wiki/Potemkin_village "reference | Fake village facades — metaphor for superficially healthy codebases") codebases don't exist at scale yet.
 
 *Yet.*
