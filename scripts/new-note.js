@@ -47,7 +47,7 @@ function generateNoteTemplate(metadata) {
 }
 
 function getExistingMetadata() {
-  const notesDir = path.join(process.cwd(), "content", "notes");
+  const notesDir = path.join(process.cwd(), "content", "en", "notes");
   if (!fs.existsSync(notesDir)) return { collections: [], types: [], tags: [] };
 
   const files = fs.readdirSync(notesDir).filter(f => f.endsWith(".mdx"));
@@ -178,7 +178,7 @@ async function main() {
     const datePrefix = formatDate(now);
     const slug = slugify(title);
     const fileName = `${datePrefix}-${slug}.mdx`;
-    const filePath = path.join(process.cwd(), "content", "notes", fileName);
+    const filePath = path.join(process.cwd(), "content", "en", "notes", fileName);
 
     if (fs.existsSync(filePath)) {
       console.log(`❌ File ${fileName} already exists!`);
@@ -198,7 +198,7 @@ async function main() {
 
     const noteContent = generateNoteTemplate(metadata);
 
-    const notesDir = path.join(process.cwd(), "content", "notes");
+    const notesDir = path.join(process.cwd(), "content", "en", "notes");
     if (!fs.existsSync(notesDir)) {
       fs.mkdirSync(notesDir, { recursive: true });
     }
