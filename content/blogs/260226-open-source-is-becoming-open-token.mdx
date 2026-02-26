@@ -1,0 +1,113 @@
+export const metadata = {
+    title: "Open Source is Becoming Open-Token",
+    publishDate: "2026-02-26",
+    description: "AI agents are quietly changing what 'contributing to open source' means. It's not all bad - but the incentive structure has shifted in ways nobody's talking about.",
+    category: "AI",
+    cover_image: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb",
+    tldr: "Open source used to run on donated time. Now it also runs on donated tokens - compute spent by agents doing the work. That's fine when knowledgeable people drive. It gets weird when nobody's driving.",
+    tags: ["AI", "Open Source", "Software"],
+};
+
+*Photo by <a href="https://unsplash.com/@synkevych?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Roman Synkevych</a> on <a href="https://unsplash.com/photos/black-and-white-penguin-toy-wX2L8L-fGeA?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+
+I've been contributing to a few open source projects recently. Not in the way I used to.
+
+I find a bug. I clone the repo. Then I point my agent at the codebase, tell it what's wrong, and watch. It reads the code, proposes a fix, forks, commits, pushes, opens the PR. When a maintainer leaves a review comment, I nudge the agent: "hey, there's feedback." It reads the comment, iterates, pushes again. The whole cycle runs without me touching an editor.
+
+I still review the plan before anything executes. That part matters more than the code itself.
+
+But something about this felt different enough to name.
+
+## Open Time → Open-Token
+
+Open source always ran on **open time.** You donated hours. Your weekends. Your attention. The scarcity was effort - yours, specifically - and that scarcity is what made contributions valuable.
+
+Now there's a second resource flowing into these projects: **tokens.** API credits. Compute budget. The cost of running an agent through a full contribution cycle. A knowledgeable contributor with agents can clear a backlog that would've taken a team weeks. One person. One afternoon.
+
+That's genuinely exciting. Large refactors, accessibility passes, test coverage gaps - the stuff that lived forever on "someday" lists? Suddenly tractable.
+
+But the economics changed underneath everyone and nobody updated the rules.
+
+## The Asymmetry
+
+Generating code got cheap. Reviewing it didn't.
+
+The [2025 Google DORA Report](https://dora.dev/research/2025/dora-report) correlated a 90% increase in AI adoption with a **91% increase in code review time** and a **154% increase in PR size**. The [Cortex 2026 Engineering Benchmark](https://www.cortex.io/report/engineering-in-the-age-of-ai-2026-benchmark-report) found incidents per pull request up 23.5% year over year, even as PR volume grew 20%.
+
+More code. Larger PRs. Longer reviews. More incidents.
+
+[Rémi Verschelde](https://www.theregister.com/2026/02/18/godot_maintainers_struggle_with_draining/), a maintainer of the [Godot](https://godotengine.org/) game engine, called the flood of AI-generated PRs *"draining and demoralizing"* a few weeks ago. [GitHub](https://github.com/) - the company that ships [Copilot](https://github.com/features/copilot) - opened a [community thread](https://github.com/orgs/community/discussions/185387) in February 2026 about the rising volume of low-quality contributions, and started [discussing](https://www.theregister.com/2026/02/03/github_kill_switch_pull_requests_ai/) what amounts to a kill switch for pull requests on repos.
+
+The platform that built the generation tool is now building escape hatches from it.
+
+[Daniel Stenberg](https://daniel.haxx.se/blog/2025/07/14/death-by-a-thousand-slops/), creator of [curl](https://curl.se/), watched AI-generated submissions consume 20% of all vulnerability reports to curl's bug bounty program in 2025. Only 5% described real vulnerabilities. He called it "Death by a Thousand Slops" and ended the bug bounty entirely.
+
+The effort floor was always the filter. That floor is gone.
+
+## The Distinction Nobody Makes
+
+Most of the discourse treats all AI contributions the same. They're not.
+
+A vibe-coder who never used Godot seriously, running "find issues and fix them" on a repo they cloned five minutes ago? That's spam with extra steps.
+
+Someone who uses the project daily, understands the architecture, notices a real bug, and uses an agent to execute a fix they could've written themselves but slower? That's just a better tool.
+
+Both look identical in a PR queue. That's the tragedy.
+
+In my workflow, the human part is: notice the bug (because I actually use the thing), decide it's worth fixing (judgment), and review the agent's plan (the part where you catch "this is technically correct but architecturally wrong"). That third step requires having written this kind of code yourself. You can't rubber-stamp a plan you don't understand - a wrong plan executed perfectly by an agent is worse than no fix at all.
+
+## When Review Gets Cheap Too
+
+The asymmetry only holds if review stays expensive. It won't forever.
+
+We're already seeing AI-assisted review tools. The end state is probably: agent submits PR → automated reviewer catches the obvious stuff → human maintainer only sees pre-filtered, pre-commented diffs.
+
+So what does the human reviewer still catch that the machine misses? Intent alignment. Whether this fix matches where the project is *going*, not just where it is. Whether it solves the right problem. Whether it introduces a pattern the maintainers will regret in six months.
+
+"This code works" is a mechanical check. "This approach belongs here" requires caring about the project.
+
+## The Scarier Question
+
+Here's what keeps nagging at me.
+
+What happens when the maintainers are also vibe-coders?
+
+Not malicious ones. People who genuinely use the project, want to help, and direct agents at it - but whose understanding was also assembled by agents. Nobody in the entire contributor graph holds a mental model of why the codebase works the way it does.
+
+The project looks healthy from outside. Stars, downloads, commit activity, responsive issue handling, green CI. All the signals. But every fix is locally coherent and globally incoherent. Design decisions compound badly because each one made local sense and nobody tracked the whole.
+
+The worst part? **It might be stable.** If the users are also vibe-coders, "works on the happy path" is good enough. Nobody's demanding the deep correctness that requires actual understanding. The false value holds because the people consuming it can't tell the difference either.
+
+It's not software collapsing. It's software that never fails spectacularly enough to reveal nobody's home.
+
+As [Flamehaven](https://flamehaven.substack.com/p/the-pull-request-illusion-how-ai) put it: "understanding stopped traveling with code."
+
+## Intent Doesn't Compress Well
+
+I've been experimenting with this. After every coding session I ask agents to generate **intent-based changelogs** - not "what changed" but "why this approach, what was considered, what was rejected." For multi-session work, I write plans that carry context forward.
+
+It helps. But I still have to manually point the agent back to those docs half the time. They exist; they're just not first-class yet.
+
+[AGENTS.md](https://agents.md) is a good start - it tells agents how to interact with a repo. [ADRs](https://github.com/joelparkerhenderson/architecture-decision-record) capture architectural decisions. But neither captures the *negative space*: what a project deliberately chose not to become. The approach that was rejected. The scope boundary held against pressure. The tradeoff that made sense three years ago in a context nobody wrote down.
+
+That knowledge lives in maintainers' heads. When those maintainers leave - or were never there - debugging becomes archaeology.
+
+## The Pipeline Problem
+
+You'd think the big tech companies would maintain standards. They have the money, the reputation, the products that can't break.
+
+Partly true. The floor is liability, not craft. [AWS](https://aws.amazon.com/) has had genuinely terrible documentation for over a decade. Still prints money. Switching cost is the moat. Quality only needs to clear the bar of "doesn't cause an expensive failure."
+
+The deeper problem: these same companies sell tools that produce vibe-coded output while running infrastructure that absolutely cannot be vibe-coded - kernels, distributed systems, security primitives. Internally they still need people who understand. But externally they're eroding the pipeline that produces those people. The junior dev who would've learned by grinding through PRs is now prompting their way through.
+
+Where do the systems engineers come from in ten years?
+
+---
+
+I don't think open source is broken. The knowledge-plus-agent model, when the human directing the agent actually understands what they're doing, might produce more good contributions than the old way ever could.
+
+But we're watching two things happen at once: the best contributors getting dramatically more capable, and the floor for "contribution" dropping to basically zero. What that equilibrium looks like is still unclear.
+
+The [Potemkin](https://en.wikipedia.org/wiki/Potemkin_village) codebases don't exist at scale yet.
+
+*Yet.*
