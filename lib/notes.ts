@@ -1,4 +1,4 @@
-import { getAllPosts, isPreviewMode, type NoteMetadata, type Post } from "./content";
+import { getAllPosts, type NoteMetadata, type Post } from "./content";
 
 export interface NoteFilters {
   collection?: string;
@@ -63,17 +63,18 @@ export function applyNoteFilters(notes: Post<NoteMetadata>[], filters: NoteFilte
   return filteredNotes;
 }
 
-export async function getFilteredNotes(filters: NoteFilters) {
-  const notes = await getAllPosts<NoteMetadata>("notes", isPreviewMode());
+export async function getFilteredNotes(filters: NoteFilters, locale: string = "en") {
+  const notes = await getAllPosts<NoteMetadata>("notes", locale);
   return applyNoteFilters(notes, filters);
 }
 
 export async function getPaginatedNotes(
   filters: NoteFilters,
   page: number = 1,
-  limit: number = 10
+  limit: number = 10,
+  locale: string = "en",
 ) {
-  const allNotes = await getFilteredNotes(filters);
+  const allNotes = await getFilteredNotes(filters, locale);
   const total = allNotes.length;
   const start = (page - 1) * limit;
   const end = start + limit;
