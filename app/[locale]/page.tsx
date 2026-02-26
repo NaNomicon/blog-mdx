@@ -6,15 +6,22 @@ import { PersonStructuredData } from "@/components/seo/structured-data";
 import { seoConfig } from "@/config/seo.config";
 import { generateSEOMetadata } from "@/lib/seo";
 
-// Define the metadata generation function
-export async function generateMetadata(): Promise<Metadata> {
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
   return generateSEOMetadata({
     title: "NaN's Blog | Software Development, Productivity & Growth",
-    description: "Personal blog of NaNomicon - Exploring software development, productivity, and personal growth through the lens of modern technology like AI and self-hosting.",
+    description:
+      "Personal blog of NaNomicon - Exploring software development, productivity, and personal growth through the lens of modern technology like AI and self-hosting.",
+    locale,
   });
 }
 
-export default function Home() {
+export default async function Home({ params }: Props) {
+  const { locale } = await params;
   return (
     <>
       <PersonStructuredData

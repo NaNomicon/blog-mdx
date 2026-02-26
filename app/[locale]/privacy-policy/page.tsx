@@ -3,18 +3,25 @@ import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import { generateSEOMetadata } from "@/lib/seo";
 
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
 // Dynamically import the MDX file
 const MDXContent = dynamic(() => import("@/content/en/pages/privacy-policy.mdx"));
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
   return generateSEOMetadata({
     title: "Privacy",
     description:
       "Privacy Policy for NaN's blog - Learn how we collect, use, and protect your information.",
+    locale,
   });
 }
 
-export default function PrivacyPolicy() {
+export default async function PrivacyPolicy({ params }: Props) {
+  const { locale } = await params;
   return (
     <>
       <div className="max-w-4xl mx-auto px-4 py-16">

@@ -1,4 +1,4 @@
-import type {Metadata} from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Code, Coffee, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,15 +7,22 @@ import { Separator } from "@/components/ui/separator";
 import { PersonStructuredData } from "@/components/seo/structured-data";
 import { generateSEOMetadata } from "@/lib/seo";
 
-// Define the metadata generation function
-export async function generateMetadata(): Promise<Metadata> {
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
   return generateSEOMetadata({
     title: "About | Software Development & Productivity",
-    description: "Learn more about NaN, a software developer exploring the intersection of productivity, self-development, and technology. Discover how I use AI and self-hosting as tools for growth.",
+    description:
+      "Learn more about NaN, a software developer exploring the intersection of productivity, self-development, and technology. Discover how I use AI and self-hosting as tools for growth.",
+    locale,
   });
 }
 
-export default function About() {
+export default async function About({ params }: Props) {
+  const { locale } = await params;
   return (
     <>
       <PersonStructuredData

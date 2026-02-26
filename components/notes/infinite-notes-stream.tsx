@@ -3,7 +3,7 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { type Post, type NoteMetadata } from "@/lib/content";
 import { NoteCard } from "./note-card";
-import { fetchNotesAction } from "@/app/notes/actions";
+import { fetchNotesAction } from "@/app/[locale]/notes/actions";
 import { type NoteFilters } from "@/lib/notes";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";

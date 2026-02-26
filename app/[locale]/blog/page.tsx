@@ -1,24 +1,32 @@
 import Link from "next/link";
 import Image from "next/image";
-import type {Metadata} from "next";
+import type { Metadata } from "next";
 import { generateSEOMetadata } from "@/lib/seo";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EngagementStats } from "@/components/mdx/engagement-stats";
 import { getAllPosts, isPreviewMode, type BlogPostMetadata } from "@/lib/content";
 
-export async function generateMetadata(): Promise<Metadata> {
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
   return generateSEOMetadata({
     title: "Blog",
-    description: "Welcome to the blog! Here you will find a collection of articles about web development, programming, technology insights, and personal experiences.",
+    description:
+      "Welcome to the blog! Here you will find a collection of articles about web development, programming, technology insights, and personal experiences.",
+    locale,
   });
 }
 
 // 🚀 ISR for blog listing - Revalidate every 30 minutes
 export const revalidate = 1800; // 30 minutes in seconds
 
-export default async function Home() {
-  const posts = await getAllPosts<BlogPostMetadata>("blogs");
+export default async function BlogPage({ params }: Props) {
+  const { locale } = await params;
+  const posts = await getAllPosts<BlogPostMetadata>("blogs", locale);
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-16 space-y-16">

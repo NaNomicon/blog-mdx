@@ -3,7 +3,11 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { getAllPosts, getPostBySlug, type NoteMetadata } from "@/lib/content";
 import { NoteCard } from "@/components/notes/note-card";
-import { generateSEOMetadata, defaultSEOConfig, extractSEOFromNoteMetadata } from "@/lib/seo";
+import {
+  generateSEOMetadata,
+  defaultSEOConfig,
+  extractSEOFromNoteMetadata,
+} from "@/lib/seo";
 import { NotesFilter } from "@/components/notes/notes-filter";
 import { SpoilerToggleButton } from "@/components/notes/spoiler-toggle-button";
 import { BreadcrumbStructuredData } from "@/components/seo/structured-data";
@@ -11,20 +15,41 @@ import { cn } from "@/lib/utils";
 import { applyNoteFilters, type NoteFilters } from "@/lib/notes";
 import { InfiniteNotesStream } from "@/components/notes/infinite-notes-stream";
 
+type Props = {
+  params: Promise<{ locale: string }>;
+  searchParams: {
+    collection?: string;
+    tag?: string;
+    note?: string;
+    from?: string;
+    to?: string;
+    sort?: "asc" | "desc";
+    view?: "masonry" | "list";
+    spoilers?: string;
+  };
+};
+
 export async function generateMetadata({
+  params,
   searchParams,
-}: {
-  searchParams: { note?: string };
-}): Promise<Metadata> {
+}: Props): Promise<Metadata> {
+  const { locale } = await params;
+
   if (searchParams.note) {
-    const result = await getPostBySlug<NoteMetadata>(searchParams.note, "notes");
+    const result = await getPostBySlug<NoteMetadata>(
+      searchParams.note,
+      "notes",
+      locale
+    );
     if (result) {
       const { post: note } = result;
-      const seoConfig = extractSEOFromNoteMetadata(note.metadata, searchParams.note);
+      const seoConfig = extractSEOFromNoteMetadata(
+        note.metadata,
+        searchParams.note
+      );
       return generateSEOMetadata({
         ...seoConfig,
-        // Override canonical to avoid duplicate content if needed, 
-        // but for sharing purposes we want the specific note title/desc
+        locale,
       });
     }
   }
@@ -34,25 +59,18 @@ export async function generateMetadata({
     description: "Short-form thoughts, quick tips, and web discoveries.",
     slug: "notes",
     pathPrefix: "",
+    locale,
   });
 }
 
 export const revalidate = 1800; // 30 minutes
 
 export default async function NotesPage({
+  params,
   searchParams,
-}: {
-  searchParams: { 
-    collection?: string; 
-    tag?: string; 
-    note?: string;
-    from?: string;
-    to?: string;
-    sort?: "asc" | "desc";
-    view?: "masonry" | "list";
-    spoilers?: string;
-  };
-}) {
+}: Props) {
+  const { locale } = await params;
+
   // Redirect old query parameter links to the new path-based clean URLs
   if (searchParams.note) {
     redirect(`/notes/${searchParams.note}`);
@@ -69,17 +87,24 @@ export default async function NotesPage({
   };
 
   // Get ALL notes ONCE (cached in lib/content)
-  const allNotes = await getAllPosts<NoteMetadata>("notes");
-  
+  const allNotes = await getAllPosts<NoteMetadata>("notes", locale);
+
   // Extract filter data from ALL notes
-  const allCollections = Array.from(new Set(allNotes.map(n => n.metadata.collection).filter(Boolean))) as string[];
-  const allTags = Array.from(new Set(allNotes.flatMap(n => n.metadata.tags || []))) as string[];
+  const allCollections = Array.from(
+    new Set(allNotes.map((n) => n.metadata.collection).filter(Boolean))
+  ) as string[];
+  const allTags = Array.from(
+    new Set(allNotes.flatMap((n) => n.metadata.tags || []))
+  ) as string[];
 
   // Apply filters and pagination locally from the already-fetched notes
   const filteredNotes = applyNoteFilters(allNotes, filters);
 
   // Calculate hidden spoilers count
-  const notesWithSpoilers = applyNoteFilters(allNotes, { ...filters, showSpoilers: true });
+  const notesWithSpoilers = applyNoteFilters(allNotes, {
+    ...filters,
+    showSpoilers: true,
+  });
   const hiddenCount = notesWithSpoilers.length - filteredNotes.length;
 
   const initialNotes = filteredNotes.slice(0, 10);
@@ -102,7 +127,9 @@ export default async function NotesPage({
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-muted-foreground/60">
                 <div className="h-px w-8 bg-border" />
-                <span className="text-xs font-bold uppercase tracking-[0.3em]">Knowledge Base</span>
+                <span className="text-xs font-bold uppercase tracking-[0.3em]">
+                  Knowledge Base
+                </span>
               </div>
               <h1 className="text-5xl sm:text-7xl font-light tracking-tight">
                 Notes
@@ -114,23 +141,25 @@ export default async function NotesPage({
             </div>
 
             <div className="flex-shrink-0">
-              <Suspense fallback={
-                <div className="flex flex-col items-end gap-3 py-2">
-                  <div className="flex flex-wrap items-center justify-end gap-3">
-                    <div className="h-10 w-[160px] bg-muted/20 animate-pulse rounded-md" />
-                    <div className="h-10 w-[180px] bg-muted/20 animate-pulse rounded-md" />
-                    <div className="h-10 w-[220px] bg-muted/20 animate-pulse rounded-md" />
+              <Suspense
+                fallback={
+                  <div className="flex flex-col items-end gap-3 py-2">
+                    <div className="flex flex-wrap items-center justify-end gap-3">
+                      <div className="h-10 w-[160px] bg-muted/20 animate-pulse rounded-md" />
+                      <div className="h-10 w-[180px] bg-muted/20 animate-pulse rounded-md" />
+                      <div className="h-10 w-[220px] bg-muted/20 animate-pulse rounded-md" />
+                    </div>
+                    <div className="flex items-center justify-end gap-2">
+                      <div className="h-10 w-[100px] bg-muted/20 animate-pulse rounded-md" />
+                      <div className="h-10 w-[80px] bg-muted/20 animate-pulse rounded-md" />
+                      <div className="h-10 w-[80px] bg-muted/20 animate-pulse rounded-md" />
+                    </div>
                   </div>
-                  <div className="flex items-center justify-end gap-2">
-                    <div className="h-10 w-[100px] bg-muted/20 animate-pulse rounded-md" />
-                    <div className="h-10 w-[80px] bg-muted/20 animate-pulse rounded-md" />
-                    <div className="h-10 w-[80px] bg-muted/20 animate-pulse rounded-md" />
-                  </div>
-                </div>
-              }>
-                <NotesFilter 
-                  collections={allCollections} 
-                  tags={allTags} 
+                }
+              >
+                <NotesFilter
+                  collections={allCollections}
+                  tags={allTags}
                   hiddenCount={hiddenCount}
                   initialFilters={{
                     collection: searchParams.collection,
@@ -150,7 +179,7 @@ export default async function NotesPage({
         {/* Notes Feed */}
         <section>
           {initialNotes.length > 0 ? (
-            <InfiniteNotesStream 
+            <InfiniteNotesStream
               initialNotes={initialNotes}
               filters={filters}
               hasMore={hasMore}
@@ -158,11 +187,14 @@ export default async function NotesPage({
             />
           ) : (
             <div className="text-center py-24 border rounded-2xl bg-muted/20 flex flex-col items-center justify-center space-y-4">
-              <p className="text-muted-foreground">No notes found matching your filters.</p>
+              <p className="text-muted-foreground">
+                No notes found matching your filters.
+              </p>
               {!showSpoilers && hiddenCount > 0 && (
                 <div className="animate-in fade-in slide-in-from-top-2 duration-700 flex flex-col items-center gap-4">
                   <p className="text-sm text-muted-foreground/60 max-w-md">
-                    Note: The spoiler toggle is currently on, hiding {hiddenCount} contents.
+                    Note: The spoiler toggle is currently on, hiding{" "}
+                    {hiddenCount} contents.
                   </p>
                   <SpoilerToggleButton />
                 </div>
