@@ -155,3 +155,48 @@ Collections group notes into filterable streams. Use consistent names (lowercase
 ### Filtering
 
 Readers can filter by `collection`, `tag`, date range, and `showSpoilers` in the notes stream UI.
+
+---
+
+## 3. Link Annotations (Tooltips)
+
+Links in MDX render with hover tooltips that show title, description, and optional context. **Always annotate external links** so readers get useful context instead of generic OG metadata.
+
+### Syntax
+
+```mdx
+[visible text](url "type | Your helpful note about why this link matters")
+```
+
+### Annotation Types
+
+| Type | When to use |
+|------|-------------|
+| `reference` | Source material, documentation, specs |
+| `mention` | Referencing another post, person, or project in passing |
+| `joke` | Humorous or ironic link |
+| `aside` | Tangential but interesting |
+| `further-reading` | Deep-dive or follow-up resource |
+| `warning` | Link contains sensitive, controversial, or paywalled content |
+
+### Examples
+
+```mdx
+[curl](https://curl.se "reference | Command-line tool for transferring data with URLs")
+[Rémi Verschelde](https://theregister.com/... "mention | Godot engine maintainer discussing AI PR spam")
+[relevant xkcd](https://xkcd.com/1319 "joke | The 'automation' comic")
+[sleep research](https://hubermanlab.com/... "further-reading | Full podcast episode on circadian biology")
+```
+
+### Why Annotate?
+
+- **Without annotation**: tooltip shows only the page’s OG title + description (often generic or unhelpful — e.g. `curl` just shows "curl.se")
+- **With annotation**: tooltip shows a colored badge, the OG data, AND your note — much more useful to readers
+
+### Rules
+
+- **Always annotate external links** — bare URLs produce generic tooltips that aren’t helpful
+- **Internal links** (`/blog/...`, `/notes/...`) auto-resolve title/description from the posts index — annotation is optional but encouraged for context
+- **Anchor links** (`#section`) have no tooltip — no annotation needed
+- The `type` is optional: `[text](url "Just a plain note without type")` works too
+- Keep notes concise (5–15 words) — explain *why* the link matters, not *what* the page is
