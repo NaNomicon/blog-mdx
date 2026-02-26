@@ -25,6 +25,12 @@ export default defineSchema({
     .index("by_slug_and_userId", ["slug", "userId"])
     .index("by_slug_and_userId_and_reactionType", ["slug", "userId", "reactionType"]),
 
+  og_cache: defineTable({
+    url: v.string(), // full URL (key for lookup)
+    title: v.string(), // OG title or page <title> fallback
+    description: v.string(), // OG description or empty string
+    fetchedAt: v.number(), // Unix timestamp ms (Date.now())
+  }).index("by_url", ["url"]),
   view_events: defineTable({
     slug: v.string(),
     userId: v.id("users"),

@@ -1,0 +1,278 @@
+{
+  "/blog/fixing-sleep-schedule": {
+    "title": "The Neuroscience Behind Fixing Your Sleep Schedule Summarized",
+    "description": "A summarization of Dr. K",
+    "href": "/blog/fixing-sleep-schedule",
+    "type": "blog"
+  },
+  "/blog/deploy-dokploy": {
+    "title": "Deploying Dokploy (and your docker registry) on multiple machines for self-hosting services",
+    "description": "Learn how to streamline deployments and self-host services using Dokploy, a flexible and developer-centric platform. This step-by-step guide walks you through setting up Dokploy on multiple VPS servers, deploying a private Docker registry, and configuring HTTPS with Let",
+    "href": "/blog/deploy-dokploy",
+    "type": "blog"
+  },
+  "/blog/the-hidden-buttons-that-must-never-die": {
+    "title": "The Hidden Buttons That Must Never Die",
+    "description": "A cautionary tale about the dangers of removing seemingly innocent UI elements from production code. Learn how two harmless-looking buttons brought down an entire booking system, the perils of obfuscated JavaScript dependencies, and why sometimes the best fix is to hide rather than delete. A freelancer",
+    "href": "/blog/the-hidden-buttons-that-must-never-die",
+    "type": "blog"
+  },
+  "/blog/when-brute-force-fails": {
+    "title": "When Brute Force Fails: Why Simple Solutions Beat Complex Engineering",
+    "description": "I inherited a messy codebase and spent a week building complex detection systems and tiered build configs. All failed. Then I found the solution was sitting right there on the internet. Here",
+    "href": "/blog/when-brute-force-fails",
+    "type": "blog"
+  },
+  "/blog/ai-and-tests-are-best-friends": {
+    "title": "AI and Tests are best friends",
+    "description": "How test-first workflows make AI agents more powerful and reliable for software development",
+    "href": "/blog/ai-and-tests-are-best-friends",
+    "type": "blog"
+  },
+  "/blog/the-shape-of-thought": {
+    "title": "The Shape of Thought",
+    "description": "A reflection on how the mediums we use, from architectural blueprints to programming languages, shape our thinking and the artifacts we create.",
+    "href": "/blog/the-shape-of-thought",
+    "type": "blog"
+  },
+  "/blog/abstraction-the-power-the-trap-and-the-escape-hatch": {
+    "title": "Abstraction: The Power, the Trap, and the Escape Hatch",
+    "description": "Explore the power and pitfalls of abstraction in software, why perfect wrappers are impossible, and how escape hatches empower both beginners and experts.",
+    "href": "/blog/abstraction-the-power-the-trap-and-the-escape-hatch",
+    "type": "blog"
+  },
+  "/blog/identity-fade": {
+    "title": "When \\",
+    "description": "Ever had an inspiring moment where you feel like you",
+    "href": "/blog/identity-fade",
+    "type": "blog"
+  },
+  "/blog/duplicating-gpg-tty-zprofile": {
+    "title": "The Curious Case of the Duplicating GPG_TTY and the Hidden .zprofile Culprit (and Why My Terminal Was So Slow!)",
+    "description": "A deep dive into why export GPG_TTY=$(tty) was duplicating in .zshrc, causing massive terminal slowdowns, and how to fix it by finding the culprit in .zprofile.",
+    "href": "/blog/duplicating-gpg-tty-zprofile",
+    "type": "blog"
+  },
+  "/blog/killing-the-local-first-dream": {
+    "title": "Killing the Local-First Dream (So I Can Finally Ship)",
+    "description": "Reflecting on the trade-offs between local-first architecture and development velocity, and choosing a hybrid path forward.",
+    "href": "/blog/killing-the-local-first-dream",
+    "type": "blog"
+  },
+  "/blog/my-broke-ass-cannot-have-higher-fps": {
+    "title": "My Broke Ass Cannot Have Higher FPS: A KVM Horror Story",
+    "description": "Solving a mysterious case of display flickering and signal loss on a Windows machine connected via a budget KVM switch.",
+    "href": "/blog/my-broke-ass-cannot-have-higher-fps",
+    "type": "blog"
+  },
+  "/blog/unlimited-tokens-is-a-huge-game-changer": {
+    "title": "Having Unlimited Tokens is a Huge Game Changer",
+    "description": "How OpenCode",
+    "href": "/blog/unlimited-tokens-is-a-huge-game-changer",
+    "type": "blog"
+  },
+  "/blog/dokploy-security-advisory": {
+    "title": "Critical Security Advisory: Dokploy Vulnerabilities Patched",
+    "description": "Remediation guide for CVE-2026-24839, CVE-2026-24840, and CVE-2026-24841. Update immediately.",
+    "href": "/blog/dokploy-security-advisory",
+    "type": "blog"
+  },
+  "/blog/ai-bubble-is-good": {
+    "title": "The AI Bubble is Good, Actually",
+    "description": "Why the inevitable AI crash will trigger a golden age for builders, based on the Carlota Perez framework and the ",
+    "href": "/blog/ai-bubble-is-good",
+    "type": "blog"
+  },
+  "/blog/open-source-is-becoming-open-token": {
+    "title": "Open Source is Becoming Open-Token",
+    "description": "AI agents are quietly changing what ",
+    "href": "/blog/open-source-is-becoming-open-token",
+    "type": "blog"
+  },
+  "/notes/a-new-way-of-operating": {
+    "title": "A new way of operating",
+    "description": "Introduction to Austin Kleon",
+    "href": "/notes/a-new-way-of-operating",
+    "type": "note"
+  },
+  "/notes/be-an-amateur": {
+    "title": "Be an amateur",
+    "description": "Why being an amateur is a superpower in the digital age.",
+    "href": "/notes/be-an-amateur",
+    "type": "note"
+  },
+  "/notes/become-a-documentarian-of-what-you-do": {
+    "title": "Become a documentarian of what you do",
+    "description": "Practical advice on documenting your creative process.",
+    "href": "/notes/become-a-documentarian-of-what-you-do",
+    "type": "note"
+  },
+  "/notes/build-a-good-domain-name": {
+    "title": "Build a good (domain) name",
+    "description": "The importance of owning your own space on the internet to share your work.",
+    "href": "/notes/build-a-good-domain-name",
+    "type": "note"
+  },
+  "/notes/credit-is-due": {
+    "title": "Credit is always due",
+    "description": "The essential practice of giving proper credit when sharing the work of others.",
+    "href": "/notes/credit-is-due",
+    "type": "note"
+  },
+  "/notes/dont-be-a-hoarder": {
+    "title": "Don",
+    "description": "Sharing your collections and inspirations as a way to define your taste and identity.",
+    "href": "/notes/dont-be-a-hoarder",
+    "type": "note"
+  },
+  "/notes/find-a-scenius": {
+    "title": "Find a scenius",
+    "description": "Austin Kleon explains Brian Eno",
+    "href": "/notes/find-a-scenius",
+    "type": "note"
+  },
+  "/notes/no-guilty-pleasures": {
+    "title": "No guilty pleasures",
+    "description": "Why being honest about what you love is the best way to connect with others.",
+    "href": "/notes/no-guilty-pleasures",
+    "type": "note"
+  },
+  "/notes/read-obituaries": {
+    "title": "Read obituaries",
+    "description": "Using obituaries as a source of inspiration and perspective on life and work.",
+    "href": "/notes/read-obituaries",
+    "type": "note"
+  },
+  "/notes/send-out-a-daily-dispatch": {
+    "title": "Send out a daily dispatch",
+    "description": "The importance of sharing a small piece of your process every single day.",
+    "href": "/notes/send-out-a-daily-dispatch",
+    "type": "note"
+  },
+  "/notes/share-your-trade-secrets": {
+    "title": "Share your trade secrets",
+    "description": "The importance of sharing your knowledge and expertise to build your brand and grow your audience.",
+    "href": "/notes/share-your-trade-secrets",
+    "type": "note"
+  },
+  "/notes/shut-up-and-listen": {
+    "title": "Shut up and listen",
+    "description": "",
+    "href": "/notes/shut-up-and-listen",
+    "type": "note"
+  },
+  "/notes/structure-is-everything": {
+    "title": "Structure is everything",
+    "description": "The importance of structure in storytelling and practical frameworks to use.",
+    "href": "/notes/structure-is-everything",
+    "type": "note"
+  },
+  "/notes/take-people-behind-the-scenes": {
+    "title": "Take people behind the scenes",
+    "description": "Why sharing your process is as important as the final product.",
+    "href": "/notes/take-people-behind-the-scenes",
+    "type": "note"
+  },
+  "/notes/talk-about-yourself-at-parties": {
+    "title": "Talk about yourself at parties",
+    "description": "How to introduce yourself to new people.",
+    "href": "/notes/talk-about-yourself-at-parties",
+    "type": "note"
+  },
+  "/notes/the-so-what-test": {
+    "title": "The ",
+    "description": "How to filter what you share using the ",
+    "href": "/notes/the-so-what-test",
+    "type": "note"
+  },
+  "/notes/turn-your-flow-into-stock": {
+    "title": "Turn your flow into stock",
+    "description": "Understanding the difference between flow (daily updates) and stock (durable content) and how to turn one into the other.",
+    "href": "/notes/turn-your-flow-into-stock",
+    "type": "note"
+  },
+  "/notes/why-notes": {
+    "title": "Why I decided to start micro-blogging",
+    "description": "",
+    "href": "/notes/why-notes",
+    "type": "note"
+  },
+  "/notes/work-doesnt-speak-for-itself": {
+    "title": "Work doesn",
+    "description": "Why the stories you tell about your work are just as important as the work itself.",
+    "href": "/notes/work-doesnt-speak-for-itself",
+    "type": "note"
+  },
+  "/notes/you-cant-find-your-voice-if-you-dont-use-it": {
+    "title": "You can",
+    "description": "Finding your voice through the act of sharing and using it.",
+    "href": "/notes/you-cant-find-your-voice-if-you-dont-use-it",
+    "type": "note"
+  },
+  "/notes/you-want-hearts-not-eyeballs": {
+    "title": "You want hearts, not eyeballs",
+    "description": "",
+    "href": "/notes/you-want-hearts-not-eyeballs",
+    "type": "note"
+  },
+  "/notes/earning-10k-with-161-line-of-javascript": {
+    "title": "Earning $10k with 161 line of Javascript",
+    "description": "A story about a simple Fortnite timer site that earned over $10k with just 161 lines of code, offering hope for indie developers.",
+    "href": "/notes/earning-10k-with-161-line-of-javascript",
+    "type": "note"
+  },
+  "/notes/identify-your-fellow-knuckleballers": {
+    "title": "Identify your fellow knuckleballers",
+    "description": "How to identify and value your fellow knuckleballers.",
+    "href": "/notes/identify-your-fellow-knuckleballers",
+    "type": "note"
+  },
+  "/notes/let-em-take-their-best-shot": {
+    "title": "Let ",
+    "description": "How to take criticisms and protect your vulnerabilities.",
+    "href": "/notes/let-em-take-their-best-shot",
+    "type": "note"
+  },
+  "/notes/meet-up-in-meatspace": {
+    "title": "Meet up in meatspace",
+    "description": "Meet up with your people in real life.",
+    "href": "/notes/meet-up-in-meatspace",
+    "type": "note"
+  },
+  "/notes/the-vampire-test": {
+    "title": "The vampire test",
+    "description": "Identify and avoid vampires.",
+    "href": "/notes/the-vampire-test",
+    "type": "note"
+  },
+  "/notes/cool-side-quest": {
+    "title": "Side Quest: PewDiePie at Wit Studio",
+    "description": "Reflections on PewDiePie",
+    "href": "/notes/cool-side-quest",
+    "type": "note"
+  },
+  "/notes/the-paradox-of-priority": {
+    "title": "Pride and Chores",
+    "description": "Why a 30-minute chore can sometimes feel more rewarding than a 10-hour work marathon.",
+    "href": "/notes/the-paradox-of-priority",
+    "type": "note"
+  },
+  "/notes/my-state-of-ai": {
+    "title": "My State of AI",
+    "description": "Personal record of AI tools, models, and workflow in early 2026.",
+    "href": "/notes/my-state-of-ai",
+    "type": "note"
+  },
+  "/notes/ai-copyright-code-art-music": {
+    "title": "The Illusion of Consent: AI Training in Code vs. Art vs. Music",
+    "description": "How AI ",
+    "href": "/notes/ai-copyright-code-art-music",
+    "type": "note"
+  },
+  "/notes/used-the-stones": {
+    "title": "I Used the Stones to Build More Stones",
+    "description": "Using AI agents to contribute to AI projects - not a paradox, a milestone.",
+    "href": "/notes/used-the-stones",
+    "type": "note"
+  }
+}
