@@ -36,6 +36,10 @@ export function LanguageSwitcher({ switchLabel, localeLabels }: LanguageSwitcher
   const handleSwitch = (newLocale: string) => {
     if (newLocale === currentLocale) return;
 
+    // Set next-intl's locale cookie so the middleware respects our choice.
+    // Without this, the middleware reads the old cookie and redirects back.
+    document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=${365 * 24 * 60 * 60}`;
+
     // Strip any non-default locale prefix to get the canonical path
     const canonicalPath =
       routing.locales
