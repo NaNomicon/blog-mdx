@@ -1,0 +1,23 @@
+services:
+  blog-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+      - .next:/app/.next
+    ports:
+      - "3001:3001"
+    environment:
+      - WATCHPACK_POLLING=true
+      - NODE_ENV=development
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4G
+
+volumes:
+  node_modules:
+  .next:
