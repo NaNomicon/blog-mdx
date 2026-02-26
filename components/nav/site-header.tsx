@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Menu } from "lucide-react";
 
 import {ModeToggle} from "@/components/nav/theme-toggle";
+import { LanguageSwitcher } from '@/components/nav/language-switcher';
 import {Sheet, SheetClose, SheetContent, SheetHeader, SheetTrigger,} from "@/components/ui/sheet";
 import { SocialLinks } from "./social-links";
 import HireButton from "../hire-button";
@@ -97,6 +98,7 @@ async function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <HireButton />
+          <LanguageSwitcher />
 
           {/* Theme Toggle */}
           <div className="flex items-center">
