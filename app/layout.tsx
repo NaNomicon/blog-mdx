@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import SiteHeader from "@/components/nav/site-header";
-import Footer from "@/components/nav/footer";
 import { ErrorBoundary } from "@/components/error-boundary";
 
 import { ThemeProvider } from "@/components/theme-provider";
@@ -90,11 +88,7 @@ export default function RootLayout({
           <ConvexClientProvider>
             <TooltipProvider delayDuration={0} skipDelayDuration={0}>
               <ErrorBoundary>
-                <div className="relative flex min-h-screen flex-col">
-                  <SiteHeader />
-                  <main className="flex-1">{children}</main>
-                  <Footer />
-                </div>
+                {children}
               </ErrorBoundary>
             </TooltipProvider>
             <Toaster />

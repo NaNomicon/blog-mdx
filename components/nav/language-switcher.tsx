@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Globe, Check } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,7 @@ interface LanguageSwitcherProps {
 
 export function LanguageSwitcher({ switchLabel, localeLabels }: LanguageSwitcherProps) {
   const pathname = usePathname();
+  const router = useRouter();
 
   // Derive current locale from the live pathname — never use a server-passed prop
   // which can be stale after client-side navigation.
@@ -53,10 +54,9 @@ export function LanguageSwitcher({ switchLabel, localeLabels }: LanguageSwitcher
         ? canonicalPath
         : `/${newLocale}${canonicalPath === '/' ? '' : canonicalPath}`;
 
-    // Hard navigation so root-layout server components (header/footer) re-render
-    // with the new locale. Soft navigation reuses the cached RSC payload and
-    // the server-translated strings would stay stale.
-    window.location.href = newPath;
+    // Soft navigation is fine now — SiteHeader/Footer are in [locale]/layout.tsx
+    // which re-renders when the locale segment changes, picking up fresh translations.
+    router.push(newPath);
   };
 
   return (
