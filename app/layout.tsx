@@ -88,7 +88,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ConvexClientProvider>
-            <TooltipProvider>
+            <TooltipProvider delayDuration={0} skipDelayDuration={0}>
               <ErrorBoundary>
                 <div className="relative flex min-h-screen flex-col">
                   <SiteHeader />

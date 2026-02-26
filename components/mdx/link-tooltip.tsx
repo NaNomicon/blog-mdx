@@ -225,6 +225,7 @@ function LinkTooltipInner({
     api.ogCache.getByUrl,
     isExternal ? { url: href } : "skip"
   );
+  const [isFetchPending, setIsFetchPending] = React.useState(false);
 
   // Trigger fetch on first hover if data is null or stale (>30 days)
   const hasFetchedRef = useRef(false);
@@ -237,9 +238,10 @@ function LinkTooltipInner({
       Date.now() - externalData.fetchedAt > THIRTY_DAYS_MS;
     if ((externalData === null || isStale) && !hasFetchedRef.current) {
       hasFetchedRef.current = true;
-      fetchOG({ url: href }).catch((err) =>
-        console.warn("OG fetch failed:", err)
-      );
+      setIsFetchPending(true);
+      fetchOG({ url: href })
+        .catch(() => {})
+        .finally(() => setIsFetchPending(false));
     }
   }, [isExternal, externalData, href, fetchOG]);
 
@@ -263,7 +265,7 @@ function LinkTooltipInner({
   );
 
   // Skip tooltip wrapper if nothing to show and not loading
-  if (!hasTooltipData && !(isExternal && externalData === undefined)) {
+  if (!hasTooltipData && !isExternal) {
     return linkEl;
   }
 
@@ -277,7 +279,7 @@ function LinkTooltipInner({
           contextNote={contextNote}
           linkType={linkType}
           isExternal={isExternal}
-          isLoading={isExternal && externalData === undefined}
+          isLoading={isExternal && (externalData === undefined || isFetchPending)}
         />
       </TooltipContent>
     </Tooltip>
