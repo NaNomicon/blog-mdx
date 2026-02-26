@@ -1,0 +1,4 @@
+
+> next-template-mdx-shad@0.1.10 type-check /Users/nhanlc/para/1-projects/work/personal/blog-mdx
+> tsc --noEmit
+

@@ -1,0 +1,5 @@
+
+> next-template-mdx-shad@0.1.10 lint /Users/nhanlc/para/1-projects/work/personal/blog-mdx
+> next lint
+
+✔ No ESLint warnings or errors

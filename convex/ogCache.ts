@@ -66,3 +66,22 @@ export const upsert = mutation({
     return null;
   },
 });
+/**
+ * Delete a cached OG entry by URL.
+ */
+export const deleteByUrl = mutation({
+  args: { url: v.string() },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("og_cache")
+      .withIndex("by_url", (q) => q.eq("url", args.url))
+      .unique();
+
+    if (existing) {
+      await ctx.db.delete(existing._id);
+    }
+
+    return null;
+  },
+});

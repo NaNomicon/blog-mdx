@@ -1,0 +1,6 @@
+pnpm type-check 2>&1 | tail -8 output:
+
+> next-template-mdx-shad@0.1.10 type-check /Users/nhanlc/para/1-projects/work/personal/blog-mdx
+> tsc --noEmit
+
+(exit 0 — no errors)

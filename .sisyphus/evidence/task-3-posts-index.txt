@@ -1,0 +1,3 @@
+Successfully generated index at /Users/nhanlc/para/1-projects/work/personal/blog-mdx/lib/data/posts-index.json
+Processed 46 of 46 files.
+keys: 46 sample: ["/blog/fixing-sleep-schedule",{"title":"The Neuroscience Behind Fixing Your Sleep Schedule Summarized","description":"A summarization of Dr. K","href":"/blog/fixing-sleep-schedule","type":"blog"}]
