@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu } from "lucide-react";
@@ -11,6 +11,8 @@ import HireButton from "../hire-button";
 
 async function SiteHeader() {
   const t = await getTranslations('Nav');
+  const tI18n = await getTranslations('I18n');
+  const locale = await getLocale();
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-6 lg:px-8">
@@ -98,7 +100,7 @@ async function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <HireButton />
-          <LanguageSwitcher />
+          <LanguageSwitcher switchLabel={tI18n('switchLanguage')} localeLabels={{ en: tI18n('locales.en'), vi: tI18n('locales.vi') }} currentLocale={locale} />
 
           {/* Theme Toggle */}
           <div className="flex items-center">

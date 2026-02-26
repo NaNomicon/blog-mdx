@@ -1,6 +1,6 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+import { useRouter, usePathname } from 'next/navigation';
 import { Globe, Check } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -15,16 +15,34 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { routing, useRouter, usePathname } from '@/i18n/routing';
+import { routing } from '@/i18n/routing';
 
-export function LanguageSwitcher() {
-  const t = useTranslations('I18n');
-  const currentLocale = useLocale();
+interface LanguageSwitcherProps {
+  switchLabel: string;
+  localeLabels: Record<string, string>;
+  currentLocale: string;
+}
+
+export function LanguageSwitcher({ switchLabel, localeLabels, currentLocale }: LanguageSwitcherProps) {
   const router = useRouter();
   const pathname = usePathname();
 
   const handleSwitch = (newLocale: string) => {
-    router.replace(pathname, { locale: newLocale });
+    if (newLocale === currentLocale) return;
+
+    // Strip current locale prefix (non-default locales have a /xx prefix)
+    let strippedPath = pathname;
+    if (currentLocale !== routing.defaultLocale) {
+      strippedPath = pathname.replace(new RegExp(`^/${currentLocale}(?=/|$)`), '') || '/';
+    }
+
+    // Build the new path with the target locale prefix
+    const newPath =
+      newLocale === routing.defaultLocale
+        ? strippedPath
+        : `/${newLocale}${strippedPath}`;
+
+    router.push(newPath);
   };
 
   return (
@@ -36,11 +54,11 @@ export function LanguageSwitcher() {
               <Button
                 variant="ghost"
                 size="icon"
-                aria-label={t('switchLanguage')}
+                aria-label={switchLabel}
                 className="relative group hover:bg-primary/10 hover:text-primary transition-all duration-300"
               >
                 <Globe className="h-[1.2rem] w-[1.2rem] transition-all duration-300 group-hover:rotate-12" />
-                <span className="sr-only">{t('switchLanguage')}</span>
+                <span className="sr-only">{switchLabel}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="bg-background border border-border/50 shadow-lg">
@@ -55,7 +73,7 @@ export function LanguageSwitcher() {
                   ) : (
                     <span className="mr-2 h-4 w-4 inline-block" />
                   )}
-                  {t(`locales.${locale}`)}
+                  {localeLabels[locale] ?? locale}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -63,7 +81,7 @@ export function LanguageSwitcher() {
         </div>
       </TooltipTrigger>
       <TooltipContent>
-        <p>{t('switchLanguage')}</p>
+        <p>{switchLabel}</p>
       </TooltipContent>
     </Tooltip>
   );
