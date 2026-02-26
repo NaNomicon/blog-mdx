@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
@@ -26,6 +27,7 @@ export const revalidate = 1800; // 30 minutes in seconds
 
 export default async function BlogPage({ params }: Props) {
   const { locale } = await params;
+  const t = await getTranslations('Blog');
   const posts = await getAllPosts<BlogPostMetadata>("blogs", locale);
 
   return (
@@ -34,13 +36,13 @@ export default async function BlogPage({ params }: Props) {
       <section className="text-center space-y-8">
         <div className="space-y-4">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight">
-            Blog
+            {t('title')}
             <span className="text-muted-foreground">.</span>
           </h1>
           <div className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent mx-auto" />
         </div>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          A collection of thoughts, insights, and discoveries from my journey in development and beyond
+          {t('description')}
         </p>
       </section>
 
@@ -114,7 +116,7 @@ export default async function BlogPage({ params }: Props) {
                       )}
                       
                       <div className="flex items-center gap-2 text-sm font-medium text-foreground/60 group-hover:text-foreground/80 transition-colors">
-                        Read more
+                        {t('readMore')}
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
                     </div>
@@ -129,13 +131,13 @@ export default async function BlogPage({ params }: Props) {
               <Calendar className="w-8 h-8 text-muted-foreground" />
             </div>
             <div className="space-y-2">
-              <h3 className="text-xl font-medium">No posts yet</h3>
+              <h3 className="text-xl font-medium">{t('noPostsYet')}</h3>
               <p className="text-muted-foreground">
-                Check back soon for new content!
+                {t('checkBackSoon')}
               </p>
             </div>
             <Button asChild variant="outline">
-              <Link href="/">Return home</Link>
+              <Link href="/">{t('returnHome')}</Link>
             </Button>
           </div>
         )}

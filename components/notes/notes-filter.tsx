@@ -36,6 +36,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslations } from "next-intl";
 
 export function NotesFilter({ 
   collections, 
@@ -58,6 +59,8 @@ export function NotesFilter({
     spoilers?: string;
   };
 }) {
+  const t = useTranslations("Notes");
+  const tc = useTranslations("Common");
   const [mounted, setMounted] = React.useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -163,7 +166,7 @@ export function NotesFilter({
                   <SelectValue placeholder="Collection" />
                 </SelectTrigger>
                 <SelectContent className="z-40">
-                  <SelectItem value="all">All Collections</SelectItem>
+                  <SelectItem value="all">{t('allCollections')}</SelectItem>
                   {collections.map((collection) => (
                     <SelectItem key={collection} value={collection}>
                       {collection}
@@ -186,17 +189,17 @@ export function NotesFilter({
                 >
                   <span className="truncate text-xs uppercase tracking-wider font-medium">
                     {currentTags.length > 0
-                      ? `${currentTags.length} Tags`
-                      : "Filter Tags"}
+                      ? `${currentTags.length} ${tc('tags')}`
+                      : t('filterTags')}
                   </span>
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[200px] p-0 z-40" align="end">
                 <Command>
-                  <CommandInput placeholder="Search tags..." />
+                  <CommandInput placeholder={t('searchTags')} />
                   <CommandList>
-                    <CommandEmpty>No tag found.</CommandEmpty>
+                    <CommandEmpty>{t('noTagFound')}</CommandEmpty>
                     <CommandGroup>
                       {tags.map((tag) => (
                         <CommandItem
@@ -246,7 +249,7 @@ export function NotesFilter({
                         format(dateRange.from, "LLL dd, y")
                       )
                     ) : (
-                      "Pick a date"
+                      t('pickADate')
                     )}
                   </span>
                 </Button>
@@ -285,7 +288,7 @@ export function NotesFilter({
                     <EyeOff className="h-4 w-4 mr-2 text-muted-foreground" />
                   )}
                   <span className="text-xs font-medium uppercase tracking-wider">
-                    Spoilers
+                    {t('spoilers')}
                   </span>
                   {!showSpoilers && hiddenCount > 0 && (
                     <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground shadow-sm">
@@ -297,8 +300,8 @@ export function NotesFilter({
               <TooltipContent>
                 <p className="text-xs">
                   {showSpoilers 
-                    ? "Hide book summaries and spoilers" 
-                    : `Show ${hiddenCount} hidden book summaries and spoilers`}
+                    ? t('hideSpoilers') 
+                    : t('showSpoilers', { count: hiddenCount })}
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -318,7 +321,7 @@ export function NotesFilter({
               <ArrowUpWideNarrow className="h-4 w-4 mr-2 text-primary" />
             )}
             <span className="text-xs font-medium uppercase tracking-wider">
-              {currentSort === "desc" ? "Newest" : "Oldest"}
+              {currentSort === "desc" ? t('newest') : t('oldest')}
             </span>
           </Button>
 
@@ -336,7 +339,7 @@ export function NotesFilter({
               <List className="h-4 w-4 mr-2 text-primary" />
             )}
             <span className="text-xs font-medium uppercase tracking-wider">
-              {currentLayout === "masonry" ? "Masonry" : "List"}
+              {currentLayout === "masonry" ? t('masonry') : t('list')}
             </span>
           </Button>
 
@@ -348,7 +351,7 @@ export function NotesFilter({
               onClick={clearFilters}
             >
               <X className="mr-1 h-3.5 w-3.5" />
-              Reset
+              {t('reset')}
             </Button>
           )}
         </div>
@@ -360,7 +363,7 @@ export function NotesFilter({
           {showSpoilers && (
             <Badge variant="secondary" className="flex items-center gap-1 py-1 px-2 bg-primary/5 hover:bg-primary/10 transition-colors border-none text-[10px] font-bold uppercase tracking-widest text-primary">
               <Eye className="h-3 w-3 mr-1" />
-              Showing Spoilers
+              {t('showingSpoilers')}
               <button 
                 className="ml-1 rounded-full outline-none focus:ring-1 focus:ring-ring"
                 onClick={(e) => {

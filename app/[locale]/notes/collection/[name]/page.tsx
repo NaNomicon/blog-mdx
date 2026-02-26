@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { type Metadata } from "next";
 import {
@@ -86,6 +87,7 @@ export default async function CollectionPage({
 }: Props) {
   const { locale, name } = await params;
   const collectionName = decodeURIComponent(name);
+  const t = await getTranslations('Notes');
 
   const filters: NoteFilters = {
     collection: collectionName,
@@ -159,7 +161,7 @@ export default async function CollectionPage({
             <Link href="/notes" className="flex items-center gap-2">
               <ChevronLeft className="h-4 w-4" />
               <span className="text-sm font-medium uppercase tracking-wider">
-                Back to all notes
+                {t('backToAllNotes')}
               </span>
             </Link>
           </Button>
@@ -169,7 +171,7 @@ export default async function CollectionPage({
               <div className="flex items-center gap-3 text-muted-foreground/60">
                 <div className="h-px w-8 bg-border" />
                 <span className="text-xs font-bold uppercase tracking-[0.3em]">
-                  Collection
+                  {t('collection')}
                 </span>
               </div>
               <h1 className="text-5xl sm:text-6xl font-light tracking-tight">

@@ -7,6 +7,7 @@ import { fetchNotesAction } from "@/app/[locale]/notes/actions";
 import { type NoteFilters } from "@/lib/notes";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface InfiniteNotesStreamProps {
   initialNotes: Post<NoteMetadata>[];
@@ -21,6 +22,8 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
   hasMore: initialHasMore,
   currentLayout,
 }: InfiniteNotesStreamProps) {
+  const t = useTranslations("Notes");
+  const tc = useTranslations("Common");
   const [notes, setNotes] = useState(initialNotes);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(initialHasMore);
@@ -125,7 +128,7 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
           {isPending && (
             <div className="flex items-center gap-2 text-muted-foreground/40 animate-in fade-in duration-500">
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Synchronizing...</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em]">{tc('synchronizing')}</span>
             </div>
           )}
         </div>
@@ -133,7 +136,7 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
       
       {!hasMore && notes.length > 0 && (
         <div className="text-center py-20">
-          <span className="text-[10px] font-bold uppercase tracking-[0.3em]">There&apos;s no more notes to show.</span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em]">{t('noMoreNotes')}</span>
         </div>
       )}
     </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link as LinkIcon, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface ShareNoteProps {
   slug: string;
@@ -12,6 +13,7 @@ interface ShareNoteProps {
 
 export function ShareNote({ slug, className }: ShareNoteProps) {
   const [copied, setCopied] = useState(false);
+  const t = useTranslations("Notes");
 
   const copyLink = () => {
     const url = `${window.location.origin}/notes/${slug}`;
@@ -35,7 +37,7 @@ export function ShareNote({ slug, className }: ShareNoteProps) {
       ) : (
         <LinkIcon className="h-3.5 w-3.5" />
       )}
-      <span className="text-xs font-medium">{copied ? "Copied!" : "Copy Link"}</span>
+      <span className="text-xs font-medium">{copied ? t('copied') : t('copyLink')}</span>
     </Button>
   );
 }

@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { type Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
@@ -70,6 +71,7 @@ export default async function NotesPage({
   searchParams,
 }: Props) {
   const { locale } = await params;
+  const t = await getTranslations('Notes');
 
   // Redirect old query parameter links to the new path-based clean URLs
   if (searchParams.note) {
@@ -128,15 +130,15 @@ export default async function NotesPage({
               <div className="flex items-center gap-3 text-muted-foreground/60">
                 <div className="h-px w-8 bg-border" />
                 <span className="text-xs font-bold uppercase tracking-[0.3em]">
-                  Knowledge Base
+                  {t('knowledgeBase')}
                 </span>
               </div>
               <h1 className="text-5xl sm:text-7xl font-light tracking-tight">
-                Notes
+                {t('title')}
                 <span className="text-primary">.</span>
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
-                A stream of short-form thoughts, quick tips, and discoveries.
+                {t('description')}
               </p>
             </div>
 
@@ -188,13 +190,12 @@ export default async function NotesPage({
           ) : (
             <div className="text-center py-24 border rounded-2xl bg-muted/20 flex flex-col items-center justify-center space-y-4">
               <p className="text-muted-foreground">
-                No notes found matching your filters.
+                {t('noNotesFound')}
               </p>
               {!showSpoilers && hiddenCount > 0 && (
                 <div className="animate-in fade-in slide-in-from-top-2 duration-700 flex flex-col items-center gap-4">
                   <p className="text-sm text-muted-foreground/60 max-w-md">
-                    Note: The spoiler toggle is currently on, hiding{" "}
-                    {hiddenCount} contents.
+                    {t('spoilerNote', { count: hiddenCount })}
                   </p>
                   <SpoilerToggleButton />
                 </div>

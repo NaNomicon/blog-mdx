@@ -62,12 +62,12 @@ Replace the plain `<a>` link renderer in MDX content with a smart `LinkTooltip` 
 - `mdx-components.tsx` — updated `a` mapping
 
 ### Definition of Done
-- [ ] `pnpm lint && pnpm type-check` passes with 0 errors
-- [ ] Hovering an annotated MDX link shows tooltip with type badge + content
-- [ ] Hovering an un-annotated MDX link shows tooltip with title/description only
-- [ ] External link tooltip shows loading state then resolves to OG content
-- [ ] Links with `#` anchors have no tooltip
-- [ ] `pnpm build:local` exits 0
+- [x] `pnpm lint && pnpm type-check` passes with 0 errors
+- [x] Hovering an annotated MDX link shows tooltip with type badge + content
+- [x] Hovering an un-annotated MDX link shows tooltip with title/description only
+- [x] External link tooltip shows loading state then resolves to OG content
+- [x] Links with `#` anchors have no tooltip
+- [x] `pnpm build:local` exits 0
 
 ### Must Have
 - Title attribute parsing: `"type | note"` format with `split('|', 2)`
@@ -356,11 +356,11 @@ Max Concurrent: 3 (Wave 1)
   - Files: `convex/ogCache.ts`, `convex/actions/fetchAndCacheOG.ts` (or equivalent path)
 ## Final Verification Wave
 
-- [ ] F1. **Build + Lint Audit** — `quick`
+- [x] F1. **Build + Lint Audit** — `quick`
   Run `pnpm lint && pnpm type-check && pnpm build:local`. Assert: 0 lint errors, 0 type errors, build exits 0.
   Output: `Lint [PASS/FAIL] | Types [PASS/FAIL] | Build [PASS/FAIL] | VERDICT`
 
-- [ ] F2. **Full Tooltip QA** — `unspecified-high` (+ `playwright` skill)
+- [x] F2. **Full Tooltip QA** — `unspecified-high` (+ `playwright` skill)
   Use Playwright on `http://localhost:3001`. Start dev server. Open a blog post that has at least one annotated link. Hover each annotated link — assert tooltip shows correct badge label, color class, title, description. Verify un-annotated link shows tooltip with title only (no badge). Verify a `#` anchor link shows NO tooltip. Screenshot each scenario to `.sisyphus/evidence/final-qa/`.
   Output: `Scenarios [N/N pass] | VERDICT`
 
@@ -385,12 +385,12 @@ pnpm build:local # Expected: exit 0
 ```
 
 ### Final Checklist
-- [ ] Hovering annotated links shows badge + tooltip in MDX posts
-- [ ] Hovering plain links shows tooltip without badge
-- [ ] External link tooltips populate from Convex (OG title/description)
-- [ ] Internal link tooltips resolve instantly (static JSON)
-- [ ] Anchor links (`#...`) have no tooltip
-- [ ] `pnpm lint && pnpm type-check` clean
+- [x] Hovering annotated links shows badge + tooltip in MDX posts
+- [x] Hovering plain links shows tooltip without badge
+- [x] External link tooltips populate from Convex (OG title/description)
+- [x] Internal link tooltips resolve instantly (static JSON)
+- [x] Anchor links (`#...`) have no tooltip
+- [x] `pnpm lint && pnpm type-check` clean
 
 - [x] 5. Build `LinkTooltip` client component
 
@@ -552,7 +552,7 @@ pnpm build:local # Expected: exit 0
   - Message: `feat(link-tooltip): wire LinkTooltip into MDX renderer and layout`
   - Files: `mdx-components.tsx`, `app/layout.tsx` (if modified)
 
-- [ ] 7. Playwright QA pass
+- [x] 7. Playwright QA pass
 
   **What to do**:
   - Start the dev server: `pnpm dev` on port 3001 (in background via tmux or existing dev server)
@@ -606,11 +606,11 @@ pnpm build:local # Expected: exit 0
   ```
 
   **Evidence to Capture**:
-  - [ ] `task-7-external-annotated.png`
-  - [ ] `task-7-external-plain.png`
-  - [ ] `task-7-internal-annotated.png`
-  - [ ] `task-7-anchor-no-tooltip.png`
-  - [ ] `task-7-console-clean.txt`
+  - [x] `task-7-external-annotated.png`
+  - [x] `task-7-external-plain.png`
+  - [x] `task-7-internal-annotated.png`
+  - [x] `task-7-anchor-no-tooltip.png`
+  - [x] `task-7-console-clean.txt`
 
   **Commit**: NO (test draft not committed; no source changes)
 
@@ -618,15 +618,15 @@ pnpm build:local # Expected: exit 0
 
 ## Final Verification Wave
 
-- [ ] F1. **Plan Compliance Audit** — `oracle`
+- [x] F1. **Plan Compliance Audit** — `oracle`
   Read the plan end-to-end. For each Must Have: verify implementation exists (read file, confirm component/function exists). For each Must NOT Have: search codebase for forbidden patterns. Check that `lib/data/posts-index.json` was generated and committed. Compare deliverables against plan.
   Output: `Must Have [N/N] | Must NOT Have [N/N] | Tasks [N/N] | VERDICT: APPROVE/REJECT`
 
-- [ ] F2. **Code Quality Review** — `unspecified-high`
+- [x] F2. **Code Quality Review** — `unspecified-high`
   Run `pnpm lint` + `pnpm type-check`. Review all changed files for: `as any`/`@ts-ignore`, empty catches, console.log in prod code, unused imports, `title` prop leaked to DOM `<a>` element. Check no Convex action throws uncaught errors.
   Output: `Build [PASS/FAIL] | Lint [PASS/FAIL] | Types [N errors] | VERDICT`
 
-- [ ] F3. **Real QA** — `unspecified-high` (+ `playwright` skill)
+- [x] F3. **Real QA** — `unspecified-high` (+ `playwright` skill)
   Run dev server on port 3001. Test every QA scenario from T1-T6. Additionally test cross-concern integration:
   - Internal link with annotation shows badge + internal post description
   - External link starts loading state, then populates tooltip
@@ -635,7 +635,7 @@ pnpm build:local # Expected: exit 0
   Save all evidence to `.sisyphus/evidence/final-qa/`.
   Output: `Scenarios [N/N pass] | Integration [N/N] | VERDICT`
 
-- [ ] F4. **Scope Fidelity Check** — `deep`
+- [x] F4. **Scope Fidelity Check** — `deep`
   For each task: read "What to do", read actual git diff. Verify 1:1 alignment. Check no cross-task contamination. Ensure `title` parsing handles all annotated edge cases (type-only, note-only, neither, pipe in note).
   Output: `Tasks [N/N compliant] | Contamination [CLEAN/N] | VERDICT`
 
@@ -659,11 +659,11 @@ node -e "JSON.parse(require('fs').readFileSync('lib/data/posts-index.json','utf8
 ```
 
 ### Final Checklist
-- [ ] `config/link-types.ts` defines 6 types with distinct colors
-- [ ] `convex/schema.ts` has `og_cache` table with `by_url` index
-- [ ] `convex/ogCache.ts` has `getByUrl` query and `upsert` mutation
-- [ ] Convex action `fetchAndCacheOG` fetches and stores OG metadata with 5s timeout
-- [ ] `scripts/refresh-posts-index.mjs` generates `lib/data/posts-index.json`
-- [ ] `components/mdx/link-tooltip.tsx` is `'use client'`, never forwards `title` to DOM, handles all 3 link kinds (internal, external, anchor)
-- [ ] `mdx-components.tsx` maps `a` to `LinkTooltip`
-- [ ] `pnpm lint && pnpm type-check` clean
+- [x] `config/link-types.ts` defines 6 types with distinct colors
+- [x] `convex/schema.ts` has `og_cache` table with `by_url` index
+- [x] `convex/ogCache.ts` has `getByUrl` query and `upsert` mutation
+- [x] Convex action `fetchAndCacheOG` fetches and stores OG metadata with 5s timeout
+- [x] `scripts/refresh-posts-index.mjs` generates `lib/data/posts-index.json`
+- [x] `components/mdx/link-tooltip.tsx` is `'use client'`, never forwards `title` to DOM, handles all 3 link kinds (internal, external, anchor)
+- [x] `mdx-components.tsx` maps `a` to `LinkTooltip`
+- [x] `pnpm lint && pnpm type-check` clean
