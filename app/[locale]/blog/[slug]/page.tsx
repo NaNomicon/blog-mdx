@@ -22,6 +22,7 @@ import {
   type BlogPostMetadata,
 } from "@/lib/content";
 import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -41,10 +42,13 @@ export async function generateMetadata(
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllPosts<BlogPostMetadata>("blogs");
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  const results = await Promise.all(
+    routing.locales.map(async (locale) => {
+      const posts = await getAllPosts<BlogPostMetadata>("blogs", locale);
+      return posts.map((post) => ({ locale, slug: post.slug }));
+    })
+  );
+  return results.flat();
 }
 
 // 🚀 ISR Magic - Revalidate every hour!

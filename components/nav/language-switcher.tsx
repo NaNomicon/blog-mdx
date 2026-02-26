@@ -56,7 +56,7 @@ export function LanguageSwitcher({ switchLabel, localeLabels }: LanguageSwitcher
 
     // Soft navigation is fine now — SiteHeader/Footer are in [locale]/layout.tsx
     // which re-renders when the locale segment changes, picking up fresh translations.
-    router.push(newPath);
+    router.push(newPath + window.location.search + window.location.hash);
   };
 
   return (

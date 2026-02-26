@@ -5,6 +5,7 @@ import {
   type NoteMetadata,
 } from "@/lib/content";
 import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
 import {
   generateSEOMetadata,
   extractSEOFromNoteMetadata,
@@ -32,10 +33,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const notes = await getAllPosts<NoteMetadata>("notes");
-  return notes.map((note) => ({
-    slug: note.slug,
-  }));
+  const results = await Promise.all(
+    routing.locales.map(async (locale) => {
+      const notes = await getAllPosts<NoteMetadata>("notes", locale);
+      return notes.map((note) => ({ locale, slug: note.slug }));
+    })
+  );
+  return results.flat();
 }
 
 // 🚀 ISR Magic - Revalidate every hour!

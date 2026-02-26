@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { GithubIcon, ExternalLink } from "lucide-react";
 import { getVersion } from "@/lib/version";
@@ -67,7 +67,7 @@ async function Footer() {
           <div className="flex flex-col items-end gap-3">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>{t('poweredBy')}</span>
-              <Link
+              <a
                 href="https://www.mdxblog.io/"
                 className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
                 target="_blank"
@@ -75,9 +75,9 @@ async function Footer() {
               >
                 MDXBlog
                 <ExternalLink className="w-3 h-3" />
-              </Link>
+              </a>
             </div>
-            <Link
+            <a
               href="https://github.com/NaN72dev/blog-mdx"
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               target="_blank"
@@ -86,7 +86,7 @@ async function Footer() {
               <GithubIcon className="w-4 h-4" />
               <span>{t('viewSource')}</span>
               <ExternalLink className="w-3 h-3" />
-            </Link>
+            </a>
           </div>
         </div>
 
