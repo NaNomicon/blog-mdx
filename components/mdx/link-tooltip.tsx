@@ -150,19 +150,50 @@ export function LinkTooltip(props: LinkTooltipProps) {
     : null;
 
   return (
-    <LinkTooltipInner
-      href={href}
-      isInternal={isInternal}
-      isExternal={isExternal}
-      internalData={internalData}
-      linkType={linkType}
-      contextNote={contextNote}
-      restProps={restProps}
-    >
-      {props.children}
-    </LinkTooltipInner>
+    <LinkTooltipErrorBoundary href={href} restProps={restProps}>
+      <LinkTooltipInner
+        href={href}
+        isInternal={isInternal}
+        isExternal={isExternal}
+        internalData={internalData}
+        linkType={linkType}
+        contextNote={contextNote}
+        restProps={restProps}
+      >
+        {props.children}
+      </LinkTooltipInner>
+    </LinkTooltipErrorBoundary>
   );
 }
+class LinkTooltipErrorBoundary extends React.Component<
+  { href: string; restProps: React.AnchorHTMLAttributes<HTMLAnchorElement>; children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { href: string; restProps: React.AnchorHTMLAttributes<HTMLAnchorElement>; children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: any, info: any) {
+    console.warn("LinkTooltip Convex Error:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <a href={this.props.href} {...this.props.restProps}>
+          {this.props.children}
+        </a>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 
 // ---------------------------------------------------------------------------
 // Inner component — isolates Convex hooks so they only run for external links
