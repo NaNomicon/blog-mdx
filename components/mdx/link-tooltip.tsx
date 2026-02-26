@@ -23,6 +23,7 @@ interface TooltipCardProps {
   contextNote?: string | null;
   linkType?: LinkType | null;
   isExternal?: boolean;
+  href?: string;
   isLoading?: boolean;
 }
 
@@ -32,10 +33,12 @@ function TooltipCard({
   contextNote,
   linkType,
   isLoading,
+  href,
+  isExternal,
 }: TooltipCardProps) {
   if (isLoading && !title) {
     return (
-      <div className="p-3 space-y-2 min-w-[160px]">
+      <div className="p-3 space-y-2 min-w-[200px]">
         <div className="h-3 bg-muted rounded animate-pulse w-3/4" />
         <div className="h-2 bg-muted rounded animate-pulse w-full" />
         <div className="h-2 bg-muted rounded animate-pulse w-2/3" />
@@ -44,9 +47,17 @@ function TooltipCard({
   }
 
   const typeConfig = linkType ? LINK_TYPES[linkType] : null;
+  const domain = (() => {
+    if (!href || !isExternal) return null;
+    try {
+      return new URL(href).hostname.replace('www.', '');
+    } catch {
+      return null;
+    }
+  })();
 
   return (
-    <div className="p-3 space-y-1.5 min-w-[160px] max-w-xs">
+    <div className="p-3 space-y-1.5 min-w-[200px] max-w-sm">
       {/* Type badge */}
       {typeConfig && (
         <span
@@ -60,16 +71,22 @@ function TooltipCard({
         </span>
       )}
 
+      {/* Domain */}
+      {domain && (
+        <span className="text-[10px] text-muted-foreground/60 truncate block">
+          {domain}
+        </span>
+      )}
       {/* Title */}
       {title && (
-        <p className="text-sm font-semibold leading-snug text-popover-foreground">
+        <p className="text-sm font-semibold leading-snug text-popover-foreground line-clamp-2">
           {title}
         </p>
       )}
 
       {/* Description */}
       {description && (
-        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+        <p className="text-xs text-muted-foreground line-clamp-3 leading-relaxed">
           {description}
         </p>
       )}
@@ -272,13 +289,14 @@ function LinkTooltipInner({
   return (
     <Tooltip>
       <TooltipTrigger asChild>{linkEl}</TooltipTrigger>
-      <TooltipContent className="z-50 max-w-xs p-0 bg-popover border border-border shadow-lg rounded-lg overflow-hidden">
+      <TooltipContent className="z-50 max-w-sm p-0 bg-popover border border-border shadow-lg rounded-lg overflow-hidden">
         <TooltipCard
           title={tooltipTitle}
           description={tooltipDescription}
           contextNote={contextNote}
           linkType={linkType}
           isExternal={isExternal}
+          href={href}
           isLoading={isExternal && (externalData === undefined || isFetchPending)}
         />
       </TooltipContent>
