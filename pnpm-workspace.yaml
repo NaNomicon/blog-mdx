@@ -7,3 +7,5 @@ builtDependencies:
 onlyBuiltDependencies:
   - '@vercel/speed-insights'
   - esbuild
+  - '@swc/core'
+  - '@parcel/watcher'
