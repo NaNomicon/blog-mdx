@@ -78,8 +78,23 @@ export const getAllPosts = cache(async function getAllPosts<T extends BlogPostMe
         // Use dynamic import for metadata
         const mdxModule = await import(`@/content/${locale}/${type}/${filename}`);
         const metadata = mdxModule.metadata;
+        // Merge with English base for non-en locales (inherit non-translatable fields)
+        let mergedMetadata = metadata;
+        if (locale !== "en" && metadata) {
+          const enFilePath = path.join(CONTENT_BASE, "en", type, filename);
+          if (fs.existsSync(enFilePath)) {
+            try {
+              const enModule = await import(`@/content/en/${type}/${filename}`);
+              if (enModule.metadata) {
+                mergedMetadata = { ...enModule.metadata, ...metadata };
+              }
+            } catch {
+              // no English base — use locale metadata as-is
+            }
+          }
+        }
 
-        if (!metadata) return null;
+        if (!mergedMetadata) return null;
 
         // Validate metadata based on type or intended type for drafts
         const validationType = type === "drafts" ? (_intendedType || "blogs") : type;
@@ -88,17 +103,17 @@ export const getAllPosts = cache(async function getAllPosts<T extends BlogPostMe
         if (validationType === "pages") return null;
 
         // Strict filtering: if we want notes, it MUST have a collection
-        if (validationType === "notes" && !metadata.collection) {
+        if (validationType === "notes" && !mergedMetadata.collection) {
           return null;
         }
 
         // If we want blogs, it MUST NOT have a collection (to keep them separate)
-        if (validationType === "blogs" && metadata.collection) {
+        if (validationType === "blogs" && mergedMetadata.collection) {
           return null;
         }
 
         const schema = validationType === "notes" ? NoteMetadataSchema : BlogPostMetadataSchema;
-        const validatedMetadata = schema.parse(metadata);
+        const validatedMetadata = schema.parse(mergedMetadata);
 
         return {
           slug,
@@ -193,6 +208,21 @@ export async function getPostBySlug<T extends BlogPostMetadata | NoteMetadata>(
       try {
         const stats = fs.statSync(mdxPath);
         const { metadata } = await import(`@/content/${resolvedLocale}/${actualType}/${slug}.mdx`);
+        // Merge with English base for non-en locales
+        let resolvedMetadata = metadata;
+        if (resolvedLocale !== "en" && metadata) {
+          const enBase = path.join(CONTENT_BASE, "en", actualType, `${slug}.mdx`);
+          if (fs.existsSync(enBase)) {
+            try {
+              const { metadata: enMetadata } = await import(`@/content/en/${actualType}/${slug}.mdx`);
+              if (enMetadata) {
+                resolvedMetadata = { ...enMetadata, ...metadata };
+              }
+            } catch {
+              // no English base — use locale metadata as-is
+            }
+          }
+        }
 
         // Determine validation type: drafts inherit the original requested type
         const validationType = actualType === "drafts" ? (type === "drafts" ? "blogs" : type) : type;
@@ -202,7 +232,7 @@ export async function getPostBySlug<T extends BlogPostMetadata | NoteMetadata>(
           return {
             post: {
               slug,
-              metadata: (metadata ?? {}) as T,
+              metadata: (resolvedMetadata ?? {}) as T,
               type: actualType,
               contentLength: stats.size,
             },
@@ -211,7 +241,7 @@ export async function getPostBySlug<T extends BlogPostMetadata | NoteMetadata>(
         }
 
         const schema = validationType === "notes" ? NoteMetadataSchema : BlogPostMetadataSchema;
-        const validatedMetadata = schema.parse(metadata);
+        const validatedMetadata = schema.parse(resolvedMetadata);
 
         return {
           post: {
