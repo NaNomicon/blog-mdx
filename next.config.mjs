@@ -8,8 +8,8 @@ import rehypeHighlight from "rehype-highlight";
 const nextConfig = {
   // Configure `pageExtensions` to include markdown and MDX files
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
-  // Enable standalone output for minimal Docker images (skip on Vercel - it uses its own runtime)
-  output: process.env.VERCEL ? undefined : "standalone",
+  // Enable standalone output for minimal Docker images
+  output: "standalone",
 
   // Enable SWC minification for faster builds
   swcMinify: true,
