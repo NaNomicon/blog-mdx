@@ -63,7 +63,12 @@ export function LanguageSwitcher({ switchLabel, localeLabels }: LanguageSwitcher
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" aria-label={switchLabel}>
-          <Globe className="h-[1.2rem] w-[1.2rem]" />
+          <span className="relative inline-flex">
+            <Globe className="h-[1.2rem] w-[1.2rem]" />
+            <span className="absolute -bottom-1 -right-1 text-[0.6rem] leading-none select-none">
+              {LOCALE_FLAGS[currentLocale]}
+            </span>
+          </span>
           <span className="sr-only">{switchLabel}</span>
         </Button>
       </DropdownMenuTrigger>
