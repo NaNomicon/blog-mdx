@@ -15,6 +15,7 @@ import { BreadcrumbStructuredData } from "@/components/seo/structured-data";
 import { cn } from "@/lib/utils";
 import { applyNoteFilters, type NoteFilters } from "@/lib/notes";
 import { InfiniteNotesStream } from "@/components/notes/infinite-notes-stream";
+import { EnglishPostsToggle } from "@/components/blog/english-posts-toggle";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -27,6 +28,7 @@ type Props = {
     sort?: "asc" | "desc";
     view?: "masonry" | "list";
     spoilers?: string;
+    showEn?: string;
   };
 };
 
@@ -88,8 +90,20 @@ export default async function NotesPage({
     showSpoilers,
   };
 
+  const showEnglishPosts = locale !== "en" && searchParams.showEn === "1";
+
   // Get ALL notes ONCE (cached in lib/content)
-  const allNotes = await getAllPosts<NoteMetadata>("notes", locale);
+  let allNotes = await getAllPosts<NoteMetadata>("notes", locale);
+
+  // For non-English locales: merge English-only notes (no duplication by slug)
+  if (showEnglishPosts) {
+    const enNotes = await getAllPosts<NoteMetadata>("notes", "en");
+    const localeSlugs = new Set(allNotes.map((n) => n.slug));
+    const enOnlyNotes = enNotes
+      .filter((n) => !localeSlugs.has(n.slug))
+      .map((n) => ({ ...n, _enOnly: true as const }));
+    allNotes = [...allNotes, ...enOnlyNotes];
+  }
 
   // Extract filter data from ALL notes
   const allCollections = Array.from(
@@ -174,6 +188,11 @@ export default async function NotesPage({
                   }}
                 />
               </Suspense>
+              {locale !== "en" && (
+                <Suspense>
+                  <EnglishPostsToggle isActive={showEnglishPosts} />
+                </Suspense>
+              )}
             </div>
           </div>
         </section>
