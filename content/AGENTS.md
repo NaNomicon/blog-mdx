@@ -201,6 +201,18 @@ Links in MDX render with hover tooltips that show title, description, and option
 - The `type` is optional: `[text](url "Just a plain note without type")` works too
 - Keep notes concise (5–15 words) — explain *why* the link matters, not *what* the page is
 
+### What Requires a Link?
+- **Historical Events & Parallels**: If you reference a historical event (e.g., WWII mobilization) or a real-world incident (e.g., SolarWinds, XZ Utils), you MUST link to a credible source (Wikipedia, ArsTechnica, etc.).
+- **Technical Claims**: If making a bold technical assertion, referencing a specific CVE, or citing an outage, provide an annotated link to the postmortem or analysis.
+- **People, Projects, & Entities**: When introducing a niche project, specific individual, or common tech entity (e.g., [GitHub](https://github.com/ "reference | Source code hosting platform"), [npm](https://www.npmjs.com/ "reference | Node package manager"), OpenAI), add a `mention` or `reference` link for context.
+
+- **Entities & Terms**: When using niche acronyms (like SCIF, BGP, CI/CD) or referring to specific entities, add a reference link so readers aren't left behind.
+
+
+### Typography Rules
+- **Emdashes**: ALWAYS use proper emdashes (`—`) instead of spaced hyphens (` - `) or double hyphens (`--`) for parenthetical phrases or bullet points acting as continuations. Do not put spaces around emdashes when used in sentences (e.g., `word—word`, not `word — word`).
+
+
 ### Anti-AI Writing Guidelines
 
 To prevent linguistic drift and avoid the "Uncanny Valley" of synthetic text, agents drafting or editing content MUST adhere to these strict constraints based on vault resource `identifying-ai-content`:
