@@ -43,7 +43,7 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
       setPage(nextPage);
       setHasMore(result.hasMore);
     });
-  }, [page, filters, hasMore, isPending]);
+  }, [page, filters, hasMore, isPending, locale]);
 
   // Reset when filters change (initialNotes change when server component re-renders)
   useEffect(() => {
