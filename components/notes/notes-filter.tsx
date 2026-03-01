@@ -43,7 +43,8 @@ export function NotesFilter({
   tags,
   hideCollection = false,
   hiddenCount = 0,
-  initialFilters = {}
+  initialFilters = {},
+  extraControls,
 }: { 
   collections: string[]; 
   tags: string[];
@@ -58,6 +59,7 @@ export function NotesFilter({
     view?: string;
     spoilers?: string;
   };
+  extraControls?: React.ReactNode;
 }) {
   const t = useTranslations("Notes");
   const tc = useTranslations("Common");
@@ -269,6 +271,7 @@ export function NotesFilter({
         </div>
 
         <div className="flex flex-wrap items-center justify-end gap-2 w-full sm:w-auto">
+          {extraControls}
           {/* Spoiler Toggle */}
           <TooltipProvider>
             <Tooltip>

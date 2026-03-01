@@ -183,16 +183,17 @@ export default async function NotesPage({
                     from: searchParams.from,
                     to: searchParams.to,
                     sort: searchParams.sort,
-                    view: searchParams.view,
-                    spoilers: searchParams.spoilers,
-                  }}
+                  view: searchParams.view,
+                  spoilers: searchParams.spoilers,
+                }}
+                extraControls={locale !== "en" ? (
+                  <Suspense>
+                    <EnglishPostsToggle isActive={showEnglishPosts} style="filter" />
+                  </Suspense>
+                ) : undefined}
                 />
               </Suspense>
-              {locale !== "en" && (
-                <Suspense>
-                  <EnglishPostsToggle isActive={showEnglishPosts} />
-                </Suspense>
-              )}
+
             </div>
           </div>
         </section>
