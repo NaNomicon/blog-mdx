@@ -4,7 +4,7 @@ This guide covers how to create and manage blog posts and short-form notes.
 
 ---
 
-## 1. Blog Posts (`content/blogs/`)
+## 1. Blog Posts (`content/en/blogs/`)
 
 ### Create a New Post
 
@@ -74,7 +74,7 @@ const x: string = "hello";
 
 ### Drafts
 
-Place in `content/drafts/` instead of `content/blogs/`. Same format. Visible only when `NEXT_PUBLIC_SHOW_DRAFTS=true`.
+Place in `content/en/drafts/` instead of `content/en/blogs/`. Same format. Visible only when `NEXT_PUBLIC_SHOW_DRAFTS=true`.
 
 ### SEO Notes
 
@@ -85,7 +85,7 @@ Place in `content/drafts/` instead of `content/blogs/`. Same format. Visible onl
 
 ---
 
-## 2. Notes (`content/notes/`)
+## 2. Notes (`content/en/notes/`)
 
 Short-form notes stream: book takeaways, links, ideas, thoughts. Different from blog posts — no ToC, no engagement stats, just content + metadata.
 
@@ -222,3 +222,25 @@ To prevent linguistic drift and avoid the "Uncanny Valley" of synthetic text, ag
 3.  **No Structural Cliches**: DO NOT use transition markers like "In today's fast-paced world", "Moreover", "Furthermore", or "In conclusion".
 4.  **Tone & Grounding**: Avoid hyper-politeness and formal neutrality. Have an edge or a specific voice. Anchor writing in concrete, specific realities rather than generic summaries.
 
+### Extended vocabulary — prefer avoiding
+
+These are soft-guidance additions to the hard-banned list above. They won't disqualify a post, but they accumulate into AI-sounding prose. Prefer concrete alternatives.
+
+**Forward-motion verbs**: leverage, utilize, streamline, elevate, empower, underscore, illuminate, unpack, resonate, propel, navigate
+
+**Scale adjectives**: crucial, pivotal, paramount, comprehensive, transformative, multifaceted, myriad, dynamic, bespoke, tailored
+
+**Big-picture nouns**: realm, paradigm, catalyst, trajectory, landscape, intersection, nuances
+
+**Clichéd phrases**: "a testament to", "serves as a reminder", "is no exception", "at the intersection of X and Y", "brings to the table"
+
+### Structural patterns to avoid
+
+These prose patterns are reliable AI tells regardless of vocabulary:
+
+- **Em-dash dramatic summary**: ending a sentence with `—` followed by a profound restatement. ❌ *"They optimized the database—a crucial step for future scalability."*
+- **"Not X, but Y" false contrast**: ❌ *"It's not just about writing code; it's about crafting experiences."* — commit to one claim.
+- **Uplifting outro moralizing**: any closing paragraph that ends with a lesson about the future, growth, or humanity. Cut the conclusion; trust the reader.
+- **Both-sides hedge**: ❌ *"While X has drawbacks, it is important to recognize Y..."* — pick a position and own it.
+- **Over-explaining context the reader already knows**: assume the reader is smart.
+- **Symmetrical paragraphs**: topic sentence → 3 supporting bullets → summary sentence, repeated identically across sections — vary the structure.
