@@ -15,6 +15,7 @@ interface InfiniteNotesStreamProps {
   hasMore: boolean;
   currentLayout: string;
   locale: string;
+  showEn?: boolean;
 }
 
 export const InfiniteNotesStream = memo(function InfiniteNotesStream({
@@ -23,6 +24,7 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
   hasMore: initialHasMore,
   currentLayout,
   locale,
+  showEn = false,
 }: InfiniteNotesStreamProps) {
   const t = useTranslations("Notes");
   const tc = useTranslations("Common");
@@ -38,12 +40,12 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
 
     startTransition(async () => {
       const nextPage = page + 1;
-      const result = await fetchNotesAction(filters, nextPage, 10, locale);
+      const result = await fetchNotesAction(filters, nextPage, 10, locale, showEn);
       setNotes((prev) => [...prev, ...result.notes]);
       setPage(nextPage);
       setHasMore(result.hasMore);
     });
-  }, [page, filters, hasMore, isPending, locale]);
+  }, [page, filters, hasMore, isPending, locale, showEn]);
 
   // Reset when filters change (initialNotes change when server component re-renders)
   useEffect(() => {
@@ -107,20 +109,20 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
           {/* Column 1 */}
           <div className="flex flex-col gap-8">
             {masonryNotes.left.map((note) => (
-              <NoteCard key={note.slug} note={note} layout="masonry" locale={locale} />
+              <NoteCard key={note.slug} note={note} layout="masonry" locale={(note as { _enOnly?: boolean })._enOnly ? "en" : locale} />
             ))}
           </div>
           {/* Column 2 */}
           <div className="flex flex-col gap-8">
             {masonryNotes.right.map((note) => (
-              <NoteCard key={note.slug} note={note} layout="masonry" locale={locale} />
+              <NoteCard key={note.slug} note={note} layout="masonry" locale={(note as { _enOnly?: boolean })._enOnly ? "en" : locale} />
             ))}
           </div>
         </div>
       ) : (
         <div className="flex flex-col max-w-5xl mx-auto w-full gap-8">
           {notes.map((note) => (
-            <NoteCard key={note.slug} note={note} layout="list" locale={locale} />
+            <NoteCard key={note.slug} note={note} layout="list" locale={(note as { _enOnly?: boolean })._enOnly ? "en" : locale} />
           ))}
         </div>
       )}

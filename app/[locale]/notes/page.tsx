@@ -207,6 +207,7 @@ export default async function NotesPage({
               hasMore={hasMore}
               currentLayout={currentLayout}
               locale={locale}
+              showEn={showEnglishPosts}
             />
           ) : (
             <div className="text-center py-24 border rounded-2xl bg-muted/20 flex flex-col items-center justify-center space-y-4">

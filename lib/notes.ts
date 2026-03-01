@@ -73,8 +73,9 @@ export async function getPaginatedNotes(
   page: number = 1,
   limit: number = 10,
   locale: string = "en",
+  pool?: Awaited<ReturnType<typeof getFilteredNotes>>,
 ) {
-  const allNotes = await getFilteredNotes(filters, locale);
+  const allNotes = pool ?? await getFilteredNotes(filters, locale);
   const total = allNotes.length;
   const start = (page - 1) * limit;
   const end = start + limit;
