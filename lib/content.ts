@@ -2,7 +2,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";
 import { cache } from "react";
-import { unstable_cache } from "next/cache";
 
 // --- Schemas ---
 
@@ -34,7 +33,7 @@ export const NoteMetadataSchema = z.object({
 
 export type NoteMetadata = z.infer<typeof NoteMetadataSchema>;
 
-export type ContentType = "blogs" | "notes" | "drafts";
+export type ContentType = "blogs" | "notes" | "drafts" | "pages";
 
 export interface Post<T> {
   slug: string;
@@ -45,18 +44,23 @@ export interface Post<T> {
 
 // --- Content Library ---
 
-const CONTENT_PATH = path.join(process.cwd(), "content");
+const CONTENT_BASE = path.join(process.cwd(), "content");
 
 /**
- * Get all posts of a specific type
+ * Get all posts of a specific type, scanned from content/{locale}/{type}/
+ * Preview-mode drafts are automatically included when NEXT_PUBLIC_SHOW_DRAFTS=true or NODE_ENV=development.
+ *
+ * @param type - Content type (blogs, notes, drafts)
+ * @param locale - Locale directory to scan (default: 'en')
+ * @param _intendedType - Internal: used for draft validation when type === 'drafts'
  */
 export const getAllPosts = cache(async function getAllPosts<T extends BlogPostMetadata | NoteMetadata>(
   type: ContentType,
-  includeDrafts: boolean = false,
-  _intendedType?: "blogs" | "notes"
+  locale: string = "en",
+  _intendedType?: "blogs" | "notes",
 ): Promise<Post<T>[]> {
-  const dir = path.join(CONTENT_PATH, type);
-  
+  const dir = path.join(CONTENT_BASE, locale, type);
+
   if (!fs.existsSync(dir)) {
     return [];
   }
@@ -72,26 +76,44 @@ export const getAllPosts = cache(async function getAllPosts<T extends BlogPostMe
       try {
         const stats = fs.statSync(mdxPath);
         // Use dynamic import for metadata
-        const mdxModule = await import(`@/content/${type}/${filename}`);
+        const mdxModule = await import(`@/content/${locale}/${type}/${filename}`);
         const metadata = mdxModule.metadata;
-        
-        if (!metadata) return null;
+        // Merge with English base for non-en locales (inherit non-translatable fields)
+        let mergedMetadata = metadata;
+        if (locale !== "en" && metadata) {
+          const enFilePath = path.join(CONTENT_BASE, "en", type, filename);
+          if (fs.existsSync(enFilePath)) {
+            try {
+              const enModule = await import(`@/content/en/${type}/${filename}`);
+              if (enModule.metadata) {
+                mergedMetadata = { ...enModule.metadata, ...metadata };
+              }
+            } catch {
+              // no English base — use locale metadata as-is
+            }
+          }
+        }
+
+        if (!mergedMetadata) return null;
 
         // Validate metadata based on type or intended type for drafts
         const validationType = type === "drafts" ? (_intendedType || "blogs") : type;
-        
+
+        // Pages don't participate in note/blog validation
+        if (validationType === "pages") return null;
+
         // Strict filtering: if we want notes, it MUST have a collection
-        if (validationType === "notes" && !metadata.collection) {
+        if (validationType === "notes" && !mergedMetadata.collection) {
           return null;
         }
-        
+
         // If we want blogs, it MUST NOT have a collection (to keep them separate)
-        if (validationType === "blogs" && metadata.collection) {
+        if (validationType === "blogs" && mergedMetadata.collection) {
           return null;
         }
 
         const schema = validationType === "notes" ? NoteMetadataSchema : BlogPostMetadataSchema;
-        const validatedMetadata = schema.parse(metadata);
+        const validatedMetadata = schema.parse(mergedMetadata);
 
         return {
           slug,
@@ -100,8 +122,7 @@ export const getAllPosts = cache(async function getAllPosts<T extends BlogPostMe
           contentLength: stats.size,
         };
       } catch (error) {
-        // Silently skip if metadata doesn't match the schema (e.g. blog draft when looking for notes)
-        // console.error(`Error loading metadata for ${type}/${filename}:`, error);
+        // Silently skip if metadata doesn't match the schema
         return null;
       }
     })
@@ -109,9 +130,9 @@ export const getAllPosts = cache(async function getAllPosts<T extends BlogPostMe
 
   const validPosts = posts.filter((post): post is Post<T> => post !== null);
 
-  // If including drafts and we are not already looking at drafts
-  if (includeDrafts && type !== "drafts") {
-    const drafts = await getAllPosts<T>("drafts", false, type as "blogs" | "notes");
+  // If in preview mode (and not already scanning drafts/pages), include drafts too
+  if (isPreviewMode() && type !== "drafts" && type !== "pages") {
+    const drafts = await getAllPosts<T>("drafts", locale, type as "blogs" | "notes");
     validPosts.push(...drafts);
   }
 
@@ -124,44 +145,116 @@ export const getAllPosts = cache(async function getAllPosts<T extends BlogPostMe
 });
 
 /**
- * Get a single post by slug
+ * Get a single post by slug with English fallback for non-en locales.
+ * Fallback chain: content/{locale}/{type}/{slug}.mdx → content/en/{type}/{slug}.mdx
+ *
+ * @param slug - Post slug (without .mdx extension)
+ * @param type - Content type
+ * @param locale - Locale to load from (default: 'en')
+ * @returns { post, isFallback } or null if not found
  */
 export async function getPostBySlug<T extends BlogPostMetadata | NoteMetadata>(
-  type: ContentType,
   slug: string,
-  checkDrafts: boolean = true
-): Promise<Post<T> | null> {
-  const possiblePaths = [
-    path.join(CONTENT_PATH, type, `${slug}.mdx`),
-  ];
-
-  if (checkDrafts && type !== "drafts") {
-    possiblePaths.push(path.join(CONTENT_PATH, "drafts", `${slug}.mdx`));
+  type: ContentType,
+  locale: string = "en",
+): Promise<{ post: Post<T>; isFallback: boolean } | null> {
+  interface PathEntry {
+    mdxPath: string;
+    resolvedLocale: string;
+    actualType: ContentType;
+    isFallback: boolean;
   }
 
-  for (const mdxPath of possiblePaths) {
+  const pathsToTry: PathEntry[] = [];
+
+  // 1. Primary: content/{locale}/{type}/{slug}.mdx
+  pathsToTry.push({
+    mdxPath: path.join(CONTENT_BASE, locale, type, `${slug}.mdx`),
+    resolvedLocale: locale,
+    actualType: type,
+    isFallback: false,
+  });
+
+  // 2. English fallback (only when locale !== 'en')
+  if (locale !== "en") {
+    pathsToTry.push({
+      mdxPath: path.join(CONTENT_BASE, "en", type, `${slug}.mdx`),
+      resolvedLocale: "en",
+      actualType: type,
+      isFallback: true,
+    });
+  }
+
+  // 3. Drafts (preview mode only)
+  if (isPreviewMode() && type !== "drafts") {
+    pathsToTry.push({
+      mdxPath: path.join(CONTENT_BASE, locale, "drafts", `${slug}.mdx`),
+      resolvedLocale: locale,
+      actualType: "drafts",
+      isFallback: false,
+    });
+    if (locale !== "en") {
+      pathsToTry.push({
+        mdxPath: path.join(CONTENT_BASE, "en", "drafts", `${slug}.mdx`),
+        resolvedLocale: "en",
+        actualType: "drafts",
+        isFallback: true,
+      });
+    }
+  }
+
+  for (const { mdxPath, resolvedLocale, actualType, isFallback } of pathsToTry) {
     if (fs.existsSync(mdxPath)) {
-      const isDraft = mdxPath.includes("/drafts/");
-      const actualType = isDraft ? "drafts" : type;
       try {
         const stats = fs.statSync(mdxPath);
-        const { metadata } = await import(`@/content/${actualType}/${slug}.mdx`);
-        
-        // Use the original requested type to determine schema, even if it's a draft
-        const validationType = type === "drafts" ? "blogs" : type;
+        const { metadata } = await import(`@/content/${resolvedLocale}/${actualType}/${slug}.mdx`);
+        // Merge with English base for non-en locales
+        let resolvedMetadata = metadata;
+        if (resolvedLocale !== "en" && metadata) {
+          const enBase = path.join(CONTENT_BASE, "en", actualType, `${slug}.mdx`);
+          if (fs.existsSync(enBase)) {
+            try {
+              const { metadata: enMetadata } = await import(`@/content/en/${actualType}/${slug}.mdx`);
+              if (enMetadata) {
+                resolvedMetadata = { ...enMetadata, ...metadata };
+              }
+            } catch {
+              // no English base — use locale metadata as-is
+            }
+          }
+        }
+
+        // Determine validation type: drafts inherit the original requested type
+        const validationType = actualType === "drafts" ? (type === "drafts" ? "blogs" : type) : type;
+
+        if (validationType === "pages") {
+          // Pages: no schema validation, return raw metadata
+          return {
+            post: {
+              slug,
+              metadata: (resolvedMetadata ?? {}) as T,
+              type: actualType,
+              contentLength: stats.size,
+            },
+            isFallback,
+          };
+        }
+
         const schema = validationType === "notes" ? NoteMetadataSchema : BlogPostMetadataSchema;
-        const validatedMetadata = schema.parse(metadata);
+        const validatedMetadata = schema.parse(resolvedMetadata);
 
         return {
-          slug,
-          metadata: validatedMetadata as T,
-          type: actualType as ContentType,
-          contentLength: stats.size,
+          post: {
+            slug,
+            metadata: validatedMetadata as T,
+            type: actualType,
+            contentLength: stats.size,
+          },
+          isFallback,
         };
       } catch (error) {
-        // Only log error if it's not a schema mismatch for a draft
-        if (!isDraft) {
-          console.error(`Error loading post ${actualType}/${slug}:`, error);
+        if (!isFallback && actualType !== "drafts") {
+          console.error(`Error loading post ${resolvedLocale}/${actualType}/${slug}:`, error);
         }
         continue;
       }
@@ -174,9 +267,9 @@ export async function getPostBySlug<T extends BlogPostMetadata | NoteMetadata>(
 export async function getAdjacentPosts<T extends BlogPostMetadata | NoteMetadata>(
   type: ContentType,
   slug: string,
-  includeDrafts: boolean = false
+  locale: string = "en",
 ): Promise<{ prev: Post<T> | null; next: Post<T> | null }> {
-  const posts = await getAllPosts<T>(type, includeDrafts);
+  const posts = await getAllPosts<T>(type, locale);
   const index = posts.findIndex((post) => post.slug === slug);
 
   if (index === -1) {

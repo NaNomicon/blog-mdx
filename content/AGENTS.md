@@ -200,3 +200,25 @@ Links in MDX render with hover tooltips that show title, description, and option
 - **Anchor links** (`#section`) have no tooltip — no annotation needed
 - The `type` is optional: `[text](url "Just a plain note without type")` works too
 - Keep notes concise (5–15 words) — explain *why* the link matters, not *what* the page is
+
+### What Requires a Link?
+- **Historical Events & Parallels**: If you reference a historical event (e.g., WWII mobilization) or a real-world incident (e.g., SolarWinds, XZ Utils), you MUST link to a credible source (Wikipedia, ArsTechnica, etc.).
+- **Technical Claims**: If making a bold technical assertion, referencing a specific CVE, or citing an outage, provide an annotated link to the postmortem or analysis.
+- **People, Projects, & Entities**: When introducing a niche project, specific individual, or common tech entity (e.g., [GitHub](https://github.com/ "reference | Source code hosting platform"), [npm](https://www.npmjs.com/ "reference | Node package manager"), OpenAI), add a `mention` or `reference` link for context.
+
+- **Entities & Terms**: When using niche acronyms (like SCIF, BGP, CI/CD) or referring to specific entities, add a reference link so readers aren't left behind.
+
+
+### Typography Rules
+- **Emdashes**: ALWAYS use proper emdashes (`—`) instead of spaced hyphens (` - `) or double hyphens (`--`) for parenthetical phrases or bullet points acting as continuations. Do not put spaces around emdashes when used in sentences (e.g., `word—word`, not `word — word`).
+
+
+### Anti-AI Writing Guidelines
+
+To prevent linguistic drift and avoid the "Uncanny Valley" of synthetic text, agents drafting or editing content MUST adhere to these strict constraints based on vault resource `identifying-ai-content`:
+
+1.  **High Burstiness (Rhythm Variance)**: Mix very short, punchy sentences (3-5 words) with longer, complex ones. Avoid the monotonous 15-25 word AI default. Break up uniform pacing.
+2.  **Banned Vocabulary (AI Red Flags)**: NEVER use the words: `delve`, `embrace`, `unlock`, `foster`, `tapestry`, `journey`, `heartbeat`, `seamless`, `robust`, `cutting-edge`.
+3.  **No Structural Cliches**: DO NOT use transition markers like "In today's fast-paced world", "Moreover", "Furthermore", or "In conclusion".
+4.  **Tone & Grounding**: Avoid hyper-politeness and formal neutrality. Have an edge or a specific voice. Anchor writing in concrete, specific realities rather than generic summaries.
+

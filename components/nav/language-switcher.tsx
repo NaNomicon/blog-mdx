@@ -1,0 +1,90 @@
+'use client';
+
+import { usePathname, useRouter } from 'next/navigation';
+import { Globe, Check } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { routing } from '@/i18n/routing';
+
+const LOCALE_FLAGS: Record<string, string> = {
+  en: '🇺🇸',
+  vi: '🇻🇳',
+};
+
+interface LanguageSwitcherProps {
+  switchLabel: string;
+  localeLabels: Record<string, string>;
+}
+
+export function LanguageSwitcher({ switchLabel, localeLabels }: LanguageSwitcherProps) {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  // Derive current locale from the live pathname — never use a server-passed prop
+  // which can be stale after client-side navigation.
+  const currentLocale =
+    routing.locales.find(
+      (l) => l !== routing.defaultLocale && pathname.startsWith(`/${l}`)
+    ) ?? routing.defaultLocale;
+
+  const handleSwitch = (newLocale: string) => {
+    if (newLocale === currentLocale) return;
+
+    // Set next-intl's locale cookie so the middleware respects our choice.
+    // Without this, the middleware reads the old cookie and redirects back.
+    document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=${365 * 24 * 60 * 60}`;
+
+    // Strip any non-default locale prefix to get the canonical path
+    const canonicalPath =
+      routing.locales
+        .filter((l) => l !== routing.defaultLocale)
+        .reduce(
+          (p, l) => (p.startsWith(`/${l}/`) || p === `/${l}` ? p.slice(`/${l}`.length) || '/' : p),
+          pathname
+        );
+
+    const newPath =
+      newLocale === routing.defaultLocale
+        ? canonicalPath
+        : `/${newLocale}${canonicalPath === '/' ? '' : canonicalPath}`;
+
+    // Soft navigation is fine now — SiteHeader/Footer are in [locale]/layout.tsx
+    // which re-renders when the locale segment changes, picking up fresh translations.
+    router.push(newPath + window.location.search + window.location.hash);
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" aria-label={switchLabel}>
+          <span className="relative inline-flex">
+            <Globe className="h-[1.2rem] w-[1.2rem]" />
+            <span className="absolute -bottom-0.5 -right-0.5 text-[0.85rem] leading-none select-none">
+              {LOCALE_FLAGS[currentLocale]}
+            </span>
+          </span>
+          <span className="sr-only">{switchLabel}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {routing.locales.map((locale) => (
+          <DropdownMenuItem
+            key={locale}
+            onClick={() => handleSwitch(locale)}
+            className="cursor-pointer gap-2"
+          >
+            <span className="text-base leading-none">{LOCALE_FLAGS[locale]}</span>
+            <span>{localeLabels[locale] ?? locale}</span>
+            {locale === currentLocale && <Check className="ml-auto h-4 w-4" />}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}

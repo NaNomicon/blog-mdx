@@ -11,8 +11,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const CONTENT_DIRS = [
-  { path: 'content/blogs', type: 'blog', hrefPrefix: '/blog' },
-  { path: 'content/notes', type: 'note', hrefPrefix: '/notes' }
+  { path: 'content/en/blogs', type: 'blog', hrefPrefix: '/blog' },
+  { path: 'content/en/notes', type: 'note', hrefPrefix: '/notes' }
 ];
 
 const OUTPUT_FILE = path.join(process.cwd(), 'lib/data/posts-index.json');

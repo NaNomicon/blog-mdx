@@ -1,9 +1,8 @@
+import { getLocale } from "next-intl/server";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import SiteHeader from "@/components/nav/site-header";
-import Footer from "@/components/nav/footer";
 import { ErrorBoundary } from "@/components/error-boundary";
 
 import { ThemeProvider } from "@/components/theme-provider";
@@ -16,7 +15,7 @@ import Script from "next/script";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin", "vietnamese"] });
 
 export const metadata: Metadata = {
   ...generateSEOMetadata(defaultSEOConfig),
@@ -44,13 +43,14 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <link
           rel="icon"
@@ -90,11 +90,7 @@ export default function RootLayout({
           <ConvexClientProvider>
             <TooltipProvider delayDuration={0} skipDelayDuration={0}>
               <ErrorBoundary>
-                <div className="relative flex min-h-screen flex-col">
-                  <SiteHeader />
-                  <main className="flex-1">{children}</main>
-                  <Footer />
-                </div>
+                {children}
               </ErrorBoundary>
             </TooltipProvider>
             <Toaster />

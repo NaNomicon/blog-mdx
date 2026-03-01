@@ -3,16 +3,19 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { type Post, type NoteMetadata } from "@/lib/content";
 import { NoteCard } from "./note-card";
-import { fetchNotesAction } from "@/app/notes/actions";
+import { fetchNotesAction } from "@/app/[locale]/notes/actions";
 import { type NoteFilters } from "@/lib/notes";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface InfiniteNotesStreamProps {
   initialNotes: Post<NoteMetadata>[];
   filters: NoteFilters;
   hasMore: boolean;
   currentLayout: string;
+  locale: string;
+  showEn?: boolean;
 }
 
 export const InfiniteNotesStream = memo(function InfiniteNotesStream({
@@ -20,7 +23,11 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
   filters,
   hasMore: initialHasMore,
   currentLayout,
+  locale,
+  showEn = false,
 }: InfiniteNotesStreamProps) {
+  const t = useTranslations("Notes");
+  const tc = useTranslations("Common");
   const [notes, setNotes] = useState(initialNotes);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(initialHasMore);
@@ -33,12 +40,12 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
 
     startTransition(async () => {
       const nextPage = page + 1;
-      const result = await fetchNotesAction(filters, nextPage);
+      const result = await fetchNotesAction(filters, nextPage, 10, locale, showEn);
       setNotes((prev) => [...prev, ...result.notes]);
       setPage(nextPage);
       setHasMore(result.hasMore);
     });
-  }, [page, filters, hasMore, isPending]);
+  }, [page, filters, hasMore, isPending, locale, showEn]);
 
   // Reset when filters change (initialNotes change when server component re-renders)
   useEffect(() => {
@@ -102,20 +109,20 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
           {/* Column 1 */}
           <div className="flex flex-col gap-8">
             {masonryNotes.left.map((note) => (
-              <NoteCard key={note.slug} note={note} layout="masonry" />
+              <NoteCard key={note.slug} note={note} layout="masonry" locale={(note as { _enOnly?: boolean })._enOnly ? "en" : locale} />
             ))}
           </div>
           {/* Column 2 */}
           <div className="flex flex-col gap-8">
             {masonryNotes.right.map((note) => (
-              <NoteCard key={note.slug} note={note} layout="masonry" />
+              <NoteCard key={note.slug} note={note} layout="masonry" locale={(note as { _enOnly?: boolean })._enOnly ? "en" : locale} />
             ))}
           </div>
         </div>
       ) : (
         <div className="flex flex-col max-w-5xl mx-auto w-full gap-8">
           {notes.map((note) => (
-            <NoteCard key={note.slug} note={note} layout="list" />
+            <NoteCard key={note.slug} note={note} layout="list" locale={(note as { _enOnly?: boolean })._enOnly ? "en" : locale} />
           ))}
         </div>
       )}
@@ -125,7 +132,7 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
           {isPending && (
             <div className="flex items-center gap-2 text-muted-foreground/40 animate-in fade-in duration-500">
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Synchronizing...</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em]">{tc('synchronizing')}</span>
             </div>
           )}
         </div>
@@ -133,7 +140,7 @@ export const InfiniteNotesStream = memo(function InfiniteNotesStream({
       
       {!hasMore && notes.length > 0 && (
         <div className="text-center py-20">
-          <span className="text-[10px] font-bold uppercase tracking-[0.3em]">There&apos;s no more notes to show.</span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em]">{t('noMoreNotes')}</span>
         </div>
       )}
     </div>

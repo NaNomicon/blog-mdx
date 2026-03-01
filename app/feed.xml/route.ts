@@ -6,7 +6,7 @@ export async function GET() {
     ? seoConfig.siteUrl.slice(0, -1)
     : seoConfig.siteUrl;
 
-  const blogs = await getAllPosts<BlogPostMetadata>("blogs", false);
+  const blogs = await getAllPosts<BlogPostMetadata>("blogs", "en");
 
   const itemsXml = blogs
     .map((post) => {

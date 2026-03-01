@@ -109,7 +109,7 @@ async function main() {
     const datePrefix = formatDate(now);
     const slug = slugify(title);
     const fileName = `${datePrefix}-${slug}.mdx`;
-    const filePath = path.join(process.cwd(), "content", "blogs", fileName);
+    const filePath = path.join(process.cwd(), "content", "en", "blogs", fileName);
 
     // Default cover image path
     const defaultCoverName = `${datePrefix}-${slug}.png`;
@@ -135,7 +135,7 @@ async function main() {
     const blogContent = generateBlogTemplate(metadata);
 
     // Ensure the blogs directory exists
-    const blogsDir = path.join(process.cwd(), "content", "blogs");
+    const blogsDir = path.join(process.cwd(), "content", "en", "blogs");
     if (!fs.existsSync(blogsDir)) {
       fs.mkdirSync(blogsDir, { recursive: true });
     }

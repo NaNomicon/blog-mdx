@@ -139,6 +139,18 @@ export const metadata = {
 
 **Critical**: Notes **must** have `collection`. Blogs **must not** have `collection`. `lib/content.ts` enforces this — mismatched files are silently skipped.
 
+## i18n (Multi-language)
+
+- **Content structure**: `content/en/` is the source of truth; `content/vi/` holds translations.
+- **Adding posts**: `pnpm new-blog` scaffolds into `content/en/blogs/`.
+- **Vietnamese translations**: Create a matching file in `content/vi/blogs/YYMMDD-slug.mdx`.
+- **Content API**: `getAllPosts(type, locale?)`, `getPostBySlug(slug, type, locale?) → { post, isFallback }`.
+- **Fallback**: If `isFallback === true`, English content is shown with a `FallbackBanner`.
+- **UI translations**: `messages/en.json` (source), `messages/vi.json` (translated).
+- **Locales**: `['en', 'vi']`, defaultLocale `'en'`. English has no URL prefix, Vietnamese uses `/vi/`.
+- **Implementation**: Language switcher in header; `next-intl` middleware in `middleware.ts`.
+- **Adding new locale (e.g., Chinese 'zh')**: Add to `routing.locales`, add `messages/zh.json`, and create `content/zh/`.
+
 ### Link Annotations (Tooltips)
 
 Links in MDX render with hover tooltips. **Always annotate links** so readers get useful context:
@@ -218,3 +230,55 @@ Next.js 14 (App Router), Tailwind CSS + Shadcn UI, MDX, Convex, Lucide/Simple Ic
 ## Linting & Type Checking
 Always run before committing: `pnpm lint` (ESLint) and `pnpm type-check` (TypeScript strict)
 Build does NOT run these automatically — must be run manually.
+
+## i18n Patterns
+
+### Internal Navigation Links
+**Always** use `Link` from `@/i18n/navigation` (not `next/link`) for internal paths. This locale-aware `Link` automatically injects the active locale prefix so `href="/about"` becomes `/vi/about` on the Vietnamese locale without any manual path construction.
+
+```tsx
+// ✅ Correct
+import { Link } from "@/i18n/navigation";
+<Link href="/about">About</Link>
+
+// ❌ Wrong — loses locale prefix
+import Link from "next/link";
+<Link href="/about">About</Link>
+```
+
+### External Links
+Use plain `<a>` with `target="_blank" rel="noopener noreferrer"` for external (`https://`) links. The i18n `Link` must NOT be used for external URLs.
+
+### Root Layout `lang` Attribute
+The root layout (`app/layout.tsx`) reads the active locale dynamically:
+```tsx
+import { getLocale } from "next-intl/server";
+export default async function RootLayout({ children }) {
+  const locale = await getLocale();
+  return <html lang={locale} suppressHydrationWarning>;
+}
+```
+
+### Language Switcher
+`components/nav/language-switcher.tsx` handles locale switching:
+- Writes `NEXT_LOCALE` cookie so next-intl middleware respects the choice
+- Computes canonical path by stripping the old locale prefix
+- Preserves `window.location.search` + `window.location.hash` in the new URL
+
+### `generateStaticParams` for Locale Routes
+Pre-render all locale variants by iterating `routing.locales`:
+```tsx
+import { routing } from "@/i18n/routing";
+import { getAllPosts } from "@/lib/content";
+
+export async function generateStaticParams() {
+  const results = await Promise.all(
+    routing.locales.map(async (locale) => {
+      const posts = await getAllPosts("blogs", locale);
+      return posts.map((post) => ({ locale, slug: post.slug }));
+    })
+  );
+  return results.flat();
+}
+```
+This future-proofs for new locales — adding `'zh'` to `routing.locales` automatically pre-renders Chinese routes.

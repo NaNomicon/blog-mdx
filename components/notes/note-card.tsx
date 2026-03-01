@@ -7,16 +7,17 @@ import { Badge } from "@/components/ui/badge";
 import { EngagementStats } from "@/components/mdx/engagement-stats";
 import { ViewTracker } from "@/components/mdx/view-tracker";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 // Cache dynamic components globally to prevent re-loading on state changes
 const mdxCache = new Map<string, React.ComponentType>();
 
-function getMDXComponent(type: string, slug: string) {
-  const key = `${type}:${slug}`;
+function getMDXComponent(locale: string, type: string, slug: string) {
+  const key = `${locale}:${type}:${slug}`;
   if (!mdxCache.has(key)) {
     mdxCache.set(
       key,
-      dynamic(() => import(`@/content/${type}/${slug}.mdx`), {
+      dynamic(() => import(`@/content/${locale}/${type}/${slug}.mdx`), {
         loading: () => <div className="h-20 bg-muted/20 rounded-md animate-pulse" />,
       })
     );
@@ -26,18 +27,21 @@ function getMDXComponent(type: string, slug: string) {
 
 export const NoteCard = memo(function NoteCard({ 
   note, 
-  layout = "masonry" 
+  layout = "masonry",
+  locale = "en",
 }: { 
   note: Post<NoteMetadata>;
   layout?: "masonry" | "list";
+  locale?: string;
 }) {
     const { slug, type, metadata } = note;
   const { title, publishDate, collection, tags, category, spoiler, pinned } = metadata;
   const isSpoiler = spoiler === true;
   const isPinned = pinned === true;
+    const t = useTranslations("Notes");
   const isList = layout === "list";
 
-  const MDXContent = getMDXComponent(type, slug);
+  const MDXContent = getMDXComponent(locale, type, slug);
 
   return (
     <div className={cn(
@@ -60,7 +64,7 @@ export const NoteCard = memo(function NoteCard({
               {isPinned && (
                 <div className="flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground shadow-lg">
                   <Pin className="h-3 w-3 fill-current" />
-                  <span>Pinned</span>
+                  <span>{t('pinned')}</span>
                 </div>
               )}
               <div className="flex items-center gap-2">
@@ -100,7 +104,7 @@ export const NoteCard = memo(function NoteCard({
               href={`/notes/${slug}`} 
               scroll={false}
               className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-muted/50 text-muted-foreground transition-all hover:bg-primary hover:text-primary-foreground"
-              title="View full note"
+              title={t('viewFullNote')}
             >
               <LinkIcon className="h-4 w-4" />
             </Link>
@@ -112,7 +116,7 @@ export const NoteCard = memo(function NoteCard({
             isList && "md:p-8"
           )}>
             <div className={cn(
-              "prose prose-neutral dark:prose-invert max-w-none overflow-hidden",
+              "prose prose-neutral dark:prose-invert max-w-none overflow-x-auto",
               isList ? "prose-base md:prose-lg" : "prose-sm"
             )}>
               <MDXContent />
@@ -129,7 +133,7 @@ export const NoteCard = memo(function NoteCard({
               )}
               {isSpoiler && (
                 <Badge variant="secondary" className="rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest bg-amber-500/10 text-amber-600 dark:text-amber-500 border-none">
-                  Spoiler
+                  {t('spoiler')}
                 </Badge>
               )}
               <div className="flex flex-wrap gap-2">

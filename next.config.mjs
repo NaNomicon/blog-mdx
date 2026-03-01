@@ -1,4 +1,5 @@
 import createMDX from "@next/mdx";
+import createNextIntlPlugin from 'next-intl/plugin';
 import remarkGfm from "remark-gfm";
 import remarkFrontmatter from "remark-frontmatter";
 import rehypeHighlight from "rehype-highlight";
@@ -106,6 +107,8 @@ const withMDX = createMDX({
   },
 });
 
+const withNextIntl = createNextIntlPlugin();
+
 // Bundle analyzer setup - proper ES module handling
 async function createNextConfig() {
   let withBundleAnalyzer = (config) => config;
@@ -115,7 +118,7 @@ async function createNextConfig() {
     withBundleAnalyzer = bundleAnalyzer({ enabled: true });
   }
 
-  return withBundleAnalyzer(withMDX(nextConfig));
+  return withBundleAnalyzer(withMDX(withNextIntl(nextConfig)));
 }
 
 // Export the config

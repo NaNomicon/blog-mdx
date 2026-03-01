@@ -1,6 +1,6 @@
 {
   "name": "next-template-mdx-shad",
-  "version": "0.1.10",
+  "version": "1.1.0",
   "private": true,
   "author": "NaNomicon",
   "scripts": {
@@ -21,7 +21,10 @@
     "verify-analytics": "node scripts/verify-analytics.js",
     "approve-builds": "pnpm approve-builds",
     "prepare": "husky",
-    "postinstall": "pnpm config set ignore-scripts false || true"
+    "postinstall": "pnpm config set ignore-scripts false || true",
+    "docker:dev": "docker compose -f compose.dev.yml up",
+    "docker:dev:build": "docker compose -f compose.dev.yml up --build",
+    "docker:dev:down": "docker compose -f compose.dev.yml down"
   },
   "dependencies": {
     "@convex-dev/auth": "^0.0.90",
@@ -52,6 +55,7 @@
     "highlight.js": "10.7.2",
     "lucide-react": "^0.408.0",
     "next": "14.2.35",
+    "next-intl": "^4.8.3",
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-day-picker": "8.10.1",

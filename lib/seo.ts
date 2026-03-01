@@ -10,6 +10,7 @@ export interface SEOConfig {
     coverImage?: string;
     slug?: string;
     language?: string;
+    locale?: string;
     siteName?: string;
     siteUrl?: string;
     twitterHandle?: string;
@@ -31,10 +32,26 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
         siteUrl = seoConfig.siteUrl,
         twitterHandle = seoConfig.twitterHandle,
         pathPrefix = "/blog",
+        locale = 'en',
     } = config;
 
     const fullTitle = title === "NaN" ? title : `${title} | ${siteName}`;
     const canonicalUrl = slug ? `${siteUrl}${pathPrefix}/${slug}` : siteUrl;
+
+    // Locale-aware OG locale and hreflang
+    const ogLocale = seoConfig.ogLocaleMap[locale] ?? 'en_US';
+    const canonicalPath = slug ? `${pathPrefix}/${slug}` : '';
+    const hreflangUrls: Record<string, string> = {};
+    for (const loc of seoConfig.supportedLocales) {
+        if (loc === 'en') {
+            hreflangUrls[loc] = canonicalPath ? `${siteUrl}${canonicalPath}` : siteUrl;
+        } else {
+            hreflangUrls[loc] = canonicalPath
+                ? `${siteUrl}/${loc}${canonicalPath}`
+                : `${siteUrl}/${loc}`;
+        }
+    }
+    hreflangUrls['x-default'] = hreflangUrls['en'];
     
     // Check if coverImage is an absolute URL
     const isAbsoluteImageUrl = coverImage?.startsWith('http://') || coverImage?.startsWith('https://');
@@ -64,7 +81,7 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
                     alt: title,
                 },
             ],
-            locale: language,
+            locale: ogLocale,
             type: slug ? "article" : "website",
             ...(publishDate && {
                 publishedTime: publishDate,
@@ -105,6 +122,7 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
         // Canonical URL
         alternates: {
             canonical: canonicalUrl,
+            languages: hreflangUrls,
         },
 
         // Additional meta tags for better SEO
@@ -145,7 +163,7 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
 
             // Additional Open Graph properties
             "og:site_name": siteName,
-            "og:locale": language,
+            "og:locale": ogLocale,
 
             // Profile information for better social media integration
             "profile:username": "NaNomicon",

@@ -1,11 +1,14 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { GithubIcon, ExternalLink } from "lucide-react";
 import { getVersion } from "@/lib/version";
 import { SocialLinks } from "./social-links";
 
-function Footer() {
+async function Footer() {
   const version = getVersion();
+  const t = await getTranslations('Footer');
+  const tNav = await getTranslations('Nav');
   return (
     <footer className="border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container max-w-screen-2xl px-6 lg:px-8 py-12">
@@ -24,7 +27,7 @@ function Footer() {
                 <span className="text-xl font-light tracking-tight">NaN</span>
               </Link>
               <p className="text-sm text-muted-foreground">
-                Developer & Explorer
+                {t('developerAndExplorer')}
               </p>
             </div>
             <SocialLinks />
@@ -37,25 +40,25 @@ function Footer() {
                 href="/"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Home
+                {tNav('home')}
               </Link>
               <Link
                 href="/about"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                About
+                {tNav('about')}
               </Link>
               <Link
                 href="/blog"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Blog
+                {tNav('blog')}
               </Link>
               <Link
                 href="/privacy-policy"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                Privacy Policy
+                {tNav('privacyPolicy')}
               </Link>
             </nav>
           </div>
@@ -63,8 +66,8 @@ function Footer() {
           {/* Powered by & Repository */}
           <div className="flex flex-col items-end gap-3">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>Powered by</span>
-              <Link
+              <span>{t('poweredBy')}</span>
+              <a
                 href="https://www.mdxblog.io/"
                 className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
                 target="_blank"
@@ -72,25 +75,25 @@ function Footer() {
               >
                 MDXBlog
                 <ExternalLink className="w-3 h-3" />
-              </Link>
+              </a>
             </div>
-            <Link
+            <a
               href="https://github.com/NaN72dev/blog-mdx"
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
               <GithubIcon className="w-4 h-4" />
-              <span>View Source</span>
+              <span>{t('viewSource')}</span>
               <ExternalLink className="w-3 h-3" />
-            </Link>
+            </a>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="mt-8 pt-8 border-t border-border/40 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} NaNomicon. All rights reserved.
+            &copy; {new Date().getFullYear()} NaNomicon. {t('allRightsReserved')}
           </p>
           <div className="text-xs text-muted-foreground">v{version}</div>
         </div>

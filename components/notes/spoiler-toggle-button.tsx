@@ -3,11 +3,13 @@
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function SpoilerToggleButton() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations("Notes");
 
   const toggleSpoilers = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -23,7 +25,7 @@ export function SpoilerToggleButton() {
       className="bg-background border-dashed hover:border-primary/50 hover:bg-primary/5 transition-all"
     >
       <Eye className="h-4 w-4 mr-2 text-primary" />
-      Turn off spoiler toggle
+      {t('turnOffSpoilerToggle')}
     </Button>
   );
 }

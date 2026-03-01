@@ -20,7 +20,8 @@ export const seoConfig = {
 
     // Language and locale
     language: "en",
-    locale: "en_US",
+    supportedLocales: ['en', 'vi'] as const,
+    ogLocaleMap: { en: 'en_US', vi: 'vi_VN' } as Record<string, string>,
 
     // Default Open Graph image (place in /public folder)
     defaultOGImage: "/logo.png",
@@ -55,7 +56,7 @@ export const {
     defaultTitle,
     defaultDescription,
     language,
-    locale,
+    supportedLocales,
     defaultOGImage,
     robots,
     cloudflareAnalyticsToken,

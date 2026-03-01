@@ -1,0 +1,85 @@
+export const metadata = {
+  title: "WW3: Imagined - The End of the Glue Coder",
+  publishDate: "2026-03-01",
+  description: "Modern development is an illusion of speed built on top of global trust. In WW3, that trust evaporates. Day 1 starts with a 403 error on GitHub.",
+  category: "technology",
+  cover_image: "/covers/260301-ww3-imagined-end-of-the-glue-coder.jpg",
+  tldr: "When global conflict erupts, the open-source supply chain collapses. The era of stitching together undocumented libraries is over. Engineers must transition to zero-trust, militarized development environments.",
+  tags: ["future", "software-engineering", "cybersecurity", "ww3"]
+};
+
+*Photo by [Eduardo Pastor](https://unsplash.com/@eduardopastor "reference | Eduardo Pastor on Unsplash") on [Unsplash](https://unsplash.com/photos/black-flat-screen-computer-monitor-NvY_gZsJt7U "reference | Black flat screen computer monitor")*
+
+<Callout type="info" title="Why this series?">
+  I've been seeing news about [OpenAI taking on military contracts](https://www.reuters.com/world/us/openai-wins-200-million-us-defense-contract-2025-06-16/ "reference | OpenAI's $200M defense contract for AI capabilities"), combined with the [escalating state of wars globally](https://foreignpolicy.com/2026/02/28/us-israel-strike-iran-trump-nuclear-program-missiles/ "reference | US/Israel 'Operation Epic Fury' strikes on Iran (Feb 2026)") over the past few months. It's got me thinking about the realities of tech in wartime.
+
+  This is a 4-part series exploring what happens to software engineers if global conflict erupts:
+  - **The End of the Glue Coder** (You are here)
+  - **The AI Umbrella & Sovereign Models**
+  - **Kinetic Code & Autonomous Frontlines**
+  - **The Resistance & The Great Reset**
+</Callout>
+
+Day 1 doesn't start with a nuclear flash. It starts with a 403 error on [GitHub](https://github.com/ "reference | The world's largest source code hosting platform").
+
+The illusion of speed in modern software development rests on a fragile foundation of global trust. Every day, our CI/CD pipelines pull gigabytes of code from strangers across the planet. We assume the content delivery networks will stay up. We assume open-source maintainers are who they say they are.
+
+If World War III kicks off, that trust evaporates in an afternoon. The utopian, borderless developer community we've built doesn't survive contact with kinetic warfare. It collapses into heavily guarded, militarized silos.
+
+Welcome to the Splinternet. 
+
+And for millions of developers, welcome to the end of your job as you know it.
+
+---
+
+### The Weaponization of Dependencies
+
+The "glue coder"-the engineer who blindly runs `npm install` (pulling from the [Node Package Manager](https://www.npmjs.com/ "reference | The default package manager for JavaScript")), wires together fifty undocumented libraries, and pushes to production-is obsolete. When geopolitics fracture, standard tools and registries morph into prime vectors for state-sponsored logic bombs.
+
+Take a look at your current `node_modules` folder. How many transitive dependencies do you actually understand?
+
+We already know how this starts. Look at [SolarWinds](https://www.npr.org/2021/04/16/985439655/a-worst-nightmare-cyberattack-the-untold-story-of-the-solarwinds-hack "reference | 2020 SolarWinds supply chain attack"). Look at the [XZ Utils backdoor](https://arstechnica.com/security/2024/04/what-we-know-about-the-xz-utils-backdoor-that-almost-infected-the-world/ "reference | The multi-year social engineering of XZ Utils"). These weren't kids in basements. These were patient, multi-year intelligence operations targeting the absolute bedrock of digital infrastructure. 
+
+Now, scale that up to total war.
+
+Imagine grabbing a minor patch for a popular date-formatting library. You don't know that a foreign intelligence agency coerced the maintainer into merging a sleep-mode backdoor. That code sits dormant in your production environment. It waits until it detects it's running on a government-owned IP subnet. Then, it quietly starts exfiltrating environment variables. Or maybe it just starts corrupting database writes, slowly enough that your alerts don't catch it.
+
+We've seen [small-scale examples of this](https://snyk.io/blog/peacenotwar-malicious-npm-node-ipc-package-vulnerability/ "reference | Snyk analysis of Peacenotwar npm protestware") when angry maintainers injected protestware into popular packages. In wartime, it's not activism. It's an industrialized, heavily funded military strategy. State-backed hackers aren't trying to deface your website. They want to poison the building blocks of the digital economy.
+
+Trust hits absolute zero. You can't pull a 5,000-line library just to center a `div` or format a string anymore.
+
+The new rule is absolute: **If you can't read it, you don't run it. And if you can't audit it, you write it from scratch.**
+
+### The National Registries
+
+Within weeks of conflict, the concept of a single global internet shatters. Nations and allied blocs will rapidly stand up state-sanctioned, air-gapped mirrors of npm, [PyPI](https://en.wikipedia.org/wiki/Python_Package_Index "reference | Python Package Index"), and [crates.io](https://crates.io/ "reference | The Rust community's crate registry").
+
+
+You won't just declare a new routing package in your `package.json`. The workflow becomes a bureaucratic nightmare. You download the raw source code. You submit a formal request to a national cybersecurity board. You wait.
+
+The code gets tossed into a sandbox. Sovereign AI models strip it down. They hunt for obfuscated malware, zero-days, or unauthorized outbound network calls. If the scanner flags a suspicious regex in line 14,000 of a dependency you've never heard of, the entire package is rejected. You either fix the regex yourself, or you build the feature without the library.
+
+If the package passes? It gets cryptographically signed by a defense agency and pushed to the internal, walled-garden registry.
+
+The internet hard-partitions. Developers inside these walled gardens are abruptly cut off from international cloud infrastructure, foreign GitHub repositories, and global [StackOverflow](https://en.wikipedia.org/wiki/Stack_Overflow "reference | Question-and-answer website for computer programmers") answers. Physical submarine cables might get severed, but the logical separation happens faster. [BGP routes get hijacked](https://blog.cloudflare.com/18-november-2025-outage/ "reference | Cloudflare's 2025 outage caused by a massive BGP route misconfiguration"). DNS records are scrubbed. Cross-border data flows face total blockades.
+
+Development speed plummets. Security overhead goes through the roof. "Ship fast and break things" dies. The new mantra is "Ship slowly and verify everything."
+
+### The Digital Munitions Factory
+
+What happens to the mid-level integrators? The thousands of engineers whose core competency is wiring together REST APIs and managing React state?
+
+When the open-source well dries up, the demand for developers doesn't vanish. It just shifts. Those engineers get drafted into the digital equivalent of a munitions factory.
+
+Developers will be sequestered in windowless [SCIFs](https://en.wikipedia.org/wiki/Sensitive_compartmented_information_facility "reference | Sensitive Compartmented Information Facility used for classified data") (Sensitive Compartmented Information Facilities). Their new job is the grueling, mandatory task of manual code auditing. Picture the modern tech office-the kombucha on tap, the natural light, the standing desks. Replace it with humming fluorescent lights, air-gapped workstations, and armed guards at the elevators. 
+
+They aren't building feature flags or A/B testing user flows anymore. They spend twelve hours a day reading legacy C code and JavaScript bundles. They hunt for state-sponsored backdoors and zero-day vulnerabilities in their nation's foundational infrastructure.
+
+During World War II, [auto plants were retrofitted overnight](https://www.smithsonianmag.com/smart-news/when-detroit-was-arsenal-democracy-180962620/ "reference | How Detroit auto factories converted to bomber production in 1941") to build tanks and airplanes. The civilian workforce was drafted into the industrial war machine. The next global conflict will trigger the exact same mobilization, but for software. 
+
+It's a massive, necessary deskilling of the modern workforce. You either become a low-level systems architect capable of writing a network stack from scratch. You become an AI model wrangler dealing with sovereign intelligence. Or you become a human linter. An auditor searching for needles in a global haystack.
+
+The age of the glue coder is dead. Code is no longer just logic. It's a vector of national security.
+
+---
+*Next in this series: **WW3: Imagined - The AI Umbrella & Sovereign Models***
