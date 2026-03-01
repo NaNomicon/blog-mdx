@@ -89,6 +89,12 @@
     "href": "/blog/open-source-is-becoming-open-token",
     "type": "blog"
   },
+  "/blog/ww3-imagined-1-end-of-the-glue-coder": {
+    "title": "WW3: Imagined (1) — The End of the Glue Coder",
+    "description": "Modern development is an illusion of speed built on top of global trust. In WW3, that trust evaporates. Day 1 starts with a 403 error on GitHub.",
+    "href": "/blog/ww3-imagined-1-end-of-the-glue-coder",
+    "type": "blog"
+  },
   "/notes/a-new-way-of-operating": {
     "title": "A new way of operating",
     "description": "Introduction to Austin Kleon",

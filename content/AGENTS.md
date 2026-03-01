@@ -200,3 +200,13 @@ Links in MDX render with hover tooltips that show title, description, and option
 - **Anchor links** (`#section`) have no tooltip — no annotation needed
 - The `type` is optional: `[text](url "Just a plain note without type")` works too
 - Keep notes concise (5–15 words) — explain *why* the link matters, not *what* the page is
+
+### Anti-AI Writing Guidelines
+
+To prevent linguistic drift and avoid the "Uncanny Valley" of synthetic text, agents drafting or editing content MUST adhere to these strict constraints based on vault resource `identifying-ai-content`:
+
+1.  **High Burstiness (Rhythm Variance)**: Mix very short, punchy sentences (3-5 words) with longer, complex ones. Avoid the monotonous 15-25 word AI default. Break up uniform pacing.
+2.  **Banned Vocabulary (AI Red Flags)**: NEVER use the words: `delve`, `embrace`, `unlock`, `foster`, `tapestry`, `journey`, `heartbeat`, `seamless`, `robust`, `cutting-edge`.
+3.  **No Structural Cliches**: DO NOT use transition markers like "In today's fast-paced world", "Moreover", "Furthermore", or "In conclusion".
+4.  **Tone & Grounding**: Avoid hyper-politeness and formal neutrality. Have an edge or a specific voice. Anchor writing in concrete, specific realities rather than generic summaries.
+
