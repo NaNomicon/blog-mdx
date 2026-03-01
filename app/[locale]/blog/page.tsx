@@ -1,15 +1,19 @@
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { generateSEOMetadata } from "@/lib/seo";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EngagementStats } from "@/components/mdx/engagement-stats";
+import { Suspense } from "react";
+import { Badge } from "@/components/ui/badge";
+import { EnglishPostsToggle } from "@/components/blog/english-posts-toggle";
 import { getAllPosts, isPreviewMode, type BlogPostMetadata } from "@/lib/content";
 
 type Props = {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ showEn?: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -25,10 +29,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // 🚀 ISR for blog listing - Revalidate every 30 minutes
 export const revalidate = 1800; // 30 minutes in seconds
 
-export default async function BlogPage({ params }: Props) {
+export default async function BlogPage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const { showEn } = await searchParams;
   const t = await getTranslations('Blog');
-  const posts = await getAllPosts<BlogPostMetadata>("blogs", locale);
+  const localePosts = await getAllPosts<BlogPostMetadata>("blogs", locale);
+
+  // For non-English locales: merge English-only posts (no duplication by slug)
+  const showEnglishPosts = locale !== "en" && showEn === "1";
+  let posts: (typeof localePosts[0] & { _enOnly?: boolean })[] = localePosts;
+
+  if (showEnglishPosts) {
+    const enPosts = await getAllPosts<BlogPostMetadata>("blogs", "en");
+    const localeSlugs = new Set(localePosts.map((p) => p.slug));
+    const enOnlyPosts = enPosts
+      .filter((p) => !localeSlugs.has(p.slug))
+      .map((p) => ({ ...p, _enOnly: true as const }));
+    posts = [
+      ...localePosts,
+      ...enOnlyPosts,
+    ].sort(
+      (a, b) =>
+        new Date(b.metadata.publishDate).getTime() -
+        new Date(a.metadata.publishDate).getTime()
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-16 space-y-16">
@@ -44,6 +69,13 @@ export default async function BlogPage({ params }: Props) {
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           {t('description')}
         </p>
+        {locale !== "en" && (
+          <div className="flex justify-center">
+            <Suspense>
+              <EnglishPostsToggle isActive={showEnglishPosts} />
+            </Suspense>
+          </div>
+        )}
       </section>
 
       {/* Posts Grid */}
@@ -51,10 +83,7 @@ export default async function BlogPage({ params }: Props) {
         {posts.length > 0 ? (
           <div className="grid gap-8">
             {posts.map((post, index) => (
-              <article 
-                key={post.slug} 
-                className="group relative overflow-hidden rounded-2xl border border-border/40 bg-card transition-all duration-300 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1"
-              >
+              <article key={post.slug} className="group relative overflow-hidden rounded-2xl border border-border/40 bg-card transition-all duration-300 hover:border-primary/20 hover:shadow-xl hover:-translate-y-1">
                 <Link href={`/blog/${post.slug}`} className="block">
                   <div className="grid md:grid-cols-4 gap-6 p-8">
                     {/* Cover Image */}
@@ -74,7 +103,7 @@ export default async function BlogPage({ params }: Props) {
                     
                     {/* Content */}
                     <div className={`space-y-4 ${post.metadata.cover_image ? 'md:col-span-3' : 'md:col-span-4'}`}>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4" />
                           <time dateTime={post.metadata.publishDate}>
@@ -86,6 +115,11 @@ export default async function BlogPage({ params }: Props) {
                           </time>
                         </div>
                         <EngagementStats slug={post.slug} />
+                        {post._enOnly && (
+                          <Badge variant="outline" className="text-xs font-normal">
+                            {t('englishOnly')}
+                          </Badge>
+                        )}
                       </div>
                       
                       <h2 className="text-2xl font-medium leading-tight group-hover:text-foreground/80 transition-colors">

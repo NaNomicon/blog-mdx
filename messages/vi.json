@@ -27,7 +27,10 @@
     "tableOfContents": "Mục lục",
     "tldr": "TLDR:",
     "publishedOn": "Đăng ngày {date}",
-    "readingTime": "{minutes} phút đọc"
+    "readingTime": "{minutes} phút đọc",
+    "showEnglishPosts": "Hiển thị bài viết tiếng Anh",
+    "hideEnglishPosts": "Ẩn bài viết tiếng Anh",
+    "englishOnly": "Chỉ tiếng Anh"
   },
   "Notes": {
     "title": "Ghi chú",

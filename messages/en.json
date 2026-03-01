@@ -27,7 +27,10 @@
     "tableOfContents": "Table of Contents",
     "tldr": "TLDR:",
     "publishedOn": "Published on {date}",
-    "readingTime": "{minutes} min read"
+    "readingTime": "{minutes} min read",
+    "showEnglishPosts": "Show English posts",
+    "hideEnglishPosts": "Hide English posts",
+    "englishOnly": "English only"
   },
   "Notes": {
     "title": "Notes",
