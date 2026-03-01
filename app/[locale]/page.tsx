@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight, BookOpen, User, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PersonStructuredData } from "@/components/seo/structured-data";
 import { seoConfig } from "@/config/seo.config";
 import { generateSEOMetadata } from "@/lib/seo";
+import { getTranslations } from "next-intl/server";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -22,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Home({ params }: Props) {
   const { locale } = await params;
+  const t = await getTranslations("Home");
   return (
     <>
       <PersonStructuredData
@@ -35,7 +37,7 @@ export default async function Home({ params }: Props) {
         <div className="space-y-6">
           <div className="relative">
             <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light tracking-tight gradient-text">
-              Build & Grow
+              {t("heroTagline")}
               <span className="text-primary">.</span>
             </h1>
             <div className="absolute -top-4 -right-4 float-animation">
@@ -47,8 +49,7 @@ export default async function Home({ params }: Props) {
 
         <div className="max-w-2xl mx-auto space-y-6">
           <p className="text-xl text-muted-foreground leading-relaxed">
-            Software developer exploring the intersection of technology, 
-            productivity, and self-development.
+            {t("heroDescription")}
           </p>
         </div>
       </section>
@@ -61,13 +62,9 @@ export default async function Home({ params }: Props) {
               <div className="p-2 rounded-lg bg-primary/10">
                 <User className="w-5 h-5 text-primary" />
               </div>
-              <h2 className="text-2xl font-medium gradient-text">The Journey</h2>
+              <h2 className="text-2xl font-medium gradient-text">{t("journeyTitle")}</h2>
             </div>
-            <p className="text-muted-foreground leading-relaxed">
-              I believe technology should serve our personal growth. Whether it&apos;s 
-              leveraging AI to expand our capabilities or self-hosting tools to reclaim our 
-              digital sovereignty, it&apos;s all part of becoming a better developer and a better self.
-            </p>
+            <p className="text-muted-foreground leading-relaxed">{t("journeyDescription")}</p>
           </div>
 
           <div className="card-enhanced space-y-6">
@@ -75,13 +72,9 @@ export default async function Home({ params }: Props) {
               <div className="p-2 rounded-lg bg-primary/10">
                 <BookOpen className="w-5 h-5 text-primary" />
               </div>
-              <h2 className="text-2xl font-medium gradient-text">Purpose</h2>
+              <h2 className="text-2xl font-medium gradient-text">{t("purposeTitle")}</h2>
             </div>
-            <p className="text-muted-foreground leading-relaxed">
-              I started this blog to document my progress and share insights on 
-              building efficient systems—both in code and in life. Here, you&apos;ll find 
-              thoughts on productivity, technical deep-dives, and occasional discoveries.
-            </p>
+            <p className="text-muted-foreground leading-relaxed">{t("purposeDescription")}</p>
           </div>
         </div>
       </section>
@@ -89,9 +82,7 @@ export default async function Home({ params }: Props) {
       {/* CTA Section */}
       <section className="text-center space-y-8">
         <div className="space-y-6">
-          <p className="text-lg text-muted-foreground">
-            Currently under construction, but getting better every day
-          </p>
+          <p className="text-lg text-muted-foreground">{t("ctaDescription")}</p>
           <div className="relative inline-block">
             <Button
               asChild
@@ -99,7 +90,7 @@ export default async function Home({ params }: Props) {
               className="group bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <Link href="/blog" className="flex items-center gap-2">
-                Explore my thoughts
+                {t("ctaButton")}
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>

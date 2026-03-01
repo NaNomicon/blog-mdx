@@ -1,3 +1,28 @@
+  "Home": {
+    "heroTagline": "Build & Grow",
+    "heroDescription": "Software developer exploring the intersection of technology, productivity, and self-development.",
+    "journeyTitle": "The Journey",
+    "journeyDescription": "I believe technology should serve our personal growth. Whether it's leveraging AI to expand our capabilities or self-hosting tools to reclaim our digital sovereignty, it's all part of becoming a better developer and a better self.",
+    "purposeTitle": "Purpose",
+    "purposeDescription": "I started this blog to document my progress and share insights on building efficient systems—both in code and in life. Here, you'll find thoughts on productivity, technical deep-dives, and occasional discoveries.",
+    "ctaDescription": "Currently under construction, but getting better every day",
+    "ctaButton": "Explore my thoughts"
+  },
+  "About": {
+    "heroTitle": "About",
+    "heroSubtitle": "Building systems, improving self, and exploring the digital garden",
+    "introParagraph1": "Hey there! Thanks for visiting my corner of the internet. I'm NaN, a software developer who views code not just as a profession, but as a tool for personal and digital evolution. My journey is defined by a deep interest in <strong>self-development</strong> and <strong>productivity</strong>, always looking for ways to optimize my life and my work.",
+    "introParagraph2": "I believe that modern technology—when used intentionally—can be a massive force multiplier. Whether it's integrating <strong>AI</strong> to amplify my thinking or <strong>self-hosting</strong> my own tools to ensure privacy and control, I see these as vital steps in building a sustainable and efficient digital life.",
+    "value1Title": "Continuous Learning",
+    "value1Description": "Always exploring new technologies, frameworks, and methodologies to stay at the forefront of development.",
+    "value2Title": "Sharing Knowledge",
+    "value2Description": "Believing that knowledge grows when shared, I document my journey to help others on theirs.",
+    "value3Title": "Problem Solving",
+    "value3Description": "Tackling challenges head-on with creativity, persistence, and a good cup of coffee.",
+    "currentStatusTitle": "Current Status",
+    "currentStatusDescription": "This website is currently under construction, evolving and improving with each visit. I'm constantly adding new content, refining the design, and enhancing the user experience.",
+    "exploreButton": "Explore my thoughts"
+  },
 {
   "Nav": {
     "home": "Home",

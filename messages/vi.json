@@ -1,3 +1,28 @@
+  "Home": {
+    "heroTagline": "Build & Grow",
+    "heroDescription": "Lập trình viên khám phá giao điểm giữa công nghệ, năng suất và phát triển bản thân.",
+    "journeyTitle": "Hành Trình",
+    "journeyDescription": "Mình tin công nghệ nên phục vụ cho sự trưởng thành cá nhân. Dù là tận dụng AI để mở rộng khả năng hay tự host các công cụ để lấy lại chủ quyền số, tất cả đều là một phần của việc trở thành một developer giỏi hơn và một phiên bản bản thân tốt hơn.",
+    "purposeTitle": "Mục Tiêu",
+    "purposeDescription": "Mình bắt đầu blog này để ghi lại tiến trình và chia sẻ những góc nhìn về việc xây dựng hệ thống hiệu quả—cả trong code lẫn cuộc sống. Ở đây bạn sẽ tìm thấy những suy nghĩ về năng suất, những phân tích kỹ thuật sâu, và vài khám phá ngẫu nhiên.",
+    "ctaDescription": "Hiện đang trong giai đoạn xây dựng, nhưng mỗi ngày lại tốt hơn một chút",
+    "ctaButton": "Khám phá suy nghĩ của mình"
+  },
+  "About": {
+    "heroTitle": "Về Mình",
+    "heroSubtitle": "Xây hệ thống, tiến bộ bản thân, và khám phá khu vườn số",
+    "introParagraph1": "Này bạn! Cảm ơn vì đã ghé góc riêng trên internet của mình. Mình là NaN, một developer xem code không chỉ là nghề mà còn là công cụ cho sự tiến hoá cá nhân và kỹ thuật số. Hành trình của mình gắn với sự quan tâm sâu sắc đến <strong>phát triển bản thân</strong> và <strong>năng suất</strong>, luôn tìm cách tối ưu cuộc sống và công việc.",
+    "introParagraph2": "Mình tin công nghệ hiện đại—khi được dùng với chủ ý—là một yếu tố nhân lực mạnh mẽ. Dù là tích hợp <strong>AI</strong> để khuếch đại suy nghĩ hay <strong>self-hosting</strong> bộ công cụ riêng để giữ quyền riêng tư và kiểm soát, mình xem đó là những bước cần thiết để xây dựng một cuộc sống số bền vững và hiệu quả.",
+    "value1Title": "Học Hỏi Liên Tục",
+    "value1Description": "Luôn khám phá công nghệ, framework và phương pháp mới để không ngừng dẫn đầu trong lĩnh vực phát triển.",
+    "value2Title": "Chia Sẻ Kiến Thức",
+    "value2Description": "Tin rằng kiến thức lớn lên khi được chia sẻ, mình ghi lại hành trình để giúp người khác trên con đường của họ.",
+    "value3Title": "Giải Quyết Vấn Đề",
+    "value3Description": "Đương đầu thử thách bằng sự sáng tạo, kiên trì, và một tách cà phê ngon.",
+    "currentStatusTitle": "Trạng Thái Hiện Tại",
+    "currentStatusDescription": "Website này vẫn đang được xây dựng, ngày càng tiến bộ theo mỗi lượt ghé thăm. Mình liên tục thêm nội dung mới, tinh chỉnh thiết kế và nâng cao trải nghiệm người dùng.",
+    "exploreButton": "Khám phá suy nghĩ của mình"
+  },
 {
   "Nav": {
     "home": "Trang chủ",
