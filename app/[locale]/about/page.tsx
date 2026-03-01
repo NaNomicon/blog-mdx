@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight, Code, Coffee, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -54,12 +54,12 @@ export default async function About({ params }: Props) {
             <p className="text-lg text-muted-foreground leading-relaxed">
               Hey there! Thanks for visiting my corner of the internet. I&apos;m NaN, a software developer 
               who views code not just as a profession, but as a tool for personal and digital evolution. 
-              My journey is defined by a deep interest in **self-development** and **productivity**, 
+              My journey is defined by a deep interest in <strong>self-development</strong> and <strong>productivity</strong>,
               always looking for ways to optimize my life and my work.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
               I believe that modern technology—when used intentionally—can be a massive force multiplier. 
-              Whether it&apos;s integrating **AI** to amplify my thinking or **self-hosting** my own tools 
+              Whether it&apos;s integrating <strong>AI</strong> to amplify my thinking or <strong>self-hosting</strong> my own tools 
               to ensure privacy and control, I see these as vital steps in building a sustainable 
               and efficient digital life.
             </p>

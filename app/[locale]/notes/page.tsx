@@ -186,6 +186,7 @@ export default async function NotesPage({
               filters={filters}
               hasMore={hasMore}
               currentLayout={currentLayout}
+              locale={locale}
             />
           ) : (
             <div className="text-center py-24 border rounded-2xl bg-muted/20 flex flex-col items-center justify-center space-y-4">

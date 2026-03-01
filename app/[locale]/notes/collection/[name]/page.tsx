@@ -221,6 +221,7 @@ export default async function CollectionPage({
               filters={filters}
               hasMore={hasMore}
               currentLayout={currentLayout}
+              locale={locale}
             />
           ) : (
             <div className="text-center py-24 border rounded-2xl bg-muted/30 border-dashed">

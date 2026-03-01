@@ -12,12 +12,12 @@ import { useTranslations } from "next-intl";
 // Cache dynamic components globally to prevent re-loading on state changes
 const mdxCache = new Map<string, React.ComponentType>();
 
-function getMDXComponent(type: string, slug: string) {
-  const key = `${type}:${slug}`;
+function getMDXComponent(locale: string, type: string, slug: string) {
+  const key = `${locale}:${type}:${slug}`;
   if (!mdxCache.has(key)) {
     mdxCache.set(
       key,
-      dynamic(() => import(`@/content/${type}/${slug}.mdx`), {
+      dynamic(() => import(`@/content/${locale}/${type}/${slug}.mdx`), {
         loading: () => <div className="h-20 bg-muted/20 rounded-md animate-pulse" />,
       })
     );
@@ -27,10 +27,12 @@ function getMDXComponent(type: string, slug: string) {
 
 export const NoteCard = memo(function NoteCard({ 
   note, 
-  layout = "masonry" 
+  layout = "masonry",
+  locale = "en",
 }: { 
   note: Post<NoteMetadata>;
   layout?: "masonry" | "list";
+  locale?: string;
 }) {
     const { slug, type, metadata } = note;
   const { title, publishDate, collection, tags, category, spoiler, pinned } = metadata;
@@ -39,7 +41,7 @@ export const NoteCard = memo(function NoteCard({
     const t = useTranslations("Notes");
   const isList = layout === "list";
 
-  const MDXContent = getMDXComponent(type, slug);
+  const MDXContent = getMDXComponent(locale, type, slug);
 
   return (
     <div className={cn(
@@ -114,7 +116,7 @@ export const NoteCard = memo(function NoteCard({
             isList && "md:p-8"
           )}>
             <div className={cn(
-              "prose prose-neutral dark:prose-invert max-w-none overflow-hidden",
+              "prose prose-neutral dark:prose-invert max-w-none overflow-x-auto",
               isList ? "prose-base md:prose-lg" : "prose-sm"
             )}>
               <MDXContent />

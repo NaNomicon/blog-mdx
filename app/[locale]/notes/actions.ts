@@ -5,7 +5,8 @@ import { getPaginatedNotes, type NoteFilters } from "@/lib/notes";
 export async function fetchNotesAction(
   filters: NoteFilters,
   page: number = 1,
-  limit: number = 10
+  limit: number = 10,
+  locale: string = "en"
 ) {
-  return await getPaginatedNotes(filters, page, limit);
+  return await getPaginatedNotes(filters, page, limit, locale);
 }
