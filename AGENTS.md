@@ -20,9 +20,15 @@ blog-mdx/
 ├── lib/              # Core utilities and data layer (7 files) → see AGENTS.md
 ├── convex/           # Real-time backend: views, reactions, auth, OG cache → see AGENTS.md
 ├── content/
-│   ├── blogs/        # Production posts (YYMMDD-slug.mdx)
-│   ├── notes/        # Notes stream entries (YYMMDD-slug.mdx)
-│   └── drafts/       # Hidden in production (NEXT_PUBLIC_SHOW_DRAFTS=true to view)
+│   ├── en/           # English content (source of truth)
+│   │   ├── blogs/    # Blog posts (YYMMDD-slug.mdx)
+│   │   ├── notes/    # Notes stream entries (YYMMDD-slug.mdx)
+│   │   ├── pages/    # Static page content (about, home, etc.)
+│   │   └── drafts/   # Hidden in production (NEXT_PUBLIC_SHOW_DRAFTS=true to view)
+│   └── vi/           # Vietnamese translations
+│       ├── blogs/    # Translated blog posts (matching EN filenames)
+│       ├── notes/    # Translated notes
+│       └── drafts/   # Vietnamese drafts
 ├── config/           # seo.config.ts, link-types.ts — site identity, link tooltip types
 ├── scripts/          # CLI scaffolding and dev tools (new-blog, new-note, version-bump)
 ├── docs/             # PRDs (prd/) and changelogs (logs/2026/)
@@ -33,9 +39,9 @@ blog-mdx/
 
 | Task | Location | Notes |
 |------|----------|-------|
-| Add/edit blog post | `content/blogs/YYMMDD-slug.mdx` | Use `pnpm new-blog` |
-| Add/edit note | `content/notes/YYMMDD-slug.mdx` | Use `pnpm new-note` |
-| Draft content | `content/drafts/` | Set `NEXT_PUBLIC_SHOW_DRAFTS=true` |
+| Add/edit blog post | `content/en/blogs/YYMMDD-slug.mdx` | Use `pnpm new-blog` (scaffolds to `en/` automatically) |
+| Add/edit note | `content/en/notes/YYMMDD-slug.mdx` | Use `pnpm new-note` (scaffolds to `en/` automatically) |
+| Draft content | `content/en/drafts/` | Set `NEXT_PUBLIC_SHOW_DRAFTS=true` |
 | Content schemas/fetching | `lib/content.ts` | `getAllPosts`, `getPostBySlug` |
 | Notes filtering/pagination | `lib/notes.ts` | `getFilteredNotes`, `getPaginatedNotes` |
 | SEO metadata | `lib/seo.ts` | `generateSEOMetadata()` |
@@ -217,6 +223,7 @@ Next.js 14 (App Router), Tailwind CSS + Shadcn UI, MDX, Convex, Lucide/Simple Ic
 - **Never** omit `metadata` export from MDX files — silently skipped by content loader
 - Convex functions must have `args`/`returns` validators (see `convex/AGENTS.md`)
 - `pnpm build` **skips ESLint and TypeScript checks** — always run `pnpm lint && pnpm type-check` manually
+- **Never** remove the `TooltipPrimitive.Portal` wrapper from `components/ui/tooltip.tsx` — Shadcn's default `TooltipContent` does not portal out of its parent, causing tooltip clipping inside scrollable/overflow containers. The portal wrapper was added intentionally; reverting it re-introduces visual clipping bugs.
 
 ## Key Gotchas
 
@@ -226,6 +233,8 @@ Next.js 14 (App Router), Tailwind CSS + Shadcn UI, MDX, Convex, Lucide/Simple Ic
 - Notes with `spoiler: true` are hidden by default; `pinned: true` floats to top
 - Docker output: `standalone` mode, multi-platform via `scripts/docker-build.sh`
 - ISR revalidation: `revalidate = 3600` on blog/note pages
+- `_enOnly` flag on merged posts: When the "Show English posts" toggle is active, EN-only posts merged into a VI locale list are tagged `_enOnly: true`. `NoteCard` (and any future card component) MUST resolve MDX with `locale="en"` when `_enOnly` is true — using the page's `locale` ("vi") causes React error #419 and a module-not-found crash. See `components/notes/infinite-notes-stream.tsx`.
+- `_enOnly` vs `isFallback`: These are distinct mechanisms. `isFallback` means a single post page fell back to EN because no VI translation exists. `_enOnly` means an EN post is included in a mixed-locale list view. Do NOT conflate them.
 
 ## Linting & Type Checking
 Always run before committing: `pnpm lint` (ESLint) and `pnpm type-check` (TypeScript strict)
@@ -282,3 +291,14 @@ export async function generateStaticParams() {
 }
 ```
 This future-proofs for new locales — adding `'zh'` to `routing.locales` automatically pre-renders Chinese routes.
+
+### UI Translation Namespaces
+
+`messages/en.json` is the source of truth. Current top-level namespaces: `Nav`, `Footer`, `Blog`, `Notes`, `Common`, `I18n`, `Home`, `About`.
+
+**To add a new namespace** (e.g. `"Settings"`):
+1. Add the namespace key and all strings to `messages/en.json`
+2. Add the same namespace key with translated strings to `messages/vi.json`
+3. Call `getTranslations("Settings")` in the relevant server component (or `useTranslations("Settings")` in a client component)
+
+Do NOT use hardcoded EN strings in page components — always extract into a namespace.
