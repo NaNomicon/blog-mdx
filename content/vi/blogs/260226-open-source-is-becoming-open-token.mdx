@@ -1,0 +1,113 @@
+export const metadata = {
+    title: "Open source đang trở thành open-token",
+    publishDate: "2026-02-26",
+    description: "AI agent đang âm thầm đổi luôn ý nghĩa của chuyện 'đóng góp cho open source'. Không hẳn là xấu, nhưng cấu trúc động lực đã lệch đi theo những cách mà rất ít người chịu nói toẹt ra.",
+    category: "AI",
+    cover_image: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb",
+    tldr: "Open source từng chạy bằng thời gian con người bỏ vào. Giờ nó còn chạy bằng token nữa, tức lượng compute mà agent đốt để làm việc. Chuyện này ổn khi người cầm lái thật sự hiểu mình đang làm gì. Nó bắt đầu méo mó khi chẳng còn ai cầm lái cả.",
+    tags: ["AI", "Open Source", "Software"],
+};
+
+*Photo by <a href="https://unsplash.com/@synkevych?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Roman Synkevych</a> on <a href="https://unsplash.com/photos/black-and-white-penguin-toy-wX2L8L-fGeA?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+
+Gần đây mình có đóng góp cho vài dự án open source. Nhưng không còn theo kiểu ngày xưa nữa.
+
+Mình thấy bug. Clone repo về. Trỏ agent vào codebase, nói nó sai ở đâu, rồi ngồi nhìn. Nó đọc code, đề xuất cách sửa, fork, commit, push, mở PR. Khi maintainer để lại comment review, mình lại hích nhẹ: "này, có feedback rồi." Nó đọc comment, sửa tiếp, rồi push lại. Cả vòng đó xong mà mình không cần mở editor lần nào.
+
+Mình vẫn review plan trước khi cho nó chạy. Phần đó còn quan trọng hơn cả đoạn code nó sinh ra.
+
+Nhưng có gì đó trong kiểu làm này khác hẳn. Khác tới mức đáng để gọi tên.
+
+## Thời gian mở → open-token
+
+Open source từ trước đến giờ sống bằng **thời gian mở.** Anh em bỏ vào buổi tối, cuối tuần và cả sự tập trung của mình. Thứ khan hiếm là công sức, công sức của từng người cụ thể, và chính cái độ khan hiếm đó mới làm contribution có giá trị.
+
+Giờ thì có thêm một dòng tài nguyên khác chảy vào dự án: **token.** API credit. Ngân sách compute. Cái giá phải trả để chạy agent qua trọn một vòng contribution. Một người hiểu hệ thống và có agent trong tay giờ có thể quét sạch đống backlog mà trước kia cả team phải mất mấy tuần mới xử lý xong. Một người. Một buổi chiều.
+
+Nghe thì thích thật. Refactor lớn, rà accessibility, vá lỗ hổng test coverage—mấy việc từng nằm lì trong danh sách "để hôm khác"? Tự nhiên lại làm nổi.
+
+Nhưng luật chơi kinh tế ở bên dưới đã đổi rồi, chỉ là chưa ai chịu cập nhật lại.
+
+## Sự bất đối xứng
+
+Việc sinh code đã rẻ đi. Review nó thì chưa.
+
+Báo cáo [2025 Google DORA Report](https://dora.dev/research/2025/dora-report "reference | Báo cáo DevOps thường niên cho thấy AI đi kèm thời gian review dài hơn 91%") cho thấy khi mức độ dùng AI tăng 90%, **thời gian code review tăng 91%** và **kích thước PR tăng 154%**. Báo cáo [Cortex 2026 Engineering Benchmark](https://www.cortex.io/report/engineering-in-the-age-of-ai-2026-benchmark-report "reference | Bộ số liệu kỹ thuật cho thấy số sự cố trên mỗi PR tăng 23.5% YoY") cũng ghi nhận số sự cố trên mỗi pull request tăng 23.5% theo năm, ngay cả khi số lượng PR cũng tăng thêm 20%.
+
+Code nhiều hơn. PR to hơn. Review lâu hơn. Incident cũng nhiều hơn.
+
+[Rémi Verschelde](https://www.theregister.com/2026/02/18/godot_maintainers_struggle_with_draining/ "mention | Maintainer Godot nói làn sóng PR do AI tạo ra vừa mệt vừa bào tinh thần"), một maintainer của [Godot](https://godotengine.org/ "mention | Game engine open source đang bị ngập bởi PR AI chất lượng thấp"), mới vài tuần trước đã gọi làn sóng PR do AI tạo ra là *"draining and demoralizing"*. [GitHub](https://github.com/ "mention | Nền tảng vừa bán Copilot vừa phải đối diện làn sóng PR AI"), công ty đứng sau [Copilot](https://github.com/features/copilot "mention | Trợ lý code AI của GitHub"), cũng đã mở một [thread cộng đồng](https://github.com/orgs/community/discussions/185387 "reference | Thảo luận của GitHub tháng 2/2026 về làn sóng đóng góp AI chất lượng thấp") vào tháng 2/2026 về việc đóng góp kém chất lượng tăng vọt, rồi còn bắt đầu [bàn tới](https://www.theregister.com/2026/02/03/github_kill_switch_pull_requests_ai/ "reference | Bài The Register về ý tưởng kill switch cho PR do AI tạo ra") thứ gần như một cái kill switch cho pull request trên repo.
+
+Chính cái nền tảng tạo ra công cụ sinh code giờ lại đang phải dựng lối thoát khỏi nó.
+
+[Daniel Stenberg](https://daniel.haxx.se/blog/2025/07/14/death-by-a-thousand-slops/ "mention | Tác giả curl kể chuyện bug bounty bị rác AI nhấn chìm"), cha đẻ của [curl](https://curl.se/ "reference | Công cụ dòng lệnh phổ biến để truyền dữ liệu bằng URL"), chứng kiến các bài nộp do AI tạo ra chiếm 20% toàn bộ báo cáo lỗ hổng gửi tới bug bounty của curl trong năm 2025. Chỉ 5% trong số đó mô tả lỗ hổng có thật. Ông gọi nó là "Death by a Thousand Slops" và đóng luôn chương trình bug bounty.
+
+Cái ngưỡng công sức từng là bộ lọc. Giờ cái bộ lọc đó biến mất rồi.
+
+## Sự khác biệt mà ít ai nói ra
+
+Phần lớn tranh luận hiện giờ coi mọi contribution do AI hỗ trợ là một loại. Không phải vậy.
+
+Một vibe-coder chưa từng dùng Godot nghiêm túc, chạy lệnh kiểu "find issues and fix them" trên repo vừa clone cách đây năm phút? Đó là spam nhưng vòng vo hơn một chút.
+
+Một người dùng dự án mỗi ngày, hiểu kiến trúc của nó, phát hiện bug thật, rồi dùng agent để thực thi bản fix mà đáng lẽ họ tự viết được nhưng chậm hơn? Đó chỉ là một công cụ tốt hơn thôi.
+
+Vấn đề là trong hàng đợi PR, nhìn hai kiểu đó gần như giống hệt nhau. Đó mới là bi kịch.
+
+Trong workflow của mình, phần con người chịu trách nhiệm là: phát hiện bug, vì mình thực sự dùng món đó; quyết định xem nó có đáng sửa không; và review plan của agent, tức cái đoạn mà anh em nhận ra kiểu "đúng kỹ thuật nhưng sai kiến trúc". Bước thứ ba chỉ làm được nếu anh em từng tự tay viết thứ code đó rồi. Không thể gật đầu cho một plan mà mình không hiểu. Một plan sai nhưng được agent thực thi hoàn hảo còn tệ hơn không sửa gì.
+
+## Khi cả review cũng rẻ đi
+
+Sự bất đối xứng này chỉ đúng khi review vẫn còn đắt. Mà chuyện đó sẽ không kéo dài mãi.
+
+Chúng ta đã thấy những công cụ review có AI hỗ trợ rồi. Trạng thái cuối chắc sẽ là: agent nộp PR → reviewer tự động bắt các lỗi lộ liễu → maintainer con người chỉ còn nhìn những diff đã được lọc sẵn, comment sẵn.
+
+Vậy thứ gì con người vẫn nhìn ra mà máy không nhìn ra? Ý đồ. Bản fix này có khớp với hướng *dự án sẽ đi tới* không, chứ không chỉ với trạng thái hiện tại? Nó có giải quyết đúng vấn đề không? Nó có nhét vào codebase một pattern mà sáu tháng nữa maintainer sẽ nguyền rủa không?
+
+"Code này chạy được" là bài test cơ học. "Cách làm này có nên tồn tại ở đây không" thì đòi hỏi phải thật sự quan tâm tới dự án.
+
+## Câu hỏi đáng sợ hơn
+
+Đây mới là thứ cứ ám mình mãi.
+
+Điều gì xảy ra nếu maintainer cũng là vibe-coder?
+
+Không phải kiểu người xấu. Chỉ là những người thực sự dùng dự án, thật lòng muốn giúp, cũng trỏ agent vào repo—nhưng chính hiểu biết của họ cũng được vá víu bởi agent. Không ai trong cả mạng lưới contributor còn giữ một mental model rõ ràng về lý do codebase hoạt động theo cách hiện tại.
+
+Nhìn từ bên ngoài, dự án vẫn có vẻ khỏe. Stars, downloads, commit activity, issue được trả lời nhanh, CI xanh lè. Tín hiệu nào cũng đẹp. Nhưng từng bản fix đều chỉ nhất quán ở phạm vi cục bộ, còn tổng thể thì rệu rã. Quyết định thiết kế chồng chất theo hướng tệ dần vì mỗi lần nhìn riêng lẻ đều thấy hợp lý, chỉ là chẳng ai còn theo dõi toàn cục nữa.
+
+Điều đáng sợ nhất là gì? **Có khi nó vẫn ổn định.** Nếu user cũng là vibe-coder, chuyện "chạy được ở happy path" đã là đủ. Chẳng ai còn đòi mức đúng đắn sâu hơn—cái loại đúng đắn chỉ xuất hiện khi có người thật sự hiểu hệ thống. Giá trị giả vẫn giữ được vì người dùng cuối cũng không phân biệt nổi.
+
+Đó không phải phần mềm đang sụp. Đó là phần mềm không bao giờ sụp đủ mạnh để lộ ra rằng trong nhà chẳng có ai cả.
+
+Như [Flamehaven](https://flamehaven.substack.com/p/the-pull-request-illusion-how-ai "reference | Bài luận lập luận rằng PR AI đã tách sự hiểu biết ra khỏi thay đổi code") viết: "understanding stopped traveling with code."
+
+## Ý đồ là thứ rất khó nén
+
+Mình cũng đang thử đối phó chuyện này. Sau mỗi buổi code, mình bắt agent sinh ra **intent-based changelog**—không phải "đã đổi gì" mà là "vì sao chọn hướng này, đã cân nhắc gì, đã bỏ qua gì". Với những việc kéo dài qua nhiều phiên, mình viết plan để mang context sang phiên sau.
+
+Nó có ích. Nhưng vẫn chưa đủ. Một nửa số lần mình vẫn phải tự tay chỉ agent quay lại đọc đống tài liệu đó. Tài liệu có tồn tại, chỉ là chúng chưa được đối xử như thứ hạng nhất.
+
+[AGENTS.md](https://agents.md "reference | Quy ước để chỉ cho AI agent cách tương tác với repo") là một điểm khởi đầu tốt—nó dạy agent cách làm việc với repo. [ADRs](https://github.com/joelparkerhenderson/architecture-decision-record "reference | Mẫu ghi lại quyết định kiến trúc và lý do đi kèm") giúp ghi lại các quyết định kiến trúc. Nhưng cả hai đều không lưu được **phần âm bản**: dự án đã chủ động quyết định *không* trở thành cái gì, cách tiếp cận nào từng bị loại bỏ, ranh giới scope nào từng được giữ chặt trước áp lực, hay trade-off nào từng hợp lý cách đây ba năm trong một bối cảnh mà chẳng ai viết xuống.
+
+Toàn bộ thứ đó nằm trong đầu maintainer. Khi những maintainer đó rời đi—hoặc thật ra chưa từng tồn tại đúng nghĩa—debug sẽ biến thành khảo cổ học.
+
+## Vấn đề pipeline
+
+Nghe thì có vẻ các công ty big tech sẽ là nơi giữ tiêu chuẩn. Họ có tiền, có danh tiếng, có sản phẩm không được phép hỏng.
+
+Đúng một phần. Mức sàn của họ là liability, không phải tay nghề. [AWS](https://aws.amazon.com/ "aside | Ví dụ rõ nhất: docs tệ suốt nhiều năm nhưng vẫn thống trị thị trường") có tài liệu tệ thật sự hơn cả thập kỷ nay mà vẫn in tiền đều đều. Con hào là switching cost. Chất lượng chỉ cần vượt qua cái ngưỡng "đừng gây ra sự cố đắt đỏ" là được.
+
+Vấn đề sâu hơn là: chính những công ty đó bán công cụ tạo ra output kiểu vibe-code, trong khi hạ tầng họ vận hành lại là thứ tuyệt đối không được phép vibe-code—kernel, hệ thống phân tán, security primitive. Ở bên trong họ vẫn cần người thật sự hiểu hệ thống. Nhưng ở bên ngoài, họ đang bào mòn cái pipeline từng đào tạo ra những người đó. Junior dev ngày xưa sẽ học bằng cách vật lộn qua từng PR. Giờ thì họ prompt để đi tiếp.
+
+Mười năm nữa, kỹ sư hệ thống sẽ từ đâu chui ra?
+
+---
+
+Mình không nghĩ open source đã hỏng. Mô hình con người-có-kiến-thức cộng với agent, nếu người chỉ huy thật sự hiểu mình đang làm gì, có khi còn tạo ra nhiều contribution tốt hơn cách cũ.
+
+Nhưng hiện tại có hai chuyện đang xảy ra song song: nhóm contributor giỏi nhất trở nên mạnh hơn rất nhiều, còn mức sàn để gọi là "đóng góp" thì rơi xuống gần bằng 0. Điểm cân bằng cuối cùng của hệ sinh thái đó sẽ trông ra sao, giờ vẫn chưa ai biết.
+
+Những codebase kiểu [Potemkin](https://en.wikipedia.org/wiki/Potemkin_village "reference | Ẩn dụ về mặt tiền giả—trông khỏe mạnh nhưng rỗng ruột bên trong") vẫn chưa xuất hiện ở quy mô lớn.
+
+*Chưa thôi.*

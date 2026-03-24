@@ -1,0 +1,72 @@
+export const metadata = {
+    title: "Unlimited token đúng là một cú hích lớn",
+    publishDate: "2026-01-22",
+    description: "OpenCode kéo mình ra khỏi kiểu dùng AI lúc nào cũng sợ tốn tiền. Khi token gần như vô hạn, mình bắt đầu dám plan sâu hơn và thử những thứ trước đây luôn bỏ qua.",
+    category: "AI",
+    cover_image: "/covers/260122-unlimited-tokens.jpg",
+    tldr: "Các model miễn phí nhưng đủ tốt trên OpenCode đã xóa cảm giác mỗi cú Enter đều tốn tiền, nhờ vậy mình plan kỹ hơn, thử nhiều hơn và dùng AI thoải mái hơn với Obsidian lẫn mấy project lạ lùng.",
+};
+
+*Photo by <a href="https://unsplash.com/@steve_j?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Steve Johnson</a> on <a href="https://unsplash.com/photos/a-blue-and-red-object-with-a-long-curved-tail-2UjheC7FBWQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+
+Mình dùng [Cursor](https://cursor.com "mention | Editor tích hợp AI quen thuộc cho dân code dùng AI") khá lâu rồi. Mỗi khi đụng bài toán kiến trúc khó nhằn, mình vẫn lôi mấy model xịn của [Claude](https://claude.ai "mention | Chatbot AI của Anthropic") ra dùng. Nhưng suốt mấy tháng, mình chỉ đứng nhìn [Claude Code](https://claude.ai/code "reference | Công cụ CLI của Anthropic cho workflow code với AI") từ xa.
+
+Mỗi lần tính thử nghiêm túc, mình lại liếc sang chi phí rồi chùn tay. Ngay cả lúc dùng Cursor, mình vẫn có cảm giác cái đồng hồ tính tiền đang chạy ở đâu đó. Chỉ cần agent hiểu sai prompt hoặc bịa ra một thư viện vớ vẩn là mình đã thấy tiếc token rồi.
+
+Thế là mình lại quay về với mấy model rẻ hơn. Và đúng như anh em đoán, mình phải kiểm tra lại, viết lại, rồi sửa đi sửa lại cùng một đống bug vào những ngày model rẻ dở chứng. Kết cục là thua cả đôi đường.
+
+Sau đó, mình tìm thấy [OpenCode](https://opencode.ai "reference | Gateway AI cung cấp các model chất lượng cao với chi phí thấp hoặc miễn phí").
+
+## Giải pháp thay thế mang tên OpenCode
+
+OpenCode về cơ bản là một gateway AI đang cho dùng một loạt [Zen models](https://opencode.ai/docs/zen/#pricing "reference | Danh sách model tối ưu chi phí trên OpenCode"), và vài cái trong số đó miễn phí thật trong một khoảng thời gian giới hạn. Cỡ như **Grok Code Fast 1**, **GLM 4.7** hay **MiniMax M2.1**.
+
+Với indie dev hay hobbyist, đây đúng là cú hích lớn. Nó không chỉ là chuyện có đồ miễn phí. Nó là cú xoay tâm lý xảy ra khi anh em biết mình gần như không thể đốt hết token.
+
+## Từ nỗi lo chi phí sang lập kế hoạch ổn định
+
+Khi mình không còn bận tâm về chi phí của một request, hành vi của mình thay đổi:
+
+1.  **Mình plan nhiều hơn**: Thay vì lao vào code cho nhanh để "tiết kiệm token", mình chịu khó ngồi ở pha plan lâu hơn. Mình có thể bắt AI brainstorm năm kiểu kiến trúc, tự chê từng kiểu một, rồi mới chốt hướng đi.
+2.  **Feature đỡ toang hơn**: Vì plan nhiều hơn nên feature ra cũng ổn định hơn. Mình bớt phải vá mấy lỗ thủng mà đáng lẽ chỉ cần nghĩ thêm năm phút là né được.
+3.  **Không còn vòng lặp kiểm tra vô tận**: Trước đây, cứ rẻ với đắt là mình lại phân vân. Giờ thì kể cả một model có hơi đần hơn đám trả phí, việc mình được lặp đi lặp lại bao nhiêu vòng cũng được vẫn thường cho ra kết quả ngon hơn một cú bắn đắt đỏ nhưng trượt mục tiêu.
+
+## Những trường hợp sử dụng trong thực tế
+
+### Bộ não thứ hai (Obsidian + MCP)
+
+Một trong những chỗ mình thấy sướng nhất là **vault Obsidian**. Từ lâu mình đã muốn kéo AI vào cái second brain của mình nhiều hơn, nhưng lần nào cũng dừng lại ở cùng một chỗ: tốn tiền.
+
+Dùng [Model Context Protocol (MCP)](https://modelcontextprotocol.io "reference | Giao thức mở cho phép AI agent chạm vào nguồn dữ liệu bên ngoài"), giờ mình có thể trỏ đám model miễn phí này vào cả cái vault. Cảm giác có một con AI thật sự *hiểu* ghi chú của mình, biết nối ý này sang ý khác và giúp mình dọn lại luồng suy nghĩ mà không phải canh tiền, nó đã lắm.
+
+Sự tích hợp này đã tồn tại từ trước. Rào cản không nằm ở công nghệ, nó nằm ở tài chính.
+
+### Gom các tác vụ AI chung lại
+
+Vì token trong gói [Cursor](https://cursor.com "mention | Editor tích hợp AI quen thuộc cho dân code dùng AI") không thật sự vô hạn, nhất là với model xịn, mình luôn phải giữ thêm một gói cho mấy dịch vụ như [t3.chat](https://t3.chat "mention | Giao diện chat AI đa model") để lo những việc AI chung chung như research rộng, tìm tài liệu hay brainstorm mấy ý không dính trực tiếp tới code.
+
+Với OpenCode, điều đó không còn cần thiết nữa. Mình có thể chuyển các prompt chung và vòng lặp nghiên cứu đó sang các model miễn phí. Lại bớt được một gói subscription phải quản lý và thêm một lĩnh vực nữa mà mình không cần phải để mắt đến cái đồng hồ đếm ngược.
+
+## Điểm trừ: đánh đổi giữa tốc độ và chi phí
+
+Tất nhiên, chẳng có bữa trưa nào hoàn toàn miễn phí cả. Điểm trừ chính không chỉ là một chút độ trễ lúc bắt đầu, nó là tổng thể **tốc độ thực thi**.
+
+So với kiểu phản hồi gần như tức thì trong Cursor, đám model miễn phí này chậm hơn rõ rệt. Cảm giác như chúng phải rướn người lên mà nghĩ, hoặc hạ tầng phía sau đơn giản là chưa được tối ưu. Mình thấy độ trễ khá rõ giữa từng nhịp suy nghĩ, nhất là giữa những lần **tool use** liên tiếp. Một task phức tạp vốn chỉ là chuỗi thao tác gọn lẹ ở model trả phí thì ở đây thành một cuộc bò chậm và cẩn thận.
+
+Nhưng vấn đề là mình thực sự không bận tâm.
+
+Khi bỏ được áp lực tài chính của cái đồng hồ đó, anh em cũng dễ chấp nhận chuyện phải chờ hơn. Một phút đứng nhìn model nghĩ nhiều khi lại vừa đủ để mình tự plan bước kế tiếp. Mình thà có một trợ lý hơi chậm nhưng dùng thoải mái cho mấy thử nghiệm kỳ quái, còn hơn một thằng nhanh như điện mà mỗi lần bấm Enter lại thấy đau ví.
+
+## Những thử nghiệm kỳ quái
+
+Sự tự do đó cho mình nghịch mấy thứ "kỳ quái", kiểu project không đủ nghiêm túc để đáng phải trả 20 đô mỗi tháng hay gánh hóa đơn tính theo từng token.
+
+Ví dụ, mình đã nghịch [job-hunter-mcp](https://github.com/patrickvicente/job-hunter-mcp "reference | MCP server hỗ trợ quản lý quy trình tìm việc và nộp đơn"), một Model Context Protocol server để quản lý đơn xin việc. Nó có phải thử nghiệm kỳ quái không? Chắc là có. Nhưng token đã miễn phí rồi thì sao lại không thử. Chính kiểu đó mới hạ thấp rào cản để mình chui vào những ngách mà bình thường mình mặc kệ.
+
+Mình cũng đang lên kế hoạch kết nối thêm một vài MCP chuyên dụng nữa để xem mình có thể đi xa đến đâu.
+
+## Những khả năng vô hạn
+
+Nói thật, đám model miễn phí hiện tại trên OpenCode ngon hơn mình tưởng khá nhiều. Mà kể cả chúng chỉ ở mức tạm được thôi, việc có một trợ lý gần như không giới hạn vẫn đã là món hời lớn rồi.
+
+Nếu anh em chưa ngó qua OpenCode, thử xem [Zen pricing](https://opencode.ai/docs/zen/#pricing "reference | Bảng giá và danh sách model Zen trên OpenCode") của họ đi. Khả năng cao là cách anh em nghĩ về workflow code với AI sẽ đổi khác đấy.
