@@ -1,7 +1,7 @@
 export const metadata = {
   title: "WW3: tưởng tượng — cái chết của glue coder",
   publishDate: "2026-03-01",
-  description: "Phát triển phần mềm hiện đại là một ảo giác tốc độ được dựng trên nền niềm tin toàn cầu. Trong WW3, niềm tin đó bốc hơi. Ngày đầu tiên bắt đầu bằng một lỗi 403 trên GitHub.",
+  description: "Phát triển phần mềm hiện đại nhanh được như bây giờ là nhờ một thứ rất mong manh: niềm tin toàn cầu. Trong WW3, niềm tin đó bốc hơi. Ngày đầu tiên bắt đầu bằng một lỗi 403 trên GitHub.",
   category: "technology",
   cover_image: "/covers/260301-ww3-imagined-end-of-the-glue-coder.jpg",
   tldr: "Khi xung đột toàn cầu bùng nổ, chuỗi cung ứng open source sụp xuống theo. Thời của việc khâu vá hàng chục thư viện không tài liệu coi như hết. Kỹ sư sẽ bị đẩy vào môi trường zero-trust, nặng màu quân sự và phải kiểm tra mọi thứ bằng tay.",
@@ -16,19 +16,19 @@ export const metadata = {
   Đây là series 4 phần về chuyện gì sẽ xảy ra với kỹ sư phần mềm nếu xung đột toàn cầu thật sự bùng nổ:
   - **Cái chết của glue coder** (Bạn đang ở đây)
   - **Chiếc ô AI và model chủ quyền**
-  - **Code động năng và chiến tuyến tự hành**
+  - **Code ngoài chiến tuyến và mặt trận tự động**
   - **Kháng chiến và cuộc tái thiết lớn**
 </Callout>
 
 Ngày đầu tiên không bắt đầu bằng ánh chớp hạt nhân. Nó bắt đầu bằng một lỗi 403 trên [GitHub](https://github.com/ "reference | Nền tảng lưu trữ mã nguồn lớn nhất thế giới").
 
-Ảo giác tốc độ của việc phát triển phần mềm hiện đại đang nằm trên một cái nền cực mong manh: niềm tin toàn cầu. Mỗi ngày, pipeline CI/CD của chúng ta kéo về hàng gigabyte code từ những người xa lạ ở khắp nơi trên thế giới. Ta mặc định CDN sẽ luôn sống. Ta mặc định maintainer open source đúng là người mà họ tự nhận.
+Cái tốc độ của việc phát triển phần mềm hiện đại thực ra dựng trên một cái nền rất mong manh: niềm tin toàn cầu. Mỗi ngày, pipeline CI/CD của chúng ta kéo về hàng gigabyte code từ những người xa lạ ở khắp nơi trên thế giới. Ta mặc định CDN sẽ luôn sống. Ta mặc định maintainer open source đúng là người mà họ tự nhận.
 
-Nếu Thế chiến III thật sự nổ ra, niềm tin đó bốc hơi chỉ trong một buổi chiều. Cộng đồng developer không biên giới, đầy màu sắc utopia mà chúng ta dựng lên sẽ không sống nổi khi va phải chiến tranh động năng. Nó co cụm lại thành những silo bị canh gác nghiêm ngặt và mang màu quân sự.
+Nếu Thế chiến III thật sự nổ ra, niềm tin đó bốc hơi chỉ trong một buổi chiều. Cái cộng đồng developer không biên giới mà tụi mình tưởng là mặc định sẽ không sống nổi khi đụng chiến tranh thật. Nó co cụm lại thành những silo bị canh gác nghiêm ngặt và mang màu quân sự.
 
-Chào mừng tới Splinternet.
+Đó là Splinternet.
 
-Và với hàng triệu developer, chào mừng đến với hồi kết của cái nghề mà anh em vẫn nghĩ mình đang làm.
+Và với hàng triệu developer, đó cũng là lúc cái công việc quen tay bỗng biến thành thứ khác hẳn.
 
 ---
 
@@ -52,7 +52,7 @@ Luật mới sẽ rất tuyệt đối: **Đọc không nổi thì đừng chạ
 
 ### Registry quốc gia
 
-Chỉ trong vài tuần sau khi chiến sự bùng nổ, khái niệm một internet toàn cầu duy nhất sẽ vỡ ra. Các quốc gia và các khối đồng minh sẽ dựng lên rất nhanh những mirror npm, [PyPI](https://en.wikipedia.org/wiki/Python_Package_Index "reference | Python Package Index") và [crates.io](https://crates.io/ "reference | Registry crate của cộng đồng Rust") do nhà nước phê chuẩn, air-gap và kiểm soát chặt.
+Chỉ trong vài tuần sau khi chiến sự bùng nổ, khái niệm một internet toàn cầu duy nhất sẽ vỡ ra. Các quốc gia và các khối đồng minh sẽ dựng lên rất nhanh những mirror npm, [PyPI](https://en.wikipedia.org/wiki/Python_Package_Index "reference | Python Package Index") và [crates.io](https://crates.io/ "reference | Registry crate của cộng đồng Rust") do nhà nước phê chuẩn và tách hẳn khỏi internet công cộng.
 
 Anh em sẽ không còn kiểu tiện tay khai báo thêm một package routing mới trong `package.json` nữa. Workflow sẽ biến thành một cơn ác mộng quan liêu. Anh em tải raw source code về. Gửi một yêu cầu chính thức lên hội đồng an ninh mạng quốc gia. Rồi ngồi chờ.
 
@@ -74,11 +74,11 @@ Developer sẽ bị nhốt trong những [SCIF](https://en.wikipedia.org/wiki/Se
 
 Họ không còn build feature flag hay A/B test cho flow người dùng nữa. Họ dành mười hai tiếng mỗi ngày để đọc C cũ và các bundle JavaScript khổng lồ. Họ săn backdoor do nhà nước cài vào và zero-day nằm trong hạ tầng nền tảng của chính quốc gia mình.
 
-Trong Thế chiến II, [các nhà máy ô tô đã được hoán cải gần như chỉ sau một đêm](https://www.smithsonianmag.com/smart-news/when-detroit-was-arsenal-democracy-180962620/ "reference | Cách các nhà máy ô tô Detroit chuyển sang sản xuất máy bay ném bom năm 1941") để sản xuất xe tăng và máy bay. Lực lượng lao động dân sự bị hút thẳng vào guồng máy chiến tranh công nghiệp. Cuộc xung đột toàn cầu kế tiếp sẽ kích hoạt đúng kiểu huy động đó, chỉ là lần này dành cho phần mềm.
+Trong Thế chiến II, [các nhà máy ô tô đã được hoán cải gần như chỉ sau một đêm](https://www.smithsonianmag.com/smart-news/when-detroit-was-arsenal-democracy-180962620/ "reference | Cách các nhà máy ô tô Detroit chuyển sang sản xuất máy bay ném bom năm 1941") để sản xuất xe tăng và máy bay. Lực lượng lao động dân sự bị điều thẳng vào guồng máy chiến tranh công nghiệp. Cuộc xung đột toàn cầu kế tiếp sẽ kích hoạt đúng kiểu huy động đó, chỉ là lần này dành cho phần mềm.
 
-Đó là một quá trình deskill hóa vừa tàn nhẫn vừa cần thiết của lực lượng lao động hiện đại. Hoặc anh em trở thành kiểu kiến trúc sư hệ thống cấp thấp, có thể tự viết network stack từ đầu. Hoặc anh em trở thành người thuần phục model AI để làm việc với trí tuệ chủ quyền. Hoặc anh em biến thành một human linter, một kiểm toán viên đi tìm kim trong đống cỏ khô toàn cầu.
+Đó là một cú deskill hóa quy mô lớn nhưng gần như không tránh khỏi của lực lượng lao động hiện đại. Hoặc anh em trở thành kiểu kiến trúc sư hệ thống cấp thấp, có thể tự viết network stack từ đầu. Hoặc anh em trở thành người thuần phục model AI để làm việc với trí tuệ chủ quyền. Hoặc anh em biến thành một human linter, một kiểm toán viên đi tìm kim trong đống cỏ khô toàn cầu.
 
-Thời của glue coder đã chết. Code không còn chỉ là logic nữa. Nó là một vector của an ninh quốc gia.
+Thời của glue coder đã chết. Code không còn chỉ là logic nữa. Nó trở thành một mắt xích của an ninh quốc gia.
 
 ---
 *Tiếp theo trong series này: **WW3: tưởng tượng — chiếc ô AI và model chủ quyền***
