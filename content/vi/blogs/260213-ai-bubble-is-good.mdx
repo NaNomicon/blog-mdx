@@ -1,0 +1,98 @@
+export const metadata = {
+    title: "Bong bóng AI thực ra lại tốt",
+    publishDate: "2026-02-13",
+    description: "Vì sao cú sập AI gần như chắc chắn lại mở ra một thời kỳ quá tốt cho builder, nếu nhìn theo khung Carlota Perez và cái mình gọi là 'hiệu ứng Linux'.",
+    category: "AI",
+    cover_image: "https://images.unsplash.com/photo-1606907568049-4bf98aad871a",
+    tldr: "Bong bóng AI là có thật, nhưng khác cú sập dot-com ở chỗ nó để lại một đống utility khổng lồ. Compute sẽ rẻ đi, open weights sẽ hưởng lợi, và junior dev sẽ bị ép phải nghĩ như architect sớm hơn nhiều.",
+    tags: ["AI", "Career", "Economics"],
+};
+
+*Photo by <a href="https://unsplash.com/@majesticlukas?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Majestic Lukas</a> on <a href="https://unsplash.com/photos/person-holding-white-and-red-hanging-decor-6lWFuyGPkk0?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+      
+import { Callout } from "@/components/mdx/callout";
+
+Nói thẳng ra nhé, **chúng ta đang ở trong một cái bubble.**
+
+[Nvidia](https://www.nvidia.com/ "reference | Công ty thiết kế GPU dẫn đầu làn sóng hạ tầng AI") đang "in tiền", các startup đang gọi vốn hàng triệu đô la mà không có gì ngoài một lớp vỏ bọc quanh [GPT-4](https://openai.com/research/gpt-4 "reference | Model ngôn ngữ lớn mạnh mẽ của OpenAI"), và bảng tin LinkedIn đang chìm nghỉm trong các bài viết "dẫn dắt tư tưởng" về cách AI sẽ sửa chữa mọi thứ từ việc viết code đến đời sống tình cảm. Cảm giác giống hệt như những câu chuyện chúng ta từng nghe về năm [1999](https://www.investopedia.com/terms/d/dotcom-bubble.asp "reference | Thời điểm bong bóng dot-com đạt đỉnh trước khi sụp đổ").
+
+Và cũng giống như năm 1999, nó sẽ vỡ.
+
+Nhưng đây là góc nhìn ngược dòng của mình: **Cú vỡ đó lại là thứ tốt nhất có thể xảy ra với chúng ta.**
+
+Nếu nhìn vào lịch sử, cụ thể là **[khung của Carlota Perez](https://carlotaperez.org/ "reference | Lý thuyết về các cuộc cách mạng công nghệ và tư bản tài chính")**, bubble không chỉ là tai nạn tài chính. Nó là một phần gần như bắt buộc của các cuộc cách mạng công nghệ. Đó là "giai đoạn lắp đặt" (installation phase), lúc xã hội đổ tiền quá tay vào hạ tầng để rồi sau đó chính hạ tầng đó trở nên rẻ bèo và ở khắp mọi nơi.
+
+## Tình thế tiến thoái lưỡng nan trị giá 100 tỷ đô
+
+Tại sao [Google](https://about.google/ "mention | Gã khổng lồ tìm kiếm đang chạy đua vũ trang AI"), [Meta](https://about.meta.com/ "mention | Công ty mẹ của Facebook, dẫn đầu về AI mã nguồn mở"), và [Microsoft](https://www.microsoft.com/ "mention | Đối tác chiến lược của OpenAI") lại chi hàng trăm tỷ đô la cho các cụm [H100](https://www.nvidia.com/en-us/data-center/h100/ "reference | GPU tiêu chuẩn vàng cho việc huấn luyện AI hiện nay") mà họ có thể không kiếm được tiền từ đó?
+
+Đó là bài toán kinh điển **[tình thế tiến thoái lưỡng nan của người tù (prisoner's dilemma)](https://plato.stanford.edu/entries/prisoner-dilemma/ "reference | Một khái niệm trong lý thuyết trò chơi về sự hợp tác và phản bội")**.
+
+Thử tưởng tượng anh em là [Sundar Pichai](https://blog.google/inside-google/company-announcements/sundar-pichai/ "mention | CEO của Google và Alphabet").
+*   **Kịch bản A:** Anh em chi 50 tỷ đô la cho GPU. Hóa ra nó là một bubble. Anh em mất 50 tỷ đô la. **Tệ.**
+*   **Kịch bản B:** Anh em *không* chi 50 tỷ đô la. Microsoft *thì có*. Họ đạt được [AGI](https://en.wikipedia.org/wiki/Artificial_general_intelligence "reference | Trí tuệ nhân tạo tổng quát đạt trình độ con người") hoặc xây dựng một công cụ tìm kiếm khiến Google trở nên lỗi thời. Anh em mất trắng công ty trị giá 2 nghìn tỷ đô la của mình. **Thảm họa.**
+
+Họ đang bị kẹt giữa dòng. Dù biết là bong bóng, họ vẫn *phải* nhảy vào vì đứng ngoài nghĩa là tự sát. Việc chi tiêu phi lý trí này chính là thứ xây dựng nên cơ sở hạ tầng cho giai đoạn tiếp theo.
+
+## Cú sập = đợt đại hạ giá
+
+Khi bubble cuối cùng cũng vỡ, không phải vì AI ngừng chạy. Nó sẽ là do "khủng hoảng thừa" ập đến—chúng ta đơn giản là đã xây dựng quá nhiều compute so với nhu cầu thực tế.
+
+Đây là khoảnh khắc **"cáp quang ngủ" ([dark fiber](https://en.wikipedia.org/wiki/Dark_fiber "reference | Hạ tầng cáp quang đã lắp đặt nhưng chưa được sử dụng"))** của chúng ta.
+
+Cuối những năm 90, các ông lớn viễn thông đã đốt hàng tỷ đô để rải cáp quang khắp đáy đại dương, với kỳ vọng lưu lượng internet sẽ tăng gấp đôi sau mỗi 100 ngày mãi mãi. Khi thực tế không như mơ, họ phá sản. Nhưng đống cáp đó vẫn nằm đó, chẳng ai đào lên cả.
+
+Kết quả là gì? **Băng thông coi như rẻ như cho.** Cơ sở hạ tầng giá rẻ này đã cho phép các công ty như [YouTube](https://www.youtube.com/ "mention | Nền tảng chia sẻ video lớn nhất thế giới") và [Netflix](https://www.netflix.com/ "mention | Dịch vụ xem phim trực tuyến hàng đầu") bùng nổ một thập kỷ sau đó.
+
+Điều tương tự cũng sẽ xảy ra với AI.
+1.  **Cú sập:** Các nhà cung cấp GPU cloud phá sản. Ngân hàng tịch thu hàng nghìn chiếc H100.
+2.  **Cuộc đấu giá:** Đống GPU đó bị bán lại với giá rẻ như cho.
+3.  **Đợt bùng nổ cho builder:** Tự nhiên, chuyện train một model 70B không còn ngốn 5 triệu đô nữa, mà chỉ còn tầm 50 nghìn. Các nhóm cộng đồng, trường đại học và cá nhân bắt đầu chạm được vào mức compute trước đây chỉ siêu máy tính mới có.
+
+<Callout emoji="📉">
+  **Cú sập không giết công nghệ, nó giết biên lợi nhuận.** [Nvidia](https://www.nvidia.com/ "mention | Nhà sản xuất chip đang hưởng lợi lớn nhất từ cơn sốt AI") không còn ăn 75% margin. [OpenAI](https://openai.com/ "mention | Công ty đứng sau ChatGPT") không còn thu $20/tháng như bây giờ. Giá lao về 0. Nhà đầu tư mất trắng, còn **người dùng thì ăn đủ**.
+</Callout>
+
+## "Hiệu ứng Linux"
+
+Có một nỗi sợ rằng nếu các phòng thí nghiệm (labs) lớn thất bại, "trí thông minh" sẽ biến mất. Đây là kiểu ngộ nhận mang màu sắc **[Thư viện Alexandria (Library of Alexandria)](https://en.wikipedia.org/wiki/Library_of_Alexandria "reference | Biểu tượng cho nỗi ám ảnh mất mát tri thức khi một kho tàng lớn bị phá hủy")**.
+
+Nhưng chúng ta có một mạng lưới an toàn: **[open weights](https://opensource.org/ai/open-weights "reference | Các mô hình AI mà người dùng có thể tải về và chạy cục bộ")**.
+
+Ngay cả khi OpenAI đóng cửa vào ngày mai, **[Llama 3](https://llama.meta.com/ "reference | Model AI mã nguồn mở mạnh mẽ của Meta")** và **[DeepSeek](https://www.deepseek.com/ "reference | Model AI hiệu suất cao từ Trung Quốc")** đã có mặt trên hàng triệu ổ cứng. Chúng đang nằm trên [BitTorrent](https://www.bittorrent.com/ "mention | Giao thức chia sẻ file ngang hàng"). Chúng không thể bị xóa bỏ. Chúng ta đã "checkpoint" trí thông minh của nhân loại ở mức [mùa hè 2024](https://ai.meta.com/blog/meta-llama-3-1/ "reference | Thời điểm ra mắt Llama 3.1, một cột mốc cho AI mã nguồn mở"), và mức sàn đó là cực kỳ cao.
+
+Nó phản chiếu khá rõ trận chiến giữa **[Linux](https://www.kernel.org/ "reference | Hệ điều hành mã nguồn mở phổ biến nhất thế giới") và [Solaris](https://www.oracle.com/solaris/ "reference | Hệ điều hành Unix độc quyền từng thống trị thị trường server")** hồi thập niên 2000.
+*   **Solaris (Độc quyền)** tốt hơn, trau chuốt hơn và trưởng thành hơn.
+*   **Linux (Open source)** thì "tệ hơn" nhưng miễn phí.
+
+Khi dot-com bubble vỡ, các công ty không thể chi trả cho các giấy phép Solaris đắt đỏ nữa. Họ buộc phải sử dụng Linux. Bởi vì *mọi người* đều dùng thứ miễn phí "tệ hơn" đó, mọi nỗ lực phát triển đều dồn vào nó. Chỉ trong vài năm, Linux đã trở thành xương sống của internet.
+
+Nếu các ông lớn AI vấp ngã, developer sẽ đổ xô vào model open source. Cái khó sẽ ló cái khôn, ép chúng ta tối ưu chúng để chạy trên phần cứng tiêu dùng. Chúng ta không cần AI "cấp độ Chúa Trời". Chúng ta cần AI "đủ tốt" chạy ngay trên laptop.
+
+## Những rủi ro thực sự (không phải về công nghệ)
+
+Mặc dù cú sập tài chính có thể kiểm soát được, những rủi ro *thực sự* lại là những kẻ giết người thầm lặng.
+
+Đầu tiên là **quả bom pháp lý.** Nếu [Tòa án Tối cao (Supreme Court)](https://www.supremecourt.gov/ "mention | Cơ quan tư pháp cao nhất của Hoa Kỳ") phán quyết rằng việc huấn luyện dựa trên dữ liệu có bản quyền là vi phạm, toàn bộ ngành công nghiệp (cả open lẫn đóng) có thể trở thành bất hợp pháp chỉ sau một đêm. Sau đó là **[sự sụp đổ mô hình (model collapse)](https://www.nature.com/articles/s41586-024-07566-y "reference | Hiện tượng chất lượng AI giảm sút khi huấn luyện trên dữ liệu do chính AI tạo ra")**. Khi internet ngập tràn mớ rác do AI tạo ra, các mô hình trong tương lai có thể bắt đầu "ảo giác" nhiều hơn vì chúng đang tự huấn luyện dựa trên chính output của mình. Và cuối cùng là **[hiệu ứng Wall-E (The Wall-E effect)](https://en.wikipedia.org/wiki/Cognitive_offloading "reference | Sự phụ thuộc quá mức vào công nghệ dẫn đến suy giảm năng lực cá nhân")**. Đây là sự sụp đổ về mặt nhận thức. Nếu chúng ta phụ thuộc vào AI cho mọi thứ, chúng ta sẽ mất đi khả năng suy nghĩ mà không có trợ lý. Chúng ta có nguy cơ trở thành một thế hệ "Prompt Engineer", những người không biết debug một hệ thống khi AI gặp lỗi.
+
+## Vấn đề "senior junior"
+
+Cuộc khủng hoảng trước mắt nhất chính là **"cây cầu gãy" trong tuyển dụng.**
+
+Các công ty đang tự đốt cháy nấc thang của chính mình. Bằng cách dùng AI để thay thế các junior dev, họ đang cắt đứt pipeline đào tạo senior trong tương lai. Tại sao phải thuê một junior để viết các đoạn boilerplate khi [Copilot](https://github.com/features/copilot "mention | Trợ lý code AI của GitHub") làm điều đó với giá $10/tháng?
+
+"Thợ gõ code" đã chết. Một dev chỉ dựa vào kiến thức cú pháp đã lỗi thời. Chúng ta đang chuyển từ thế giới "viết code" sang "lắp ghép logic".
+
+Với những junior dev mới bước chân vào nghề, luật chơi đã thay đổi. **"Coder" đã chết.** Biết cú pháp giờ đây vô giá trị. **"Architect" (kiến trúc sư) đã ra đời.** Anh em cần phải hiểu về *hệ thống*. Database nói chuyện với API thế nào? Deploy ra sao?
+
+Giá trị của anh em không còn nằm ở chuyện tự tay gõ code, mà nằm ở khả năng *thẩm định* code do AI sinh ra. Anh em giống như một quản lý còn tỉnh đang duyệt lại bài của một thằng intern say khướt. Nghe không công bằng thật, nhưng đó là con đường duy nhất để sống sót và đi tiếp.
+
+---
+
+Bong bóng sẽ vỡ. Các nhà đầu tư sẽ mất hàng nghìn tỷ đô la. Có thể sẽ có suy thoái.
+
+Nhưng với builder thì sao? **Đó sẽ là lúc cực kỳ ngon ăn.**
+
+Chúng ta sẽ thừa kế những tàn tích của đế chế: cụm GPU khổng lồ giá rẻ, các mô hình open weights được tối ưu hóa cực tốt, và một thế giới nơi trí thông minh rẻ mạt và dồi dào như điện năng.
+
+Đừng sợ cú sập. Hãy chuẩn bị cho đợt đại hạ giá.
