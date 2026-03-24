@@ -18,15 +18,15 @@ Mình vẫn review plan trước khi cho nó chạy. Phần đó còn quan trọ
 
 Nhưng có gì đó trong kiểu làm này khác hẳn. Khác tới mức đáng để gọi tên.
 
-## Thời gian mở → open-token
+## Open source từng chạy bằng công sức, giờ chạy thêm bằng token
 
-Open source từ trước đến giờ sống bằng **thời gian mở.** Anh em bỏ vào buổi tối, cuối tuần và cả sự tập trung của mình. Thứ khan hiếm là công sức, công sức của từng người cụ thể, và chính cái độ khan hiếm đó mới làm contribution có giá trị.
+Open source từ trước đến giờ sống bằng **công sức con người.** Anh em bỏ vào buổi tối, cuối tuần và cả sự tập trung của mình. Thứ khan hiếm là công sức, công sức của từng người cụ thể, và chính cái độ khan hiếm đó mới làm contribution có giá trị.
 
 Giờ thì có thêm một dòng tài nguyên khác chảy vào dự án: **token.** API credit. Ngân sách compute. Cái giá phải trả để chạy agent qua trọn một vòng contribution. Một người hiểu hệ thống và có agent trong tay giờ có thể quét sạch đống backlog mà trước kia cả team phải mất mấy tuần mới xử lý xong. Một người. Một buổi chiều.
 
 Nghe thì thích thật. Refactor lớn, rà accessibility, vá lỗ hổng test coverage—mấy việc từng nằm lì trong danh sách "để hôm khác"? Tự nhiên lại làm nổi.
 
-Nhưng luật chơi kinh tế ở bên dưới đã đổi rồi, chỉ là chưa ai chịu cập nhật lại.
+Nhưng luật chơi kinh tế ở bên dưới đã đổi rồi, chỉ là chưa ai cập nhật luật chơi cho kịp.
 
 ## Sự bất đối xứng
 
@@ -86,9 +86,9 @@ Như [Flamehaven](https://flamehaven.substack.com/p/the-pull-request-illusion-ho
 
 Mình cũng đang thử đối phó chuyện này. Sau mỗi buổi code, mình bắt agent sinh ra **intent-based changelog**—không phải "đã đổi gì" mà là "vì sao chọn hướng này, đã cân nhắc gì, đã bỏ qua gì". Với những việc kéo dài qua nhiều phiên, mình viết plan để mang context sang phiên sau.
 
-Nó có ích. Nhưng vẫn chưa đủ. Một nửa số lần mình vẫn phải tự tay chỉ agent quay lại đọc đống tài liệu đó. Tài liệu có tồn tại, chỉ là chúng chưa được đối xử như thứ hạng nhất.
+Nó có ích. Nhưng vẫn chưa đủ. Một nửa số lần mình vẫn phải tự tay chỉ agent quay lại đọc đống tài liệu đó. Tài liệu có tồn tại, chỉ là chúng chưa được coi là ưu tiên hàng đầu.
 
-[AGENTS.md](https://agents.md "reference | Quy ước để chỉ cho AI agent cách tương tác với repo") là một điểm khởi đầu tốt—nó dạy agent cách làm việc với repo. [ADRs](https://github.com/joelparkerhenderson/architecture-decision-record "reference | Mẫu ghi lại quyết định kiến trúc và lý do đi kèm") giúp ghi lại các quyết định kiến trúc. Nhưng cả hai đều không lưu được **phần âm bản**: dự án đã chủ động quyết định *không* trở thành cái gì, cách tiếp cận nào từng bị loại bỏ, ranh giới scope nào từng được giữ chặt trước áp lực, hay trade-off nào từng hợp lý cách đây ba năm trong một bối cảnh mà chẳng ai viết xuống.
+[AGENTS.md](https://agents.md "reference | Quy ước để chỉ cho AI agent cách tương tác với repo") là một điểm khởi đầu tốt—nó dạy agent cách làm việc với repo. [ADRs](https://github.com/joelparkerhenderson/architecture-decision-record "reference | Mẫu ghi lại quyết định kiến trúc và lý do đi kèm") giúp ghi lại các quyết định kiến trúc. Nhưng cả hai đều không lưu được **phần chìm**: dự án đã chủ động quyết định *không* trở thành cái gì, cách tiếp cận nào từng bị loại bỏ, ranh giới scope nào từng được giữ chặt trước áp lực, hay trade-off nào từng hợp lý cách đây ba năm trong một bối cảnh mà chẳng ai viết xuống.
 
 Toàn bộ thứ đó nằm trong đầu maintainer. Khi những maintainer đó rời đi—hoặc thật ra chưa từng tồn tại đúng nghĩa—debug sẽ biến thành khảo cổ học.
 
