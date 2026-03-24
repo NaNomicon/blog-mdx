@@ -149,7 +149,8 @@ export const metadata = {
 
 - **Content structure**: `content/en/` is the source of truth; `content/vi/` holds translations.
 - **Adding posts**: `pnpm new-blog` scaffolds into `content/en/blogs/`.
-- **Vietnamese translations**: Create a matching file in `content/vi/blogs/YYMMDD-slug.mdx`.
+- **Vietnamese translations**: Create a matching file in `content/vi/blogs/YYMMDD-slug.mdx`. The filename MUST exactly match the English source for the locale switcher to work.
+- **Information Parity**: While Vietnamese prose can be restructured for natural flow, the frontmatter metadata (`publishDate`, `tags`, `category`), and underlying facts/links MUST exactly match the English source.
 - **Content API**: `getAllPosts(type, locale?)`, `getPostBySlug(slug, type, locale?) → { post, isFallback }`.
 - **Fallback**: If `isFallback === true`, English content is shown with a `FallbackBanner`.
 - **UI translations**: `messages/en.json` (source), `messages/vi.json` (translated).
@@ -187,7 +188,7 @@ Links in MDX render with hover tooltips. **Always annotate links** so readers ge
 **With annotation**: tooltip shows a badge, the OG data, AND your note — much more useful to readers.
 
 **Rules:**
-- Always annotate external links — bare external URLs produce generic tooltips
+- **Always annotate external links** — bare external URLs are treated as UX bugs. The `note` must pre-summarize *why* the link matters, respecting the reader's time before they click.
 - Internal links (`/blog/...`) auto-resolve title/description from the posts index — annotation is optional but encouraged
 - Anchor links (`#section`) have no tooltip — no annotation needed
 - The `type` is optional: `[text](url "Just a plain note without type")` works too

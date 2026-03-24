@@ -7,10 +7,23 @@ This guide helps adapt English drafts into Vietnamese posts that sound like a lo
 - Reader: address the audience as `bạn` for standard guidance and `anh em` when the tone leans casual and familiar.
 - Never use `quý vị` or `các bạn đọc` here; the blog is a personal space, not a corporate newsletter.
 
+## information parity (english as anchor)
+- The English version is the immutable source of truth. You have absolute freedom to change sentence structures or swap metaphors to sound natural in Vietnamese, but **you cannot drop data**. If a statistic, a hyperlink, or a sub-claim exists in the English source, it must exist in the Vietnamese counterpart.
+- **Filename Parity**: The translated file (`content/vi/blogs/YYMMDD-slug.mdx`) must have the exact same filename as the English source, or the "Read in English/Vietnamese" toggle on the live site will crash or 404.
+
 ## tech term handling
 - Keep the core terms in English: `bug`, `deploy`, `feature`, `app`, `codebase`, `refactor`, `hardcode`, `framework`, `side-project`, `junior/senior`, `PR`, `code review`, `token`, `prompt`, `agent`.
 - When you introduce a new or uncommon idea, give the Vietnamese translation first and then the English term in parentheses on first use. Example: "Lập trình theo cảm hứng (Vibe Coding) là cách mình hay làm dự án nhỏ." After that, you can pick whichever version feels most natural.
 - Avoid translating the core terms above — alternatives like `gỡ lỗi`, `triển khai`, `mã cứng`, `khung làm việc` sound dated or overly literal.
+
+## translation by metaphor (not dictionary)
+- Never translate tech analogies literally if a local cultural or dev-slang equivalent exists.
+  - ❌ "The effort floor was the filter" -> Ngưỡng công sức là bộ lọc.
+  - ✅ "The effort floor was the filter" -> Cái "ngưỡng" công sức ngày xưa chính là **cái rây lọc**.
+  - ❌ "Rubber-stamp a plan" -> Đóng dấu thông qua một kế hoạch.
+  - ✅ "Rubber-stamp a plan" -> **Gật đầu bừa** cho một kế hoạch.
+  - ❌ "Nobody's home" -> Chẳng có ai ở nhà.
+  - ✅ "Nobody's home" -> Chẳng có ai **cầm lái**.
 
 ## banned vocabulary
 | Banned | Why / use instead |
@@ -39,6 +52,11 @@ This guide helps adapt English drafts into Vietnamese posts that sound like a lo
 - Possessive overuse (của bạn):
   - ❌ "Kỹ năng code của bạn sẽ cải thiện"
   - ✅ "Kỹ năng code sẽ cải thiện"
+
+## the "burstiness" rhythm
+- Translated Vietnamese naturally tends to become long, run-on, and overly explanatory. You must actively fracture these into short, punchy 3-5 word bursts to maintain the authoritative "Senior Engineer" cadence.
+  - ❌ "Một người có kiến thức sâu có thể quét sạch đống backlog trong một buổi chiều."
+  - ✅ "Một người có kiến thức sâu có thể quét sạch đống backlog... Một người. Một buổi chiều."
 
 ## formatting rules
 - Use sentence case for every heading from H1 down to H4, including the post title. Capitalize only the first word and any proper nouns.
