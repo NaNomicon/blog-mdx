@@ -21,6 +21,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { CompactReactions, type CompactReactionItem } from "@/components/mdx/compact-reactions";
 
 const EmojiPicker = dynamic(() => import("emoji-picker-react"), {
   ssr: false,
@@ -31,6 +32,8 @@ const PREDEFINED_REACTIONS = [
   { type: "like", icon: ThumbsUp, label: "Like", emoji: "👍" },
   { type: "rocket", icon: Rocket, label: "Rocket", emoji: "🚀" },
 ];
+
+const MAX_VISIBLE_CUSTOM_REACTIONS = 3;
 
 export function InlineEngagement({ slug, className }: { slug: string; className?: string }) {
   const engagement = useQuery(api.engagement.getEngagement, { slug });
@@ -51,6 +54,17 @@ export function InlineEngagement({ slug, className }: { slug: string; className?
   const reactionsMap = new Map(
     engagement?.reactions.map((r) => [r.type, r.count]) ?? []
   );
+  const customReactions = (engagement?.reactions ?? [])
+    .filter((reaction) => reaction.count > 0)
+    .filter((reaction) => !PREDEFINED_REACTIONS.some((predefined) => predefined.type === reaction.type))
+    .sort((a, b) => b.count - a.count);
+  const customReactionItems: CompactReactionItem[] = customReactions.map((reaction) => ({
+    type: reaction.type,
+    count: reaction.count,
+    label: reaction.type,
+    icon: <span className="text-sm leading-none">{reaction.type}</span>,
+    tooltipIcon: <span className="text-sm leading-none">{reaction.type}</span>,
+  }));
 
   const emojiPickerTheme = resolvedTheme === "dark" ? Theme.DARK : Theme.LIGHT;
 
@@ -94,29 +108,61 @@ export function InlineEngagement({ slug, className }: { slug: string; className?
             );
           })}
 
-          {/* User's custom reactions */}
-          <AnimatePresence mode="popLayout">
-            {userReactions
-              .filter((type) => !PREDEFINED_REACTIONS.some((pr) => pr.type === type))
-              .map((type) => (
-                <motion.div
-                  key={type}
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0, opacity: 0 }}
-                >
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 px-2 gap-1.5 rounded-md text-primary bg-primary/5 hover:bg-primary/10"
-                    onClick={() => handleToggleReaction(type)}
+            <CompactReactions
+              reactions={customReactionItems}
+              maxVisible={MAX_VISIBLE_CUSTOM_REACTIONS}
+              panelClassName="w-auto min-w-[10rem] rounded-xl border border-border/60 bg-background/95 p-2 text-foreground shadow-lg backdrop-blur"
+              renderReaction={(reaction) => {
+                const isActive = userReactions.includes(reaction.type);
+
+              return (
+                <AnimatePresence key={reaction.type} mode="popLayout">
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
                   >
-                    <span className="text-sm leading-none">{type}</span>
-                    <span className="text-xs font-bold">{reactionsMap.get(type)}</span>
-                  </Button>
-                </motion.div>
-              ))}
-          </AnimatePresence>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={cn(
+                        "h-8 px-2 gap-1.5 rounded-md transition-all hover:bg-muted",
+                        isActive ? "text-primary bg-primary/5 hover:bg-primary/10" : "text-muted-foreground"
+                      )}
+                      onClick={() => handleToggleReaction(reaction.type)}
+                    >
+                      {reaction.icon}
+                      <span className="text-xs font-bold">{reaction.count}</span>
+                    </Button>
+                  </motion.div>
+                </AnimatePresence>
+              );
+            }}
+            renderOverflowTrigger={(hiddenCount) => (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-2 gap-1.5 rounded-md text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
+              >
+                <span className="text-xs font-bold">+{hiddenCount}</span>
+              </Button>
+            )}
+              renderPanelReaction={(reaction) => (
+                <button
+                  type="button"
+                  className={cn(
+                    "flex w-full items-center justify-between gap-2 rounded-lg border border-border/50 bg-muted/50 px-2 py-1.5 text-xs text-foreground transition-colors hover:bg-muted",
+                    userReactions.includes(reaction.type) && "border-primary/40 bg-primary/10 text-primary"
+                  )}
+                  onClick={() => handleToggleReaction(reaction.type)}
+                >
+                  <div className="flex min-w-0 items-center gap-1.5">
+                    {reaction.tooltipIcon ?? reaction.icon}
+                  </div>
+                  <span className="font-semibold">{reaction.count}</span>
+                </button>
+              )}
+            />
 
           {/* Add Reaction Button */}
           <Popover>
