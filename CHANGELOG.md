@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://github.com/NaNomicon/blog-mdx/compare/v1.0.0...v1.1.0) (2026-03-26)
+
+
+### Features
+
+* **content:** add software tax essay ([d798942](https://github.com/NaNomicon/blog-mdx/commit/d7989428b13ccc92c278575bc5bcf54a322e47b7))
+* **content:** add Vietnamese software tax essay ([2744c25](https://github.com/NaNomicon/blog-mdx/commit/2744c25f80058ec0cf3addee841449462f8abebb))
+* **i18n:** add Vietnamese translations for four blog posts ([d7b0552](https://github.com/NaNomicon/blog-mdx/commit/d7b055262b9ed6946b48b8b0b012362b091c7681))
+
+
+### Bug Fixes
+
+* **blog:** improve reaction overflow panel ([9ef62ec](https://github.com/NaNomicon/blog-mdx/commit/9ef62ecaa3565ca1a3ff0fa1a82eb05e5a3fa90e))
+* **i18n:** polish Vietnamese blog translations ([99bddaa](https://github.com/NaNomicon/blog-mdx/commit/99bddaafc8e6f3d829c35088bd9994ecca81621f))
+
 ## 1.0.0 (2026-03-01)
 
 
