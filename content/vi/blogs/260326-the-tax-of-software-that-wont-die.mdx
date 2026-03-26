@@ -1,0 +1,129 @@
+export const metadata = {
+  title: "Cái thuế của thứ phần mềm mãi không chịu chết",
+  publishDate: "2026-03-26",
+  description: "Một service PufferPanel sống dai, 91 GB Docker volume mồ côi, rồi tới simulator runtime của Apple, tất cả dạy mình cùng một bài học: phần mềm vẫn tiếp tục thu tiền thuê rất lâu sau khi product bảo là nó hết rồi.",
+  category: "Technology",
+  cover_image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+  tldr: "Mình đã gặp cả hai kiểu rác số: phần còn sót lại do chính mình bày ra, và phần còn sót lại mà platform không cho mình dọn. Điểm chung là phần mềm hiện đại làm chuyện tạo mới rất dễ, nhưng tới lúc một thứ phải chết thì nó vẫn tiếp tục thu thuế.",
+  tags: ["infrastructure", "docker", "apple"],
+};
+
+*Photo by <a href="https://unsplash.com/@carlheyerdahl?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Carl Heyerdahl</a> on <a href="https://unsplash.com/photos/black-flat-screen-computer-monitor-KE0nC8-58MQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+
+Tháng trước mình dính hai kiểu thuế phần mềm khác nhau.
+
+Kiểu đầu tiên là do mình.
+
+Mình gỡ [PufferPanel](https://www.pufferpanel.com/ "mention | Panel quản lý game server mà trước đó mình cài bên ngoài Dokploy") khỏi [Dokploy](https://dokploy.com/ "mention | Lớp deploy self-hosted của mình, chỉ quản lý thứ do chính nó tạo") rồi coi như xong. Hoặc ít nhất lúc đó mình tưởng vậy. Vài tuần sau, mình chui vào một con VPS có mức dùng RAM nhìn rất khả nghi, rồi thấy `pufferpanel.service` vẫn còn sống ở tầng host, âm thầm chạy Minecraft server với heap `-Xmx8192M`. Một service bị quên. Tám gig RAM bị giữ sẵn. Cứ nằm đó như tiền nhà mình quên mất là tháng nào cũng phải trả.
+
+Kiểu thứ hai thì không phải lỗi của mình.
+
+Trên macOS, mình đụng phải đống bòng bong quanh iOS simulator runtime. Riêng đống file đã đủ nhức đầu. Còn cách tính dung lượng thì còn oái oăm hơn. Storage settings báo rằng mục Documents đang ngốn **200+ GB**. Mình bấm vào, nghĩ chắc sẽ thấy nguyên bãi tha ma file. UI hiện ra đúng năm file, cộng lại chắc cỡ **1.5 GB**. Tới đoạn đó thì câu hỏi tử tế duy nhất còn lại là: rốt cuộc Apple đang đếm cái gì vậy?
+
+Chính đoạn đó mới làm mình bực.
+
+Xóa file thì phiền. Ừ, chịu được. Nhưng bảo với mình là có hàng trăm GB nằm trong "Documents" trong khi danh sách file nhìn thấy còn chưa đủ thành sai số làm tròn, cái đó mới bực. [Xcode](https://developer.apple.com/xcode/ "reference | IDE chính thức của Apple, cũng là nơi simulator runtime đáng lẽ phải được quản lý") cho bạn một luồng quản lý component nhìn rất gọn gàng. `xcrun simctl` cũng có vài lệnh cleanup. Rồi bạn bắt đầu lục forum, từ [thread này của Apple](https://developer.apple.com/forums/thread/812992 "reference | Báo cáo về simulator runtime mồ côi vẫn nằm trên ổ đĩa trong vùng lưu trữ bị SIP bảo vệ"), qua folklore trên Stack Overflow, tới mấy bài hướng dẫn dọn máy trôi nổi, tới mức bản thân cái category đó cũng hết còn logic. Có thể bạn đang nhìn stale device. Có thể là runtime cài nửa vời. Có thể là mấy CoreSimulator image đang mount. Cũng có thể là runtime asset đang nằm dưới `/System/Library/AssetsV2`, còn file thật thì bị nhét sau một lớp bảo vệ của hệ thống.
+
+Đến đó thì cảm giác nó không còn là cleanup nữa, mà là trừ tà. Happy path rất đơn giản: mở Xcode settings, gỡ runtime, có khi chạy thêm vài lệnh `simctl` cleanup. Broken path thì ngớ ngẩn hẳn: đóng Xcode, soi từng thư mục CoreSimulator, tự phân biệt xem runtime đó là file hay mounted volume, vật nhau với permission, restart simulator service, reboot máy, có khi phải cài lại, rồi kiểm tra xem dung lượng có thật sự quay về không. Tới lúc hiểu mình vừa đi qua cái gì thì bản thân việc dọn dẹp gần như không còn là vấn đề chính nữa.
+
+Hai vụ này khác nhau thật.
+
+Một vụ là mình tự ngu mà ra. Vụ kia thì mình lãnh đủ từ platform.
+
+Nhưng chửi tới đâu thì mình vẫn đụng đúng một chuyện: phần mềm bây giờ sinh ra thứ mới quá dễ, còn dẹp cho nó chết hẳn thì làm như không ai muốn nghĩ tới. Ở thời AI, chuyện đó không còn là một ý niệm lửng lơ nữa. Nó hiện thẳng ra ở tiền RAM, tiền ổ đĩa, tiền máy móc mình phải gánh.
+
+## Phần dễ nhất là tạo ra thứ mới
+
+Chưa bao giờ chuyện spin up phần mềm lại dễ như bây giờ.
+
+Một cú click trong control panel. Một lệnh `docker compose up`. Một lần cài dependency. Một lần tải simulator runtime. Một thử nghiệm mà mình thề là chỉ tạm thời thôi.
+
+Lúc đó chi phí trông rất nhỏ vì cả hệ thống giúp mình dàn nó ra. Storage từng có cảm giác là rẻ. RAM từng có cảm giác là thứ trừu tượng. Giờ thì đằng nào cũng phải trả, chỉ là hóa đơn tới muộn thôi, nhất là khi nửa cái ngành này đang bận biến phần cứng nhàn rỗi thành AI throughput. Background service biến mất sau dashboard. Container làm mọi thứ trông như đồ dùng một lần, cho tới khi bạn nhận ra thứ dùng một lần chỉ là cái interface.
+
+Thứ thật sự được tạo ra ở bên dưới thì chẳng dùng một lần chút nào. Nó là state. Là volume. Là cache. Là service. Là asset. Là mấy thư mục có cái tên mình chưa từng gõ và nằm ở mấy chỗ mình chẳng bao giờ mò tới.
+
+Đó là lúc cú ngu của mình với PufferPanel thú vị hơn chuyện "haha mình quên uninstall một thứ".
+
+Mình có xóa nó ở tầng product. Mình có xóa nó khỏi chỗ mà bình thường mình *nhìn thấy* service của mình. Chừng đó đủ để não mình đánh dấu là xong việc. Nhưng host thì đâu quan tâm tới cảm giác của mình. [systemd](https://systemd.io/ "reference | Trình quản lý service trên Linux, sẽ giữ host-level unit sống tới khi mình stop và disable nó hẳn") vẫn làm đúng thứ mình đã bảo nó làm từ mấy tuần trước: giữ service đó sống.
+
+UI bảo câu chuyện đã hết. Máy thì bảo chưa.
+
+## Xóa thường chỉ là xóa cho có
+
+Đó mới là thứ làm mình ngứa nghề hơn.
+
+Phần mềm rất thích cho mình cái cảm giác là mọi thứ đã xong. Một cái nút xóa. Một lệnh prune. Một màn hình nhìn có vẻ sạch sẽ.
+
+Nhưng nhiều khi chỉ là nhìn vậy thôi.
+
+Mình tìm thấy hơn bảy mươi Docker named volume mồ côi trên mỗi con trong hai con server. Dữ liệu game, build cache cũ, nhiều đời state của Langfuse, rồi đủ thứ tàn dư từ những stack mà trong đầu mình đã cho vào nhóm "xong từ lâu rồi". Ban đầu mình chạy `docker volume prune` và gần như chẳng lấy lại được gì. Vài mẩu anonymous volume. Sáu mươi chín kilobyte. Gần như một trò đùa.
+
+Dọn thật sự chỉ bắt đầu khi mình dùng [`docker volume prune -a`](https://docs.docker.com/reference/cli/docker/volume/prune/ "reference | Chế độ volume-prune đầy đủ của Docker, cần thiết nếu muốn xóa named volume mồ côi") vì Docker bây giờ mặc định vẫn tha cho named volume, trừ khi mình nói toẹt ra là đừng tha nữa.
+
+Chỉ một flag đó thôi đã biến kết quả từ kiểu "nhìn như sạch rồi đó" thành **91 GB lấy lại được** trên hai VPS.
+
+Chính cái độ vênh đó mới làm mình khó chịu.
+
+Tự tay đi dọn thì mình chịu được. Cái bực là tool làm như đã dọn xong, còn cái máy thì vẫn phải ôm nguyên đống xác ở phía sau. Một lệnh tên là `prune` mà để lại gần hết đống rác thì không phải dọn dẹp. Nó chỉ tạo cảm giác là đã dọn thôi.
+
+## Có hai kiểu rác số
+
+Giờ thì mình đã đi qua cả hai.
+
+Kiểu đầu là thứ rác do mình tự tạo.
+
+Đó là vụ PufferPanel. Mình cài một thứ nằm ngoài lớp quản lý chính của mình. Mình chỉ gỡ nó được nửa chừng. Rồi mình để cái ranh giới đó che mất phần việc còn lại khỏi mắt mình. Vụ này là lỗi của mình. Đau thật. Nhưng công bằng.
+
+Kiểu thứ hai là thứ rác mình bị ép phải gánh.
+
+Đó là đống simulator runtime của Apple. Ở đây vấn đề không phải là lười. Vấn đề là mình mất quyền chủ động. Hệ thống đẩy mấy thứ đó vào chỗ nó tự quản, không chỉ ra rõ ràng nữa, nhưng tiền dung lượng thì mình vẫn phải gánh. Mình vẫn phải trả bằng ổ đĩa. Chỉ là mình không còn quyền tự tay dọn cho xong nữa.
+
+Mình chịu được chuyện phải trả tiền cho phần còn sót lại do chính mình gây ra. Thứ làm mình điên hơn là phải trả cho phần còn sót lại mà hệ thống không cho mình xóa.
+
+Sự khác biệt đó quan trọng. Nếu gom cả hai lại thành kiểu "ổ đĩa phình lên" chung chung thì câu chuyện này vừa nhạt vừa sai. Thứ xảy ra với mình khó chịu hơn nhiều.
+
+Một đống rác là mình tự bày ra.
+
+Đống còn lại là mình bị thừa kế.
+
+Và cả hai đều chỉ ra một chuyện rất kỳ cục: lúc làm ra thứ mới thì ai cũng chăm chút, còn tới lúc phải dọn nó đi thì thành việc hậu đậu giao cho người dùng tự chịu. Thế nên phần mở đầu lúc nào cũng được vuốt ve kỹ, còn đoạn kết thì bị bỏ mặc.
+
+## Phần mềm hiếm khi có đường lui tử tế
+
+Đa số hệ thống đều có đường cài vào. Có đường setup. Có đường chạy êm ru.
+
+Nhưng tới lúc muốn dẹp nó đi cho sạch thì sao?
+
+Một service được tạo bên ngoài chỗ mình đang quản thì lúc bỏ nó đi, ai chỉ mình phải dọn những gì? Một simulator runtime mà chính platform cũng làm như không muốn nhắc tới nữa thì rốt cuộc phải gỡ theo đường nào? Còn mấy thứ bám lại sau mỗi lần redeploy, migrate, thử linh tinh rồi quên, thì cuối cùng ai là người phải lôi ra dọn?
+
+Thường là không có câu trả lời tử tế nào cả.
+
+Chỉ có lúc mình thấy hệ thống nặng bất thường, mở graph ra thấy sai sai, rồi bắt đầu mò `du`, soi `systemctl`, đào lại từng lớp quyết định cũ của chính mình với của platform. Lúc đó mình đâu còn "cleanup" gì nữa. Mình đang bới rác cũ lên để lần xem rốt cuộc thứ gì chưa chịu chết.
+
+## Hóa đơn tới rất lặng lẽ
+
+Đó là lý do rác số dễ bị lờ đi đến vậy.
+
+Đồ đạc ngoài đời làm mình bẽ mặt ngay. Một cái ghế gãy chặn giữa lối đi. Vài thùng carton cũ nuốt mất cả góc phòng. Đồ thối thì có mùi.
+
+Rác phần mềm thì lịch sự hơn. Nó ngồi chờ.
+
+Nó biến thành RAM pressure ở nền. Vài cảnh báo ổ đĩa tệ hơn một chút. Backup chậm hơn. Cloud bill cao hơn. Một cái máy có cảm giác "hơi sai sai" suốt mấy tuần. Hóa đơn của nó tới dưới dạng ma sát, không phải drama.
+
+Chính cái kiểu âm thầm đó mới làm nó nguy hiểm. Nhiều loại rác số sống dai không phải vì nó quan trọng, mà vì nó quá im.
+
+## Mình tin hệ thống hơn khi nó nói thật nó giữ lại gì
+
+Mình không đòi tự động hóa phải hoàn hảo.
+
+Mình cũng không đòi platform nào phải hiểu hết mọi thứ nó từng sinh ra. Nhưng ít nhất hãy nói thật. Nếu bấm xóa mà mới chỉ xóa lớp nhìn thấy được, nói thẳng ra. Nếu lệnh prune mặc định bỏ qua named resource, nói cho người ta biết ngay từ đầu. Nếu runtime nằm trong vùng được bảo vệ và công cụ bình thường không lấy lại được chỗ dung lượng đó, thì đừng làm như mọi thứ đã xong rồi.
+
+Một hệ thống tử tế sẽ giúp người dùng dọn cho sạch.
+
+Còn nhiều tool bây giờ vẫn cư xử như thể đoạn dọn rác là việc của ai khác.
+
+Mình biết chuyện đó vì mình vừa phải làm cái phần "ai khác" ấy tới hai lần.
+
+Một lần vì mình đáng bị vậy.
+
+Một lần thì không.
