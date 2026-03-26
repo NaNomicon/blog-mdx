@@ -1,0 +1,131 @@
+export const metadata = {
+  title: "The Tax of Software That Won't Die",
+  publishDate: "2026-03-26",
+  description: "A ghost PufferPanel service, 91 GB of orphaned Docker volumes, and Apple's simulator runtimes all taught me the same thing: software keeps charging rent long after the product says it's gone.",
+  category: "Technology",
+  cover_image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+  tldr: "I've seen both kinds of digital garbage: the leftovers that were my fault, and the leftovers the platform won't let me remove. The common thread is that modern software makes creation easy, then keeps charging tax when it's time for something to die.",
+  tags: ["infrastructure", "docker", "apple"],
+};
+
+*Photo by <a href="https://unsplash.com/@carlheyerdahl?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Carl Heyerdahl</a> on <a href="https://unsplash.com/photos/black-flat-screen-computer-monitor-KE0nC8-58MQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+
+I spent part of last month paying two different kinds of software tax.
+
+The first one was my fault.
+
+I removed [PufferPanel](https://www.pufferpanel.com/ "mention | Game server management panel I had previously installed outside Dokploy") from [Dokploy](https://dokploy.com/ "mention | My self-hosted deployment layer, which only manages what it created") and moved on with my life. Or at least I thought I did. Weeks later I went digging into a VPS with suspiciously high RAM usage and found `pufferpanel.service` still alive at the host layer, quietly running a Minecraft server with an `-Xmx8192M` heap. One forgotten service. Eight gigabytes of budgeted memory. Just sitting there like rent I forgot I was paying.
+
+The second one was not my fault.
+
+On macOS, I ran into the mess around iOS simulator runtimes. The files were bad. The accounting was worse. My Storage settings were telling me Documents was eating **200+ GB**. I clicked in expecting a graveyard. The UI showed me five files totaling maybe **1.5 GB**. At that point the only honest question is: what exactly are you counting, Apple?
+
+That is the part that got under my skin.
+
+Deleting things is annoying. Fine. Being told I have hundreds of gigabytes in "Documents" while the visible list barely clears a rounding error is worse. [Xcode](https://developer.apple.com/xcode/ "reference | Apple's official IDE and the place where simulator runtimes are supposed to be managed") gives you a neat component-management story. `xcrun simctl` gives you cleanup commands. Then you start digging through forum threads like [this Apple discussion](https://developer.apple.com/forums/thread/812992 "reference | Report of orphaned simulator runtime assets that stay on disk in SIP-protected storage"), Stack Overflow folklore, and random cleanup guides until the category itself stops making sense. Maybe you are looking at stale devices. Maybe half-installed runtimes. Maybe mounted CoreSimulator images. Maybe runtime assets sitting under `/System/Library/AssetsV2`, with the real files parked behind system protection.
+
+That is when the process stops feeling like cleanup and starts feeling like exorcism. The happy path is simple: open Xcode settings, remove the runtime, maybe run `simctl` cleanup. The broken path is stupid: close Xcode, inspect CoreSimulator folders, figure out whether the runtime is a file or a mounted volume, fight permissions, restart simulator services, reboot, maybe reinstall, then check whether the disk space even came back. By the time you understand what happened, the cleanup itself is barely the problem anymore.
+
+Those two incidents are not the same story. One is a confession. The other is a complaint.
+
+But they land on the same conclusion.
+
+Modern software is very good at creating things. It is terrible at ending them. And in the AI era, that is not a philosophical bug anymore. It is a bill.
+
+## The Easy Part Is Creation
+
+Spinning up software has never been easier.
+
+One click in a control panel. One `docker compose up`. One dependency install. One simulator runtime download. One experiment you swear is temporary.
+
+The cost feels tiny in the moment because the system spreads it out for you. Storage used to feel cheap. RAM used to feel abstract. Now both feel like delayed invoices, especially when half the industry is busy turning idle hardware into AI throughput. Background services disappear behind dashboards. Containers make everything feel disposable until you realize the disposable part was only the interface.
+
+What actually gets created underneath is not disposable at all. It is state. Volumes. caches. services. assets. directories with names you never typed and locations you never visit.
+
+This is where my PufferPanel mistake becomes more interesting than "haha I forgot to uninstall a thing."
+
+I did remove it from the product layer. I removed it from the place where I normally *see* my services. That was enough to let my brain mark it as finished. But the host did not care about my perception. [systemd](https://systemd.io/ "reference | Linux service manager that keeps host-level units alive until you explicitly stop and disable them") was still doing exactly what I had asked it to do weeks earlier: keep that service alive.
+
+The UI said the story was over. The machine disagreed.
+
+## Deletion Is Usually Performative
+
+That was the more useful lesson.
+
+Software loves giving you a deletion gesture. A button. A prune command. A little sense of closure.
+
+The closure is often fake.
+
+I found more than seventy orphaned named Docker volumes on each of two servers. Game data, old build caches, multiple generations of Langfuse state, random leftovers from stacks I had already mentally written off. I ran `docker volume prune` first and got almost nothing back. A few anonymous scraps. Sixty-nine kilobytes. Basically a joke.
+
+The real cleanup only happened when I used [`docker volume prune -a`](https://docs.docker.com/reference/cli/docker/volume/prune/ "reference | Docker's full volume-prune mode, required for named orphaned volumes") because modern Docker defaults to sparing named volumes unless you explicitly tell it not to.
+
+That one flag changed the result from "looks clean" to **91 GB reclaimed** across two VPSes.
+
+That gap is what bothers me.
+
+Manual work is fine. The insulting part is the mismatch between the story the tool tells and the story the machine is still living with. A command called `prune` that leaves most of the corpse behind is not cleanup. It is theater.
+
+## There Are Two Kinds of Digital Garbage
+
+I've now gone through both.
+
+The first kind is the garbage you own.
+
+That is the PufferPanel case. I installed something outside my main orchestration path. I removed it only halfway. I let the abstraction boundary hide the remaining work from me. That one is on me. Painful, but fair.
+
+The second kind is the garbage you inherit.
+
+That is the Apple simulator-runtime mess. Here the problem is not laziness. The problem is loss of agency. The platform moves assets into a system-managed place, stops surfacing them cleanly in the normal management flow, and leaves the user holding the bill anyway. You still pay in disk. You just lose the right to finish the deletion.
+
+I can live with paying for my own leftovers. What drives me insane is paying for leftovers the system will not let me remove.
+
+That difference matters. If I flatten both cases into generic "storage bloat," the post becomes boring and dishonest. What actually happened to me was sharper than that.
+
+I made one mess.
+
+I inherited the other.
+
+And both of them taught me that software has a weird moral structure around cleanup. Creation is treated as product. Deletion is treated as janitorial work. So nobody designs endings with the same care they design beginnings.
+
+## Software Rarely Has a Death Model
+
+Most systems have an install path. A setup path. A happy path.
+
+Far fewer have a real death path.
+
+What is the supported end-of-life story for a service that was created outside the current control plane? What is the supported end-of-life story for a simulator runtime the platform no longer wants to acknowledge? What is the supported end-of-life story for all the little persistent artifacts that survive each redeploy, migration, failed experiment, and "I'll clean it later" week?
+
+Usually the answer is: there isn't one.
+
+There is only garbage collection by human shame. You notice a graph looks wrong. You open `du`. You inspect `systemctl`. You stare at a server that feels heavier than it should. Then you start digging through the sediment layers of your own past decisions and the platform's forgotten ones.
+
+That is not a cleanup workflow. That is archaeology.
+
+## The Bill Arrives Quietly
+
+This is why digital waste is so easy to ignore.
+
+Physical junk humiliates you immediately. A broken chair blocks the hallway. Old boxes eat a room. Rot smells.
+
+Software junk is polite. It waits.
+
+It turns into background RAM pressure. Slightly worse disk alerts. Slower backups. Higher cloud bills. A machine that feels "kind of off" for weeks. The bill arrives as friction, not drama.
+
+That subtlety is what makes it dangerous. A lot of digital garbage survives not because it is important, but because it is quiet.
+
+## I Trust Systems More When They Admit What They Keep
+
+I don't expect perfect automation here.
+
+I do not need every platform to magically understand every artifact it ever created. I do want honesty. If removing something only removes the visible layer, say that. If a prune command skips named resources by default, make that painfully obvious. If a runtime asset is parked in protected storage and ordinary tools cannot reclaim the bytes, do not pretend the delete flow is complete.
+
+Good systems help you end things cleanly.
+
+Right now a lot of modern tooling still behaves like endings are somebody else's job.
+
+I know that because I have now been that somebody else twice.
+
+Once because I deserved it.
+
+Once because I didn't.
