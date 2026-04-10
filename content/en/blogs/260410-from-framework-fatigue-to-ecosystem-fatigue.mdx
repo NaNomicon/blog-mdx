@@ -1,0 +1,106 @@
+export const metadata = {
+  title: "From Framework Fatigue to Ecosystem Fatigue",
+  publishDate: "2026-04-10",
+  description: "The old joke was that JavaScript got a new framework every week. Now every week brings a new world asking for your notes, workflows, and trust—while you pay the migration bill if it dies.",
+  category: "Technology",
+  cover_image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+  tldr: "Framework fatigue used to be about too many tools. Ecosystem fatigue is worse: AI makes it cheap to ship new products, wrappers, and memory systems, while users still eat the cost of evaluating them, integrating them, and escaping them.",
+  tags: ["AI", "Software", "Open Source", "PKM"],
+};
+
+*Photo by <a href="https://unsplash.com/@carlheyerdahl?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Carl Heyerdahl</a> on <a href="https://unsplash.com/photos/black-flat-screen-computer-monitor-KE0nC8-58MQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+
+I already have one long-lived knowledge system.
+
+It is an [Obsidian](https://obsidian.md/about "reference | Product manifesto centered on durability, independence, and open formats") vault I have been feeding for years. Notes. Fragments. Ideas I do not remember writing. Links I am glad I kept. Half-finished thoughts that only make sense because the file is still there when I need it.
+
+So when a new memory product shows up and asks me to trust a different substrate, I do not hear "look at this cool demo." I hear paperwork. I hear migration. I hear the quiet possibility that six months from now I will be maintaining two realities because I wanted to see what the shiny thing could do.
+
+That reaction did not come out of nowhere. It came out of the older joke that JavaScript got a new framework every week.
+
+That joke used to feel exaggerated. Then you looked around and realized it barely was.
+
+Frontend moved fast, build tools changed constantly, and half the internet seemed to be arguing about [React](https://react.dev/ "mention | The framework-era winner that helped consolidate part of the chaos"), [Angular](https://angular.dev/ "mention | Google-backed framework from the thick of the framework wars"), [Vue](https://vuejs.org/ "mention | Lightweight framework that became one of the main alternatives to React"), [Babel](https://babeljs.io/ "mention | JavaScript compiler that became standard plumbing during the tooling boom"), [Webpack](https://webpack.js.org/ "mention | Build tool that symbolized the complexity of the 2010s frontend stack"), [Redux](https://redux.js.org/ "mention | State-management library that became part of the frontend fatigue canon"), or whichever thing had just become mandatory in the last forty-eight hours. There was a whole mini-genre built around that exhaustion, from [JavaScript Fatigue](https://medium.com/@ericclemmons/javascript-fatigue-48d4011b6fc4 "reference | Eric Clemmons' 2015 essay that named the feeling") to [How it feels to learn JavaScript in 2016](https://hackernoon.com/how-it-feels-to-learn-javascript-in-2016-d3a717dd577f "reference | The canonical parody of frontend churn") to Allen Pike's [A JS Framework on Every Table](https://allenpike.com/2015/javascript-framework-fatigue "reference | Early essay arguing framework churn was structural, not just fashion"). You were learning JavaScript. You were also learning the current political map of JavaScript.
+
+That mess was annoying. It still had a shape. Too many people were solving the same thing differently, and the rest of us had to guess which version would survive long enough to matter.
+
+Now the joke lands differently.
+
+It is no longer a new framework every week. It is a new memory tool, a new agent runtime, a new orchestration layer, a new AI wrapper, a new local-first knowledge app, a new vector store abstraction, a new SaaS clone, a new “second brain for agents,” all showing up before I can finish deciding whether the previous one was real.
+
+## Cheap to Build, Expensive to Adopt
+
+AI did not create software churn. It changed the economics of it.
+
+Before AI, making a new framework or tool still took enough time, effort, and skill that the cost of creation acted as a filter. A weak one, sure. [npm's left-pad fiasco](https://www.davidhaney.io/npm-left-pad-have-we-forgotten-how-to-program/ "reference | Classic critique of micro-dependency absurdity after left-pad broke the ecosystem") already showed how absurd the ecosystem could get long before language models arrived. We already had dependency forests, fragile build stacks, and permanent discourse about what was dead, what was rising, and what everyone had to rewrite next.
+
+Still, there was friction.
+
+That friction mattered.
+
+Now you can take an idea, prompt your way to a working prototype, wrap it in a decent landing page, ship it, and start asking strangers to trust it before the hard questions have even started.
+
+Can this be maintained?
+Can other people depend on it?
+Can it survive edge cases?
+Can it coexist with what people already use?
+Can users leave when it goes sideways?
+
+AI makes the first part cheaper. It barely touches the rest.
+
+I am fine with invention. Weird new things are good. New software is good. Shipping software that asks other people to depend on it is a different act than inventing it in the first place.
+
+Cheap creation changes the risk distribution. Authors can now produce and publish with very little downside. Users still pay the evaluation cost. The integration cost. The migration cost. The trust cost. That gap is where ecosystem fatigue comes from.
+
+The raw number of options is not the problem. The sorting cost is. More and more of that cost gets dumped onto the user.
+
+## The Adoption Story Is Usually The Problem
+
+A lot of AI-era software feels careless in a quiet way.
+
+The core idea might be interesting. The demo might be real. Sometimes the work behind it is serious. Then you get to the adoption story and the whole thing sags: maintain this alongside your current stack, or move your life into mine.
+
+I saw that pattern with [MemPalace](https://github.com/milla-jovovich/mempalace "mention | Hyped local-first AI memory project that spread fast, including in Vietnam, while its benchmark claims and migration story were still being argued out") in real time. It got hyped hard, including in Vietnam, before the durability questions were settled. The hype arrives first. The exit story shows up later, if it shows up at all.
+
+That is where my mind keeps going back to Obsidian.
+
+Obsidian is interesting to me because its core bet is so boring it loops back around to being radical. Your notes are files. Markdown files. In folders. On your machine. Things you can open without the app, back up however you want, grep through, sync however you want, and keep long after the software itself is gone. Steph Ango's [File over app](https://stephango.com/file-over-app "reference | Strong statement that durable digital artifacts should be files you control, not app-owned state") makes the same point in one clean sentence: the durable layer should be the file, not the app.
+
+Set that against a new memory product with an opaque binary format, a proprietary graph, or a local-first container that only its own runtime can fully interpret. Maybe the retrieval is better. Maybe the compression is clever. Maybe the indexing flies.
+
+Fine.
+
+Then the standard gets stricter.
+
+What does adoption cost me?
+
+If I try it, do I now have to maintain two systems forever?
+If I commit to it, can I get my data back in a legible form?
+If the project dies in a year, do my years die with it?
+If I want to leave, is there an exit path, or just an import button on the way in?
+
+Import is easy to promise. Exit is the real test.
+
+[Local-first software](https://www.inkandswitch.com/essay/local-first/ "reference | Foundational essay on software that gives users real control over their data") is a powerful idea. Local-first without inspectability is only half trust. If my data is on my machine but trapped in a format I cannot meaningfully read, transform, diff, or migrate, then ownership is mostly branding. I am still renting from a landlord who happens to live on my laptop.
+
+## This Is More Than Churn
+
+The obvious pushback is that ecosystems are always noisy when a market is young. Most things die. A few ideas survive. The rest get folded into infrastructure or forgotten. JavaScript did eventually stop feeling like peak meme-era JavaScript all the time. Maybe AI tooling will settle down too.
+
+Maybe.
+
+I still think this wave has a nastier edge than the old framework churn.
+
+Framework churn lived mostly at the layer of developer tools and mental models. Today's churn shows up one layer lower in your life. People are asking you to trust products with real workflows, real archives, real long-term dependency. Swapping a frontend framework is painful. Swapping a memory system, note store, or agent runtime with non-portable state can be worse by an order of magnitude.
+
+That is a lock-in problem.
+
+## The Bar Should Be Higher
+
+AI makes it easier than ever to produce software. That has not made me more open to moving my stack into every new thing. It has made me slower.
+
+The old joke was that there was a new framework every week.
+
+Now it feels like there is a new world every week, each one asking for my notes, my workflows, my state, my habits.
+
+If a tool wants that much from me, I want to see the exit before I see the import button.
