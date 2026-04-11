@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/NaNomicon/blog-mdx/compare/v1.2.2...v1.2.3) (2026-04-11)
+
+
+### Miscellaneous Chores
+
+* release 1.2.3 ([7312b93](https://github.com/NaNomicon/blog-mdx/commit/7312b9393de46d6e7e3d341eaca30b589abd6832))
+
 ## [1.2.2](https://github.com/NaNomicon/blog-mdx/compare/v1.2.1...v1.2.2) (2026-04-11)
 
 
