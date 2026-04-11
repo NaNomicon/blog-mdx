@@ -1,0 +1,103 @@
+export const metadata = {
+  title: "Từ framework fatigue tới ecosystem fatigue",
+  publishDate: "2026-04-10",
+  description: "Ngày xưa câu đùa là JavaScript tuần nào cũng có framework mới. Giờ thì tuần nào cũng có một món mới nhảy ra đòi note, workflow với niềm tin của mình, còn lúc nó chết thì mình tự ôm phần migrate.",
+  category: "Technology",
+  cover_image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+  tldr: "Framework fatigue ngày xưa là mệt vì quá nhiều tool. Ecosystem fatigue bây giờ còn mệt hơn: AI làm chuyện đẻ product, wrapper và memory system mới dễ như bấm nút, còn phần đánh giá, tích hợp, migrate với thoát ra thì người dùng vẫn tự gánh.",
+  tags: ["AI", "Software", "Open Source", "PKM"],
+};
+
+*Photo by <a href="https://unsplash.com/@carlheyerdahl?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Carl Heyerdahl</a> on <a href="https://unsplash.com/photos/black-flat-screen-computer-monitor-KE0nC8-58MQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>*
+
+Mình đã có một chỗ để cất đầu óc của mình rồi.
+
+Đó là cái vault [Obsidian](https://obsidian.md/about "reference | Tuyên ngôn sản phẩm của Obsidian, nhấn mạnh độ bền, tính độc lập và định dạng mở") mình dùng mấy năm nay. Trong đó có note, có link cũ, có mấy ý tưởng hồi xưa tưởng là tào lao mà mấy tháng sau quay lại đọc vẫn thấy có ích. Có những đoạn mình còn chẳng nhớ là mình viết lúc nào. Nhưng file vẫn còn đó. Mình tìm lại được. Thế là đủ.
+
+Nên khi một memory product mới nhảy ra và bảo mình: tin tôi đi, chuyển sang đây đi, cái đầu mình không nghe thấy "ồ hay đấy". Mình chỉ nghĩ tới đống việc đi theo sau. Nghĩ tới migrate. Nghĩ tới cảnh nửa năm nữa phải nuôi hai hệ thống cùng lúc chỉ vì hôm nay nổi hứng thử món mới thôi.
+
+Phản xạ đó không tự nhiên mà có. Nó đi ra từ một câu đùa cũ hơn nhiều: JavaScript tuần nào cũng có framework mới.
+
+Ngày xưa câu đó nghe hơi làm quá. Giờ nhìn lại thì cũng chẳng làm quá mấy.
+
+Frontend chạy như điên. Build tools đổi liên tục. Nửa cái internet lúc nào cũng như đang cãi nhau về [React](https://react.dev/ "mention | Framework thắng lớn trong thời kỳ framework wars"), [Angular](https://angular.dev/ "mention | Framework của Google từng nằm giữa tâm bão framework wars"), [Vue](https://vuejs.org/ "mention | Framework nhẹ, từng là đối trọng lớn với React"), [Babel](https://babeljs.io/ "mention | JavaScript compiler thành tiêu chuẩn trong thời bùng nổ tooling"), [Webpack](https://webpack.js.org/ "mention | Build tool từng tượng trưng cho độ phức tạp của frontend stack thời 2010s"), [Redux](https://redux.js.org/ "mention | Library quản lý state thuộc hàng kinh điển của thời framework fatigue"), hay bất cứ thứ gì tự nhiên thành ra bắt buộc chỉ trong vòng mấy hôm. Xung quanh cơn mệt đó còn mọc ra hẳn một mini-genre, từ [JavaScript Fatigue](https://medium.com/@ericclemmons/javascript-fatigue-48d4011b6fc4 "reference | Bài viết năm 2015 của Eric Clemmons, đặt tên cho cảm giác này") tới [How it feels to learn JavaScript in 2016](https://hackernoon.com/how-it-feels-to-learn-javascript-in-2016-d3a717dd577f "reference | Bài parody kinh điển về cơn loạn frontend") rồi Allen Pike với [A JS Framework on Every Table](https://allenpike.com/2015/javascript-framework-fatigue "reference | Bài viết sớm lập luận rằng framework churn là vấn đề cấu trúc chứ không chỉ là mốt"). Hồi đó chỉ riêng chuyện theo cho kịp xem phe nào đang thắng, phe nào vừa chết, phe nào sắp bắt codebase rewrite thêm một vòng cũng đủ mệt rồi.
+
+Nhưng ít ra ngày xưa còn biết mình đang bực cái gì. Vẫn là nhiều người cùng giải một bài toán bằng nhiều cách khác nhau. Việc của phần còn lại là đoán xem cái nào sống đủ lâu để còn đáng đặt cược vào.
+
+Bây giờ thì cơn mệt đó đổi kiểu rồi.
+
+Không còn chỉ là framework mới nữa. Bây giờ cứ hết memory tool mới tới agent runtime mới, hết orchestration layer mới tới AI wrapper mới, rồi app local-first mới, vector store mới, SaaS clone mới, đủ kiểu “second brain for agents” mới. Cái trước còn chưa hiểu xong thì cái sau đã lướt qua timeline rồi.
+
+## Làm ra thì rẻ. Tin vào nó mới đắt.
+
+AI không tạo ra cái cảnh tool mới mọc lên liên tục. Nó chỉ làm một chuyện rất mệt: làm cho việc đẻ ra thứ mới rẻ tới mức nhìn như miễn phí.
+
+Trước thời AI, muốn làm một framework hay một tool mới thì ít ra cũng phải đốt đủ thời gian, đủ công, đủ đầu óc. Chừng đó thôi đã đủ kìm bớt một đống thứ nửa vời lại rồi. Nó không hoàn hảo. [Vụ left-pad của npm](https://www.davidhaney.io/npm-left-pad-have-we-forgotten-how-to-program/ "reference | Bài phê bình kinh điển về sự lố bịch của micro-dependency sau vụ left-pad") đã cho thấy hệ sinh thái có thể lố tới mức nào từ rất lâu trước khi language model xuất hiện. Chúng ta đã có dependency forest, build stack dễ gãy, rồi cãi nhau quanh năm về chuyện cái gì chết, cái gì lên, cái gì sắp bắt cả team rewrite tiếp.
+
+Nhưng hồi đó vẫn còn cái gì đó ghìm nó lại.
+
+Chính cái chỗ đó mới quan trọng.
+
+Còn bây giờ thì khác. Có ý tưởng là prompt ra prototype được, kiếm cái landing page bọc vào, đẩy lên cho chạy, rồi bắt đầu bảo người ta tin. Nhiều khi mọi thứ xong xuôi trước cả lúc mấy câu hỏi khó nhất kịp ló đầu ra.
+
+Mà mấy câu hỏi đó mới là phần tốn nhất.
+
+Lúc đó kiểu gì mấy câu mình né từ đầu cũng ùa ra một lượt: nó có được duy trì tới nơi tới chốn không, người khác có dám dựa vào nó không, nó có chịu nổi mấy ca khó không, nó có sống chung được với stack người ta đang dùng không, rồi nhỡ một năm nữa nó chết thì đống năm tháng mình bỏ vào đó có đi luôn không?
+
+AI làm phần đầu rẻ đi. Phần còn lại gần như vẫn nguyên giá.
+
+Mình không ghét chuyện làm đồ mới. Đồ lạ cũng được. Đồ hơi điên cũng được. Nhưng từ lúc bạn ship nó ra và mong người khác dựa vào nó, câu chuyện không còn là "mình vừa nghĩ ra một ý hay" nữa.
+
+Giờ thì làm ra thứ mới gần như không tốn bao nhiêu. Rủi ro đâu có biến mất. Nó chỉ chạy từ phía tác giả sang phía người dùng thôi. Tác giả làm xong, public xong, nếu không thành thì cũng chẳng mất mấy. Người dùng mới là người phải ngồi đánh giá, tích hợp, migrate, rồi ôm luôn phần trust.
+
+Mệt không phải vì nhiều. Mệt là vì giờ mình phải tự làm cái việc sàng lọc đó cho cả hệ sinh thái, trong khi chẳng ai hỏi mình có muốn nhận cái job đó không.
+
+## Tới đoạn adoption là bắt đầu xệ xuống
+
+Nhiều software thời AI cho mình cảm giác nó ẩu theo kiểu không nói ra miệng.
+
+Ý tưởng lõi có thể ổn. Demo có thể thật. Người làm có khi cũng nghiêm túc. Nhưng tới đoạn adoption là cả câu chuyện hụt hơi ngay: hoặc bạn nuôi nó song song với stack hiện tại, hoặc bạn dọn đời mình sang hẳn nhà nó.
+
+Mình thấy đúng cái kiểu đó với [MemPalace](https://github.com/milla-jovovich/mempalace "mention | Dự án local-first AI memory được hype rất nhanh, cả ở Việt Nam, trong lúc benchmark claim và câu chuyện migrate vẫn còn đang bị cãi") luôn. Nó được hype rất mạnh, cả ở Việt Nam, từ lúc những câu hỏi về độ bền dữ liệu còn chưa ngã ngũ. Hype tới trước. Exit story tới sau. Có khi còn chẳng tới.
+
+Đó là lúc đầu mình lại quay về với Obsidian.
+
+Obsidian hay ở chỗ cú đặt cược lõi của nó nghe chán kinh khủng, mà chán tới mức thành ra đáng gờm. Note của bạn thực ra chỉ là file Markdown nằm trong folder, nằm trên máy của bạn. Mở được, backup được, grep được, diff được, sync bằng gì cũng được. App có chết thì file vẫn còn đó. Steph Ango viết trong [File over app](https://stephango.com/file-over-app "reference | Bài ngắn nhưng rất đắt, lập luận rằng lớp bền vững phải là file chứ không phải app-owned state") cũng trúng đúng một chỗ: thứ bền lâu phải là file, không phải app.
+
+Giờ thử đặt nó cạnh một memory product mới dùng binary format mù mờ, hoặc graph độc quyền, hoặc một local-first container mà chỉ runtime của chính nó mới hiểu hết.
+
+Ừ, cứ cho là retrieval của nó tốt hơn, compression của nó khéo hơn, indexing của nó bay thật đi.
+
+Thì sao?
+
+Tới đó tiêu chuẩn vẫn phải đổi.
+
+Adoption bắt mình trả cái gì?
+
+Tới lúc đó, những câu mình né từ đầu mới ùa ra một lượt: thử rồi có phải nuôi hai hệ thống mãi không, commit vào rồi có kéo dữ liệu ra nổi không, lỡ một năm nữa dự án chết thì mấy năm của mình có chết theo không, hay cuối cùng vẫn ngồi tự migrate một mình?
+
+Hứa import thì dễ. Tới lúc đi ra được hay không mới là bài test thật.
+
+[Local-first software](https://www.inkandswitch.com/essay/local-first/ "reference | Bài nền tảng về phần mềm cho người dùng quyền kiểm soát dữ liệu thật sự") là một ý hay. Nhưng local-first mà không inspect được thì mới có nửa lòng tin. Nếu dữ liệu nằm trên máy mình nhưng bị nhốt trong một định dạng mà mình không thể đọc, transform, diff hay migrate cho tử tế, thì cái gọi là ownership phần lớn chỉ là cái nhãn dán cho đẹp. Mình vẫn chỉ đang ở nhà thuê thôi, chẳng qua chủ nhà tình cờ sống ngay trên laptop của mình.
+
+## Đây đâu còn là chuyện thay qua đổi lại cho vui nữa
+
+Mình biết kiểu phản biện này rồi. Hệ sinh thái non trẻ thì lúc nào cũng ồn ào. Đa số thứ sẽ chết. Một vài ý tưởng sống sót. Phần còn lại thì bị nuốt vào hạ tầng hoặc bị quên luôn. JavaScript rồi cũng đâu có ở mãi trong trạng thái peak meme như hồi đó. Có thể AI tooling rồi cũng sẽ lắng xuống.
+
+Biết đâu đấy.
+
+Nhưng mình vẫn thấy làn sóng này khó chịu hơn hẳn cái thời framework fatigue ngày xưa.
+
+Framework fatigue ngày xưa chủ yếu nằm ở tầng tool với cách nghĩ của dân làm phần mềm. Còn cái mệt bây giờ chui xuống thấp hơn một tầng trong cuộc sống của mình. Người ta đang đòi workflow thật sự của mình, đòi chỗ mình cất đồ, rồi cả một kiểu ràng buộc dài hơi mà rất khó gỡ ra. Đổi frontend framework đã đủ đau. Đổi một memory system, note store hay agent runtime với state không đem đi chỗ khác được còn đau hơn nhiều.
+
+Đó là cái cửa chỉ mở một chiều.
+
+## Cái ngưỡng bây giờ phải cao hơn trước
+
+AI làm chuyện sản xuất phần mềm dễ hơn bao giờ hết. Điều đó không làm mình cởi mở hơn với chuyện dọn stack của mình sang sống trong mấy món mới như vậy. Nó chỉ làm mình chậm lại.
+
+Ngày xưa câu đùa là tuần nào cũng có framework mới.
+
+Bây giờ cảm giác như tuần nào cũng có một thế giới mới chui ra, xong chìa tay đòi note, workflow, state, rồi cuối cùng là cả cái cách mình nhớ nữa.
+
+Nếu một tool muốn lấy của mình chừng đó thứ, mình muốn thấy đường thoát trước khi nhìn thấy nút import.
