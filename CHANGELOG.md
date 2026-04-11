@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/NaNomicon/blog-mdx/compare/v1.1.0...v1.2.0) (2026-04-11)
+
+
+### Features
+
+* **content:** add ecosystem fatigue essay ([5c01c4b](https://github.com/NaNomicon/blog-mdx/commit/5c01c4be03e1315c9fa952c50da0b4a59e56a003))
+* **content:** add Vietnamese ecosystem fatigue essay ([eea7862](https://github.com/NaNomicon/blog-mdx/commit/eea7862ce588be8d8b1a2116f91c01d221a5c327))
+
 ## [1.1.0](https://github.com/NaNomicon/blog-mdx/compare/v1.0.0...v1.1.0) (2026-03-26)
 
 
