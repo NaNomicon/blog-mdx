@@ -76,6 +76,12 @@ pnpm verify-analytics       # Verify Cloudflare Analytics config
 NEXT_PUBLIC_SHOW_DRAFTS=true pnpm dev   # Preview drafts
 ```
 
+### Deployment behavior
+- Vercel native Git preview deployments remain enabled for PRs.
+- `main` branch auto-deploys are disabled in `vercel.json` to avoid duplicate production-ish deploys on merge.
+- Production deploys are driven by GitHub Actions on release tags via `.github/workflows/deploy-production.yml`.
+- Required GitHub secrets for production deploys: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
+
 ### Testing
 No custom test files. Manually test in development. Run `pnpm lint` and `pnpm type-check` before committing.
 
