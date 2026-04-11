@@ -79,7 +79,7 @@ NEXT_PUBLIC_SHOW_DRAFTS=true pnpm dev   # Preview drafts
 ### Deployment behavior
 - Vercel native Git preview deployments remain enabled for PRs.
 - `main` branch auto-deploys are disabled in `vercel.json` to avoid duplicate production-ish deploys on merge.
-- Production deploys are driven by a conditional `deploy-production` job inside `.github/workflows/release-please.yml`, gated on `release-please-action` reporting `release_created == true`.
+- Production deploys are driven by a conditional `deploy-production` job inside `.github/workflows/release-please.yml`, gated on `release-please-action` reporting `release_created == true`, and the job targets GitHub's `production` environment so releases show up in the Deployments UI.
 - Required GitHub secrets for production deploys: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
 
 ### Testing

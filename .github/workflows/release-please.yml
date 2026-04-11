@@ -26,6 +26,9 @@ jobs:
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created == 'true' }}
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://nanomicon.com
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
