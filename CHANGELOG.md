@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/NaNomicon/blog-mdx/compare/v1.2.3...v1.3.0) (2026-05-31)
+
+
+### Features
+
+* **content:** add one-desk-five-devices post (en + vi) ([8f0684e](https://github.com/NaNomicon/blog-mdx/commit/8f0684eeb591740c7eba6e4c59cea5a3477e0901))
+* **font:** use Be Vietnam Pro for vi locale ([e614584](https://github.com/NaNomicon/blog-mdx/commit/e6145843616e9e8743c3d423694fa56559acd425))
+
 ## [1.2.3](https://github.com/NaNomicon/blog-mdx/compare/v1.2.2...v1.2.3) (2026-04-11)
 
 
