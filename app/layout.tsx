@@ -1,6 +1,6 @@
 import { getLocale } from "next-intl/server";
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 
 import { ErrorBoundary } from "@/components/error-boundary";
@@ -15,7 +15,12 @@ import Script from "next/script";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-const inter = Inter({ subsets: ["latin", "vietnamese"] });
+const inter = Inter({ subsets: ["latin", "vietnamese"], variable: "--font-inter" });
+const beVietnamPro = Be_Vietnam_Pro({
+  subsets: ["latin", "vietnamese"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-be-vietnam-pro",
+});
 
 export const metadata: Metadata = {
   ...generateSEOMetadata(defaultSEOConfig),
@@ -79,7 +84,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${inter.className} min-h-screen bg-background font-sans antialiased`}
+        className={`${inter.variable} ${beVietnamPro.variable} ${locale === "vi" ? beVietnamPro.className : inter.className} min-h-screen bg-background font-sans antialiased`}
       >
         <ThemeProvider
           attribute="class"
