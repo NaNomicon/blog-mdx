@@ -1,0 +1,61 @@
+export const metadata = {
+  title: "One Desk, Five Devices",
+  publishDate: "2026-06-01",
+  description: "How I collapsed a Mac, Ubuntu laptop, headless Windows PC, iPhone, and Android tablet into a single ergonomic workspace.",
+  category: "setup",
+  cover_image: "/covers/260601-one-desk-five-devices.jpg",
+  tldr: "One keyboard, one pair of headphones, five devices. The software glue that makes it feel like one machine.",
+  tags: ["setup", "workflow", "devtools"],
+};
+
+I'm building a Windows desktop app. My code lives on an Ubuntu laptop. My daily driver is a MacBook Air. The only Windows machine I own is a gaming PC with no monitor attached.
+
+At some point I looked at my desk and realized I had five devices that all needed to be part of one workflow, and exactly one keyboard.
+
+This is how I made that work.
+
+## Why it got complicated
+
+The MacBook Air is fast enough for most things, but I run a lot simultaneously — multiple dev servers, Docker containers, an AI client or two, browser tabs that never close. Eventually the fans spin up and everything lags.
+
+The Ubuntu laptop is an old machine, specs arguably worse than the Mac on paper. But it has one job: run services. Dev servers, containers, background processes. No Electron apps, no browser, no distractions. Smaller OS footprint, dedicated resources, monitor usually off. It just sits there and works.
+
+The Windows PC is a gaming rig. It's already there. Running a Windows VM on the Mac is possible but adds to the exact resource problem I'm trying to solve. The PC is three feet away and idle most of the day.
+
+So: Mac for thinking, Ubuntu for running, Windows for testing. The problem is I don't want to touch three keyboards.
+
+## The input layer
+
+[Barrier](https://github.com/debauchee/barrier "reference | Open-source KVM software — share one keyboard and mouse across multiple computers over the network") handles the Mac-to-Ubuntu hop. It's software KVM — slide the cursor past the edge of the Mac's screen and it appears on the Ubuntu machine. Same keyboard, same mouse, no switching. The Ubuntu monitor is usually off; I flip it on when I need to see the desktop, but most of the time I'm SSH'd in via mosh from the Mac.
+
+I use [mosh](https://mosh.org "reference | Mobile shell — persistent SSH sessions that survive network changes and high latency") instead of SSH for most things. Persistent sessions, survives the laptop sleeping, works fine over flaky connections. With everyone running TUI-based AI clients these days, having a session that doesn't drop when the network hiccups matters.
+
+The Windows PC is a different problem — it's headless by default. It has a KVM switch connected (monitor, keyboard, mouse all run through it), so I *can* flip back to Windows physically, but that takes a few seconds for the monitor to wake up and I'd rather not break flow. [RustDesk](https://rustdesk.com "reference | Open-source self-hosted remote desktop, solid alternative to TeamViewer") gives me a remote desktop window on the Mac instead. I run the RustDesk server on the Ubuntu machine, keeping everything on the local network. Latency is noticeable but fine for clicking through a UI and verifying the built app behaves correctly.
+
+The workflow: write and iterate on the Mac, dev server with hot reload running on Ubuntu (test the live build there), and when I have a proper build ready, rsync it to the Windows machine and verify through RustDesk.
+
+I did experiment with using the Ubuntu laptop and the tablet as additional external screens via RustDesk and [BetterDisplay](https://github.com/waydabber/BetterDisplay "reference | Mac utility for display management, custom resolutions, and virtual screens"). The latency is noticeable enough that I don't use it daily — but I do pull up the Ubuntu machine as an extra screen occasionally when I need one.
+
+## The phones
+
+The phones aren't part of this specific project, but they live on the same desk and follow the same logic.
+
+[iPhone Mirroring](https://support.apple.com/en-us/120421 "reference | Apple's native feature for mirroring and controlling your iPhone from a Mac") works wirelessly and shows up as a window on the Mac. It just works, and it means I rarely pick up the phone.
+
+The Android tablet is more interesting. [scrcpy](https://github.com/Genymobile/scrcpy "reference | Open-source screen mirroring and control for Android devices") can mirror and control it just like iPhone Mirroring does for iOS — useful for mobile testing without running an emulator (which would just add to the Mac's load). But most of the time I run it differently:
+
+```bash
+scrcpy --no-window
+```
+
+No display. Just the connection. Requires USB debugging enabled on the tablet. What this buys me is that the tablet's audio routes through the Mac's sound system — which means through my wireless ANC headphones. I watch content on the tablet's screen, but the audio comes through my headphones instead of the tablet's speakers.
+
+The headphones matter here. Wireless ANC means I can walk to the kitchen, come back, and the audio follows. No cable to put down, no device to carry. The tablet is just a content source; the Mac is the audio hub.
+
+## The actual point
+
+None of these tools are obscure. The interesting part isn't the software — it's the constraint that shaped the setup: I wanted one interaction point. One keyboard, one pair of headphones, one place where my attention lives.
+
+Once that was the goal, the rest was just finding software that makes each machine transparent. Barrier makes Ubuntu feel like a second screen. RustDesk makes the Windows PC feel like a window. scrcpy makes the tablet disappear entirely except for its audio.
+
+The seams are still there if you look for them. But most of the time, I don't.

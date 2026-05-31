@@ -1,6 +1,12 @@
 packages:
   - .
 
+allowBuilds:
+  '@parcel/watcher': false
+  '@swc/core': false
+  '@vercel/speed-insights': false
+  esbuild: false
+
 builtDependencies:
   - '@vercel/speed-insights'
 

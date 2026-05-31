@@ -1,0 +1,61 @@
+export const metadata = {
+  title: "Một bàn làm việc, năm thiết bị",
+  publishDate: "2026-06-01",
+  description: "Cách tôi gom một chiếc Mac, laptop Ubuntu, PC Windows không màn hình, iPhone và máy tính bảng Android vào một không gian làm việc duy nhất.",
+  category: "setup",
+  cover_image: "/covers/260601-one-desk-five-devices.jpg",
+  tldr: "Một bàn phím, một cặp tai nghe, năm thiết bị. Phần mềm kết nối tất cả lại như thể chỉ là một máy.",
+  tags: ["setup", "workflow", "devtools"],
+};
+
+Mình đang viết một ứng dụng desktop cho Windows. Code được lưu trên con laptop Ubuntu. Máy chính (daily driver) là chiếc MacBook Air. Máy Windows duy nhất mình có là một bộ PC gaming đang không cắm màn hình.
+
+Có lúc nhìn lại góc làm việc, mình nhận ra có đến năm thiết bị cần phải nằm trong cùng một workflow, nhưng mình chỉ có đúng một cái bàn phím.
+
+Đây là cách mình giải bài toán đó.
+
+## Tại sao lại phức tạp vậy
+
+MacBook Air đủ mạnh cho hầu hết mọi việc, nhưng mình chạy quá nhiều thứ cùng lúc: vài cái dev server, Docker container, một hai cái AI client, và vô số tab trình duyệt không bao giờ tắt. Đến một lúc thì quạt cũng phải rú lên và mọi thứ bắt đầu giật lag.
+
+Con laptop Ubuntu thì đời cũ rồi, cấu hình trên giấy tờ còn tệ hơn cả Mac. Nhưng nó chỉ làm đúng một việc: chạy services. Dev server, container, các tiến trình ngầm. Không app Electron, không trình duyệt, không gây xao nhãng. Hệ điều hành nhẹ nhàng, tài nguyên độc lập, màn hình thường xuyên tắt. Nó cứ nằm đó và cày thôi.
+
+PC Windows là máy chơi game. Nó vốn dĩ đã nằm sẵn đó rồi. Chạy máy ảo Windows trên Mac cũng được, nhưng làm thế lại dính ngay vào cái bài toán ngốn tài nguyên mà mình đang cố tránh. Thùng PC cách đó chưa tới một mét và rảnh rỗi cả ngày.
+
+Tóm lại: Mac để suy nghĩ, Ubuntu để chạy code, Windows để test. Vấn đề là mình không muốn phải với tay gõ ba cái bàn phím khác nhau.
+
+## Giải quyết chuyện chuột phím
+
+[Barrier](https://github.com/debauchee/barrier "reference | Phần mềm KVM mã nguồn mở — chia sẻ bàn phím và chuột qua nhiều máy tính qua mạng") xử lý việc chuyển đổi giữa Mac và Ubuntu. Nó là một dạng KVM mềm, chỉ cần di chuột qua mép màn hình Mac là con trỏ sẽ xuất hiện bên máy Ubuntu. Dùng chung một chuột, một phím, chẳng cần bấm nút chuyển gì cả. Màn hình Ubuntu thường tắt; mình chỉ bật lên khi cần nhìn giao diện desktop, còn phần lớn thời gian mình remote từ Mac vào qua [mosh](https://mosh.org "reference | Mobile shell — phiên SSH bền vững, sống sót qua thay đổi mạng và độ trễ cao").
+
+Mình chuộng mosh hơn SSH cho hầu hết tác vụ. Giao thức này duy trì session liên tục, không bị rớt ngay cả khi laptop sleep, và cực kỳ ổn định khi mạng chập chờn. Thời buổi ai cũng chạy mấy cái AI client trên terminal (TUI) thế này, một session không bị văng khi mạng lag là cực kỳ quan trọng.
+
+PC Windows lại là một bài toán khác, mặc định nó đang chạy kiểu headless (không cắm màn). Máy này có nối với một bộ KVM switch (màn hình, chuột, phím đều cắm qua đó), nên về lý thuyết mình có thể chuyển qua dùng Windows trực tiếp. Nhưng màn hình sẽ mất vài giây để lên hình, mà mình thì không muốn bị ngắt break flow. Thay vào đó, [RustDesk](https://rustdesk.com "reference | Remote desktop mã nguồn mở tự host, thay thế tốt cho TeamViewer") cho mình một cửa sổ remote desktop ngay trên Mac. Mình chạy server RustDesk trên con Ubuntu để giữ mọi thứ nằm gọn trong mạng local. Độ trễ có thể nhận ra được, nhưng vẫn quá ổn để click test UI và kiểm tra xem app sau khi build chạy có chuẩn không.
+
+Workflow sẽ là: viết code trên Mac, dev server bật hot reload chạy trên Ubuntu (test luôn live build ở đó), và khi có bản build hoàn chỉnh thì rsync sang máy Windows rồi check qua RustDesk.
+
+Mình cũng từng thử dùng laptop Ubuntu và máy tính bảng làm màn hình phụ qua RustDesk và [BetterDisplay](https://github.com/waydabber/BetterDisplay "reference | Tiện ích Mac quản lý màn hình, độ phân giải tùy chỉnh và màn hình ảo"). Độ trễ khá rõ nên mình không dùng hàng ngày, nhưng thỉnh thoảng bí không gian quá thì vẫn lôi con Ubuntu lên làm màn hình phụ.
+
+## Chuyện điện thoại và thiết bị di động
+
+Điện thoại không liên quan trực tiếp đến project này, nhưng chúng cũng nằm trên bàn và được setup theo cùng một tư duy.
+
+[iPhone Mirroring](https://support.apple.com/en-us/120421 "reference | Tính năng gốc của Apple để mirror và điều khiển iPhone từ Mac") hoạt động hoàn toàn không dây và hiện ra như một cửa sổ trên Mac. Rất mượt, nhờ thế mình hiếm khi phải cầm điện thoại lên.
+
+Cái máy tính bảng Android thì thú vị hơn. [scrcpy](https://github.com/Genymobile/scrcpy "reference | Mirror và điều khiển thiết bị Android mã nguồn mở") có thể mirror và điều khiển nó y hệt như cách iPhone Mirroring làm với iOS, rất tiện để test app mobile mà không cần chạy máy ảo (thứ sẽ ngốn thêm RAM của Mac). Nhưng phần lớn thời gian mình chạy lệnh này:
+
+```bash
+scrcpy --no-window
+```
+
+Không mirror hình ảnh. Chỉ kết nối thôi. Bạn cần bật USB debugging trên máy tính bảng trước. Cái hay ở đây là âm thanh từ máy tính bảng sẽ được truyền thẳng qua hệ thống âm thanh của Mac, tức là đi thẳng vào cái tai nghe ANC không dây của mình. Mình xem hình trên màn hình máy tính bảng, nhưng tiếng thì nghe qua tai nghe thay vì phát ra loa ngoài.
+
+Vai trò của cái tai nghe ở đây rất quan trọng. Tai nghe không dây chống ồn giúp mình có thể đi ra bếp, quay lại, mà âm thanh vẫn đi theo. Không vướng víu dây nhợ, không phải cầm theo thiết bị nào cả. Máy tính bảng chỉ là nguồn phát nội dung; Mac mới là trung tâm xử lý âm thanh.
+
+## Điểm mấu chốt
+
+Chẳng có công cụ nào ở đây là quá bí ẩn hay cao siêu cả. Cái thú vị là ràng buộc tự đặt ra ban đầu: mình chỉ muốn một điểm tương tác duy nhất. Một bàn phím, một tai nghe, một nơi duy nhất để mình tập trung sự chú ý.
+
+Một khi đã chốt được mục tiêu đó, phần còn lại chỉ là tìm phần mềm để khiến từng cỗ máy trở nên tàng hình. Barrier biến Ubuntu thành cái màn hình thứ hai. RustDesk biến PC Windows thành một cửa sổ nhỏ. scrcpy làm cái máy tính bảng gần như biến mất, chỉ giữ lại phần tiếng.
+
+Tất nhiên, hệ thống này vẫn có những điểm chắp vá nếu bạn soi kỹ. Nhưng hầu hết thời gian, mình chẳng hề bận tâm.
