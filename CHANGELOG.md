@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/NaNomicon/blog-mdx/compare/v1.3.0...v1.4.0) (2026-07-29)
+
+
+### Features
+
+* **content:** add the-job-board-is-lying-to-you post ([613f080](https://github.com/NaNomicon/blog-mdx/commit/613f08091fcb2c0796f6b1dc135decd7381f8134))
+
 ## [1.3.0](https://github.com/NaNomicon/blog-mdx/compare/v1.2.3...v1.3.0) (2026-05-31)
 
 
