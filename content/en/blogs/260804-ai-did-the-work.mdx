@@ -1,0 +1,91 @@
+export const metadata = {
+  title: "AI Did the Work. That's Not the Point.",
+  publishDate: "2026-08-04",
+  description: "I used AI to fix a phone system I barely understood. A chatbot arrived at the same diagnosis with the same data. The interesting part is what happened before the prompt.",
+  category: "ai",
+  cover_image: "https://images.pexels.com/photos/5380603/pexels-photo-5380603.jpeg?auto=compress&w=1260&h=750&dpr=1",
+  tldr: "A web chatbot can reason to the same answer as an engineer if you hand it the right context. The moat isn't the prompt. It's knowing what data exists, what to feed the AI, and when not to listen to it.",
+  tags: ["ai", "debugging", "engineering"],
+};
+
+*Photo by [Tima Miroshnichenko](https://www.pexels.com/@tima-miroshnichenko/) on [Pexels](https://www.pexels.com/photo/person-using-computer-5380603/)*
+
+I use AI to do things I'm not qualified to do. But hear me out - there's a catch, and it's not the one you think.
+
+I fixed an office phone system I'd never configured before, and AI did the heavy lifting. That's not the interesting part.
+
+## The setup
+
+A client's office phones kept rebooting. Every time they connected the [PBX](https://en.wikipedia.org/wiki/Private_branch_exchange "reference | A private telephone network used within an organization") to the network, the IP phones would freeze, restart, freeze, restart. Nobody could make a call.
+
+The client wasn't helpless. He was a general IT guy who'd been following getting-started documentation for the system, got most of it working, and hit a wall. He didn't know where to go next.
+
+I studied networking and telecommunications at university, and picked up things here and there over the years. But I'd never configured a PBX in my life, never touched [SIP](https://en.wikipedia.org/wiki/Session_Initiation_Protocol "reference | Signaling protocol for voice/video calls over IP networks") directly, never managed [Asterisk](https://www.asterisk.org "reference | Open-source PBX framework, the engine inside most commercial PBX boxes"). I knew the general shape of the domain, not the specifics.
+
+## The hunt
+
+The topology was a mess: 4G SIM into a GSM terminal, RJ-11 into the PBX's [FXO](https://en.wikipedia.org/wiki/Foreign_exchange_station "reference | FXO/FXS ports connect analog phone lines to IP systems") port, PBX out to the switch, switch to the IP phones, [Starlink](https://www.starlink.com "reference | Satellite internet constellation by SpaceX") router also on the same switch. Seven [PoE](https://en.wikipedia.org/wiki/Power_over_Ethernet "reference | Delivers power and data over a single Ethernet cable") phones that wouldn't stay alive.
+
+The AI suggested theories. I didn't run with them blindly. I asked the client for evidence, or went looking for it myself.
+
+PoE budget? No - only one phone was connected. DHCP conflict between the Starlink router and the PBX? No - PBX DHCP was already off. Auto-provisioning loop? No - no [TFTP](https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol "reference | Simple file transfer protocol used by network devices for auto-provisioning") server, no provisioning process running on the PBX.
+
+Then the client mentioned something. The phones worked fine on their own, disconnected from the switch. Only when you plugged them into the network did they crash. That's a clue - the phones themselves were healthy, and something on the network was killing them.
+
+I captured the network traffic. 284 packets, zero [SIP](https://en.wikipedia.org/wiki/Session_Initiation_Protocol "reference | Signaling protocol for voice/video calls over IP networks") traffic. The phones weren't even *trying* to register; they were crashing before they got the chance.
+
+What I *did* find was broadcast traffic on port 10010 - the phones' auto-discovery protocol, sending "Hey, who's the PBX?" into the void and getting a response that apparently made them unhappy.
+
+So I SSH'd into the PBX. Didn't know the password, so I tried a bunch of defaults, including ones from the official documentation. Nothing worked. But the PBX logs had the MAC address of the unit, and I tried the last 8 characters of the MAC, uppercase. It worked. (Vendors, please stop doing this.) If the logs hadn't dumped that MAC address, I wouldn't have gotten in - luck mattered.
+
+From there: [PJSIP](https://docs.asterisk.org/Configuration/Core-Configuration/PJSIP/ "reference | Asterisk's modern channel driver, replacing the legacy chan_sip module") CLI, check the extension, grab the password, configure the phone manually. Server IP, extension, password. Phone registered, stopped rebooting. Done.
+
+## The twist
+
+Here's where it gets uncomfortable.
+
+I fed the same curated context to [Gemini](https://gemini.google.com "reference | Google's multimodal AI chatbot") - not the coding agent I'd spent hundreds of hours collectively configuring, just the web chatbot. The same pcap findings, the same PBX logs, the same network topology. No hand-holding beyond the raw information I'd already gathered.
+
+Gemini arrived at the same diagnosis. Same root cause, same fix. Same brain, different interface.
+
+## So what did I actually bring?
+
+If a chatbot can reason to the same answer when you give it the right context, what's the human contribution? It's not reasoning - the AI can reason fine. It's not "prompt engineering," whatever that means when people say it with a straight face.
+
+It's three things.
+
+### 1. Knowing what data exists
+
+A non-engineer doesn't know what logs are, or where to find them. Wouldn't know a PBX can capture network traffic, or what that even means. Wouldn't know [SSH](https://en.wikipedia.org/wiki/Secure_Shell "reference | Protocol for secure remote access to network devices") exists as a management interface, or that Asterisk has a CLI.
+
+I logged into the PBX web interface and noticed the sidebar right away: system logs, network settings, SIP extensions, terminal access. Each one a tool. A non-engineer looking at the same sidebar would skip half of it because the labels don't mean anything to them, and they'd miss the tools that actually solve the problem.
+
+I didn't know the *telecom* specifics. But I knew the *shape* of the problem: network devices have management interfaces, traffic captures tell you what's happening on the wire, and embedded systems ship with vendor backdoors. That's not telecom knowledge - it's engineering knowledge, and it generalizes across domains.
+
+The AI can analyze any data you give it. The question is whether you know there's data to analyze.
+
+### 2. Curation
+
+The second moat is knowing what to feed the AI at each step. I didn't dump everything into one prompt. I fed it the topology first, then the pcap findings, then the PBX logs. Each prompt built on the previous, and each one targeted the next question.
+
+This is the part people call "prompt engineering," and it's the part that gets oversold. Yes, the prompt matters. But the reason it matters is that *I knew what was relevant*. I knew "no SIP in the pcap" was the key finding, not a footnote. I knew the Starlink router's DHCP behavior was worth mentioning. I knew the phone model and the PBX firmware version mattered.
+
+A non-engineer can write a perfect prompt template. It'll still produce garbage because they don't know what to ask.
+
+### 3. Execution
+
+The third moat is knowing what to run, what to ignore, and what to relay back.
+
+The AI agents I used weren't a bare CLI. They were a fully customized orchestration layer - research, delegation to sub-agents, tool access, context management. Not ChatGPT in a browser tab. Hundreds of hours of configuration, accumulated across projects, distilled into a workflow that knows how to iterate.
+
+But here's the thing nobody talks about. The agents suggested dozens of commands, debugging steps, things to check. I didn't blindly run all of them. I read the suggestions, looked at the output myself first, and decided what was worth relaying back. Sometimes the AI tells you to check five things and only one of them matters, and you need the judgment to know which one.
+
+And yes, search-capable chatbots can look up commands, read logs, and analyze output. What they can't do is sit in front of a misbehaving system and decide the output doesn't match expectations, so the hypothesis is wrong, so try something else. That loop - observe, judge, pivot - is the human part.
+
+## The punchline
+
+AI didn't replace my expertise. It *compressed* it. What used to require weeks of domain-specific reading got compressed into a couple hours of AI-assisted reasoning, but the compression only worked because I had the engineering foundation to direct it.
+
+If you're an engineer, AI makes you faster. If you're not, AI makes you *sound* like one. Those are different things.
+
+The next time someone tells you prompt engineering is a real skill, ask them: could they debug a PBX they've never seen, with no telecom knowledge, using nothing but a chatbot? The prompt isn't the bottleneck. The engineer is.

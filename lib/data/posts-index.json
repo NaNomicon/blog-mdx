@@ -89,10 +89,34 @@
     "href": "/blog/open-source-is-becoming-open-token",
     "type": "blog"
   },
-  "/blog/ww3-imagined-end-of-the-glue-coder": {
-    "title": "WW3: Imagined — The End of the Glue Coder",
-    "description": "Modern development is an illusion of speed built on top of global trust. In WW3, that trust evaporates. Day 1 starts with a 403 error on GitHub.",
-    "href": "/blog/ww3-imagined-end-of-the-glue-coder",
+  "/blog/the-tax-of-software-that-wont-die": {
+    "title": "The Tax of Software That Won",
+    "description": "A ghost PufferPanel service, 91 GB of orphaned Docker volumes, and Apple",
+    "href": "/blog/the-tax-of-software-that-wont-die",
+    "type": "blog"
+  },
+  "/blog/from-framework-fatigue-to-ecosystem-fatigue": {
+    "title": "From Framework Fatigue to Ecosystem Fatigue",
+    "description": "The old joke was that JavaScript got a new framework every week. Now every week brings a new world asking for your notes, workflows, and trust—while you pay the migration bill if it dies.",
+    "href": "/blog/from-framework-fatigue-to-ecosystem-fatigue",
+    "type": "blog"
+  },
+  "/blog/one-desk-five-devices": {
+    "title": "One Desk, Five Devices",
+    "description": "How I collapsed a Mac, Ubuntu laptop, headless Windows PC, iPhone, and Android tablet into a single ergonomic workspace.",
+    "href": "/blog/one-desk-five-devices",
+    "type": "blog"
+  },
+  "/blog/the-job-board-is-lying-to-you": {
+    "title": "The Job Board Is Lying to You",
+    "description": "I spent two years working for myself. When I went back to the job market, I found that most postings are AI data funnels in disguise. Finding a real job felt like digging through a landfill.",
+    "href": "/blog/the-job-board-is-lying-to-you",
+    "type": "blog"
+  },
+  "/blog/ai-did-the-work": {
+    "title": "AI Did the Work. That",
+    "description": "I used AI to fix a phone system I barely understood. A chatbot arrived at the same diagnosis with the same data. The interesting part is what happened before the prompt.",
+    "href": "/blog/ai-did-the-work",
     "type": "blog"
   },
   "/notes/a-new-way-of-operating": {

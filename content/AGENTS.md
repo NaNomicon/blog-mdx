@@ -210,7 +210,7 @@ Links in MDX render with hover tooltips that show title, description, and option
 
 
 ### Typography Rules
-- **Emdashes**: ALWAYS use proper emdashes (`—`) instead of spaced hyphens (` - `) or double hyphens (`--`) for parenthetical phrases or bullet points acting as continuations. Do not put spaces around emdashes when used in sentences (e.g., `word—word`, not `word — word`).
+- **Dashes**: Use spaced hyphens (` - `) for parenthetical phrases or bullet points acting as continuations (e.g., `word - word`). Do NOT use emdashes (`—`) or double hyphens (`--`).
 
 
 ### Anti-AI Writing Guidelines

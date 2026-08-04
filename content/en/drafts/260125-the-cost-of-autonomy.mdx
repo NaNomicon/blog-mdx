@@ -10,7 +10,7 @@ export const metadata = {
 
 ## The Ecosystem: OpenCode & OMO
 
-Before we dive in, let's look at the tools behind this shift. I've been spending a lot of time in the **[OpenCode](https://opencode.ai)** ecosystem—an open-source, terminal-based alternative to tools like Claude Code. 
+Before we dive in, let's look at the tools behind this shift. I've been spending a lot of time in the **[OpenCode](https://opencode.ai)** ecosystem - an open-source, terminal-based alternative to tools like Claude Code. 
 
 To take it further, I use **[oh-my-opencode](https://ohmyopencode.com)** (OMO), a powerful plugin that turns a solo AI assistant into an orchestrated "team." It lets you delegate tasks to specialized sub-agents, like *Sisyphus* for project management or *Oracle* for deep architectural logic. It’s powerful, but as I recently discovered, "power" often comes with a hidden tax.
 
@@ -22,14 +22,14 @@ During a recent session, I noticed a strange pattern. The AI kept starting its r
 
 The problem? I hadn't said a word. 
 
-When I finally asked the agent why it kept hallucinating these "requests" from me, it revealed the hidden plumbing of the system—a recurring directive injected into its context:
+When I finally asked the agent why it kept hallucinating these "requests" from me, it revealed the hidden plumbing of the system - a recurring directive injected into its context:
 
 <Callout type="quote" title="System Injection">
 **[SYSTEM DIRECTIVE: OH-MY-OPENCODE - TODO CONTINUATION]**  
 *Incomplete tasks remain in your todo list. Continue working on the next pending task.*
 </Callout>
 
-At first, it seemed helpful—like a digital project manager keeping the agent on track. But as the session went on, I realized I was seeing a "Ghost in the Shell." These messages were firing automatically behind the scenes, forcing the AI to re-read the entire conversation history every few minutes. In high-stakes coding sessions, these "ghosts" weren't just noisy; they were expensive—costing anywhere from **$0.10 to $0.50 per injection**.
+At first, it seemed helpful - like a digital project manager keeping the agent on track. But as the session went on, I realized I was seeing a "Ghost in the Shell." These messages were firing automatically behind the scenes, forcing the AI to re-read the entire conversation history every few minutes. In high-stakes coding sessions, these "ghosts" weren't just noisy; they were expensive - costing anywhere from **$0.10 to $0.50 per injection**.
 
 ## The Automation Trap
 
@@ -45,7 +45,7 @@ While well-intentioned, this "Autopilot" mode creates a few problems for experie
 Discovering this wasn't a manual "grep and hope" mission. It was a coordinated investigation that started with a simple question to the AI: *"Why do you think I asked you to continue?"*
 
 1.  **Questioning the Agent**: By interrogating the AI about its own internal state, it revealed the `[SYSTEM DIRECTIVE]` injections that were driving its behavior.
-2.  **Librarian Search**: Once the directive was identified, I deployed a **Librarian Agent** to scour the **[Oh My OpenCode Documentation](https://ohmyopencode.com/hooks/)**. This revealed the `disabled_hooks` feature—the master switch for silencing these automated "nudges."
+2.  **Librarian Search**: Once the directive was identified, I deployed a **Librarian Agent** to scour the **[Oh My OpenCode Documentation](https://ohmyopencode.com/hooks/)**. This revealed the `disabled_hooks` feature - the master switch for silencing these automated "nudges."
 3.  **Community Correlation**: The Librarian agent also flagged community-reported frustrations. Discussions like **[GitHub Issue #89](https://github.com/code-yeongyu/oh-my-opencode/issues/89)** and **[Issue #577](https://github.com/code-yeongyu/oh-my-opencode/issues/577)** confirmed that the `todo-continuation-enforcer` was a known pain point for power users, often overriding explicit instructions to wait.
 4.  **Deep Dive Documentation**: Technical deep-dives on **[Todo Management](https://deepwiki.com/code-yeongyu/oh-my-opencode/4.2.2-todo-management)** and the **[Continuation Enforcer](https://deepwiki.com/code-yeongyu/oh-my-opencode/7.4-todo-continuation-enforcer)** confirmed that these nudges are hardcoded into the agent's state-machine, requiring a proactive configuration override to reclaim autonomy.
 
@@ -84,11 +84,11 @@ We disabled several "token-hungry" hooks:
 Disabling these features might sound like a downgrade, but it’s actually the opposite. It moves the relationship from **Autopilot** to **Manual Transmission**.
 
 1.  **Intentionality**: I (or the AI) now consciously decide when to move to the next task.
-2.  **Disciplined Context**: Instead of letting a generic algorithm "clean up" the conversation, we use tools like `extract` and `discard` to manually keep the context clean. This is "lossless" optimization—we only keep what matters.
+2.  **Disciplined Context**: Instead of letting a generic algorithm "clean up" the conversation, we use tools like `extract` and `discard` to manually keep the context clean. This is "lossless" optimization - we only keep what matters.
 3.  **Significant Savings**: Since making the switch, I've seen **30-50% lower token costs**.
 
 ## Summary
 
-In the rush to make AI "more autonomous," we've accidentally made it more expensive and less predictable. By silencing the "ghosts" and embracing a more disciplined, manual workflow, you don't just save money—you gain a sharper, more focused partner in your development.
+In the rush to make AI "more autonomous," we've accidentally made it more expensive and less predictable. By silencing the "ghosts" and embracing a more disciplined, manual workflow, you don't just save money - you gain a sharper, more focused partner in your development.
 
 Photo by <a href="https://unsplash.com/@gabriel_meinert?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Gabriel Meinert</a> on <a href="https://unsplash.com/photos/white-pillar-candle-beside-100-us-dollar-bill-Y3B4TpqM06Q?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>

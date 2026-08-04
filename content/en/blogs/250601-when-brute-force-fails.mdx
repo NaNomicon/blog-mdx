@@ -7,7 +7,7 @@ export const metadata = {
     tldr: "Spent a week over-engineering solutions for a legacy codebase problem. All failed. Then I found an online tool, went back to basics, and solved it methodically. Sometimes the best engineering solution is the simplest one, and the internet already has the tools you need.",
 };
 
-When working with legacy code, you're often handed messy dependencies, outdated patterns, or inconsistent formatting. But what if the entire codebase you inherit is obfuscated? That's exactly what happened to me on a recent freelance project — and my first instinct to brute-force the problem taught me a valuable lesson about patience and methodology.
+When working with legacy code, you're often handed messy dependencies, outdated patterns, or inconsistent formatting. But what if the entire codebase you inherit is obfuscated? That's exactly what happened to me on a recent freelance project - and my first instinct to brute-force the problem taught me a valuable lesson about patience and methodology.
 
 In this post, I'll walk you through how I initially tried to solve everything at once, why that failed spectacularly, and how stepping back and taking a methodical approach saved the project. Sometimes the best solution isn't the most complex one.
 
@@ -25,9 +25,9 @@ In this post, I'll walk you through how I initially tried to solve everything at
 
 I was hired as a freelance developer to maintain and extend an existing Chrome extension. The client handed over the entire codebase in obfuscated form, with no access to the original source.
 
-After analyzing the functionality, I started implementing new features — naturally, I wrote clean, maintainable JavaScript. As a result, the project quickly became a mix of obfuscated and unobfuscated code.
+After analyzing the functionality, I started implementing new features - naturally, I wrote clean, maintainable JavaScript. As a result, the project quickly became a mix of obfuscated and unobfuscated code.
 
-The client needed a secure production build — meaning everything had to be obfuscated again, in a consistent and Chrome-compliant way.
+The client needed a secure production build - meaning everything had to be obfuscated again, in a consistent and Chrome-compliant way.
 
 <Callout type="warning" title="Important notes">
 
@@ -47,7 +47,7 @@ My first instinct was simple: "Just run the entire codebase through an obfuscati
 ```bash
 # My brilliant first attempt
 npm install javascript-obfuscator
-node -e "
+node - e "
 const obfuscator = require('javascript-obfuscator');
 const fs = require('fs');
 // Just obfuscate everything!
@@ -260,9 +260,9 @@ Finally, I tried to understand the obfuscated commit history:
 
 ```bash
 # My workflow for handling obfuscated merges
-git log --oneline --graph
-git show <commit-hash> --name-only   
-git show <commit-hash> --stat        
+git log - -oneline - -graph
+git show <commit-hash> - -name-only   
+git show <commit-hash> - -stat        
 git diff <commit-hash>^ <commit-hash> # Try to understand changes
 ```
 
@@ -312,9 +312,9 @@ For each commit after the first one, I didn't try to understand the obfuscated c
 
 ```bash
 # My new workflow
-git log --oneline <first-commit>..<latest-commit>
-git show <commit-hash> --name-only   # See which files changed
-git show <commit-hash> --stat        # See the scope of changes
+git log - -oneline <first-commit>..<latest-commit>
+git show <commit-hash> - -name-only   # See which files changed
+git show <commit-hash> - -stat        # See the scope of changes
 ```
 
 ### 2. Understand the Intent
@@ -431,4 +431,4 @@ If you're facing a similar obfuscated codebase challenge:
 - [obf-io.deobfuscate.io](https://obf-io.deobfuscate.io/) - Online deobfuscation tool that saved the project
 - [Chrome Extension Manifest V3](https://developer.chrome.com/docs/extensions/mv3/) - Official Chrome extension documentation
 
-Have you ever spent days on a complex solution only to find a simple one was right there all along? Let me know — I'd love to hear your story.
+Have you ever spent days on a complex solution only to find a simple one was right there all along? Let me know - I'd love to hear your story.

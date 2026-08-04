@@ -22,7 +22,7 @@ If you're reading this because your screen is doing weird things through a KVM (
 - **The Signal Death:** After a few cycles of flickering, the screen goes black and just... stays there. "No Signal."
 - **The Judgemental Pop-up:** A "Not Optimum Mode. Recommended Mode: 1920x1080 60Hz" message, even though I'm literally *at* that resolution. 
 
-    *Foreshadowing: I was so annoyed by the resolution part that I completely ignored the "60Hz" suggestion for way too long — until the very moment of writing this blog.*
+    *Foreshadowing: I was so annoyed by the resolution part that I completely ignored the "60Hz" suggestion for way too long - until the very moment of writing this blog.*
 - **The Static Glitch:** Occasionally, the screen would turn into a mosaic of static or "glitch" artifacts, looking like a cursed VHS tape.
 
 The weirdest part? It only happened on the Windows machine. The MacBook was perfectly fine.
@@ -37,18 +37,18 @@ A gentle massage of the HDMI ports would cause the screen to refresh and jump ba
 
 Figuring this out felt like being a detective in a very boring, very frustrating movie. 
 
-At first, I blamed the HDMI cables. I swapped them, bought new ones, tried every combination of "high speed" and "ultra high speed" labels. Nothing changed. Then I updated the GPU drivers to the latest NVIDIA release—still flickering. I even checked if the KVM was getting enough power, plugging it into a dedicated power cube instead of a random USB port. Still haunted.
+At first, I blamed the HDMI cables. I swapped them, bought new ones, tried every combination of "high speed" and "ultra high speed" labels. Nothing changed. Then I updated the GPU drivers to the latest NVIDIA release - still flickering. I even checked if the KVM was getting enough power, plugging it into a dedicated power cube instead of a random USB port. Still haunted.
 
 After some back-and-forth with an AI assistant (thanks, Gemini!), we started digging into the math.
 
 1. **Bandwidth Limits:** The KVM is advertised as 4K 60Hz. While that *should* handle 1080p easily, budget brands often have "optimistic" marketing. Their actual throughput is often much lower than the box claims.
 2. **The 72Hz Overclock:** Here was the "Aha!" moment. My monitor natively supports 60Hz. At some point, I had manually bumped it to 71.91Hz in the Windows settings because, well, I wanted those extra frames. This meant the GPU was pushing a non-standard signal through a device already struggling with its own build quality.
 3. **The EDID Handshake:** KVMs use something called EDID (Extended Display Identification Data) to tell the computer what the monitor can do. When I pushed 72Hz, the KVM likely couldn't reconcile that with its internal "standard" 60Hz profile, causing the signal to drop and the monitor to throw a "No Optimal Resolution" tantrum.
-4. **The Physical Confirmation:** The final clue was the "Magic Touch." The fact that a physical tap could fix a digital signal drop proved this wasn't just a software bug—it was hardware fragility. The 72Hz signal was the "stress test" that the KVM's poor soldering simply couldn't pass.
+4. **The Physical Confirmation:** The final clue was the "Magic Touch." The fact that a physical tap could fix a digital signal drop proved this wasn't just a software bug - it was hardware fragility. The 72Hz signal was the "stress test" that the KVM's poor soldering simply couldn't pass.
 
 ## The "Fix" (For Now)
 
-The solution was as painful as the title suggests: **I had to give up my 72Hz dream and crawl back to 60Hz.** Honestly, I don't even know why I wanted 72Hz in the first place—probably just because I (theoretically) could. 
+The solution was as painful as the title suggests: **I had to give up my 72Hz dream and crawl back to 60Hz.** Honestly, I don't even know why I wanted 72Hz in the first place - probably just because I (theoretically) could. 
 
 By setting the Windows display refresh rate back to its native 60Hz, the signal became "cleaner" and less demanding. The KVM, despite its physical fragility, could finally handle the data stream without having a panic attack every time a game of *League of Legends* got intense. And maybe no more mid-combat panic in PUBG as the screen decides to go on a coffee break.
 

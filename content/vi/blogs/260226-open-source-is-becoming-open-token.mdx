@@ -24,7 +24,7 @@ Open source từ trước đến giờ sống bằng **công sức con người.
 
 Giờ thì có thêm một dòng tài nguyên khác chảy vào dự án: **token.** API credit. Ngân sách compute. Cái giá phải trả để chạy agent qua trọn một vòng contribution. Một người hiểu hệ thống và có agent trong tay giờ có thể quét sạch đống backlog mà trước kia cả team phải mất mấy tuần mới xử lý xong. Một người. Một buổi chiều.
 
-Nghe thì thích thật. Refactor lớn, rà accessibility, vá lỗ hổng test coverage—mấy việc từng nằm lì trong danh sách "để hôm khác"? Tự nhiên lại làm nổi.
+Nghe thì thích thật. Refactor lớn, rà accessibility, vá lỗ hổng test coverage - mấy việc từng nằm lì trong danh sách "để hôm khác"? Tự nhiên lại làm nổi.
 
 Nhưng luật chơi kinh tế ở bên dưới đã đổi rồi, chỉ là chưa ai cập nhật luật chơi cho kịp.
 
@@ -72,11 +72,11 @@ Vậy thứ gì con người vẫn nhìn ra mà máy không nhìn ra? Ý đồ. 
 
 Điều gì xảy ra nếu maintainer cũng là vibe-coder?
 
-Không phải kiểu người xấu. Chỉ là những người thực sự dùng dự án, thật lòng muốn giúp, cũng trỏ agent vào repo—nhưng chính hiểu biết của họ cũng được vá víu bởi agent. Không ai trong cả mạng lưới contributor còn giữ một mental model rõ ràng về lý do codebase hoạt động theo cách hiện tại.
+Không phải kiểu người xấu. Chỉ là những người thực sự dùng dự án, thật lòng muốn giúp, cũng trỏ agent vào repo - nhưng chính hiểu biết của họ cũng được vá víu bởi agent. Không ai trong cả mạng lưới contributor còn giữ một mental model rõ ràng về lý do codebase hoạt động theo cách hiện tại.
 
 Nhìn từ bên ngoài, dự án vẫn có vẻ khỏe. Stars, downloads, commit activity, issue được trả lời nhanh, CI xanh lè. Tín hiệu nào cũng đẹp. Nhưng từng bản fix đều chỉ nhất quán ở phạm vi cục bộ, còn tổng thể thì rệu rã. Quyết định thiết kế chồng chất theo hướng tệ dần vì mỗi lần nhìn riêng lẻ đều thấy hợp lý, chỉ là chẳng ai còn theo dõi toàn cục nữa.
 
-Điều đáng sợ nhất là gì? **Có khi nó vẫn ổn định.** Nếu user cũng là vibe-coder, chuyện "chạy được ở happy path" đã là đủ. Chẳng ai còn đòi mức đúng đắn sâu hơn—cái loại đúng đắn chỉ xuất hiện khi có người thật sự hiểu hệ thống. Giá trị giả vẫn giữ được vì người dùng cuối cũng không phân biệt nổi.
+Điều đáng sợ nhất là gì? **Có khi nó vẫn ổn định.** Nếu user cũng là vibe-coder, chuyện "chạy được ở happy path" đã là đủ. Chẳng ai còn đòi mức đúng đắn sâu hơn - cái loại đúng đắn chỉ xuất hiện khi có người thật sự hiểu hệ thống. Giá trị giả vẫn giữ được vì người dùng cuối cũng không phân biệt nổi.
 
 Đó không phải phần mềm đang sụp. Đó là phần mềm không bao giờ sụp đủ mạnh để lộ ra rằng trong nhà chẳng có ai cả.
 
@@ -84,13 +84,13 @@ Như [Flamehaven](https://flamehaven.substack.com/p/the-pull-request-illusion-ho
 
 ## Ý đồ là thứ rất khó nén
 
-Mình cũng đang thử đối phó chuyện này. Sau mỗi buổi code, mình bắt agent sinh ra **intent-based changelog**—không phải "đã đổi gì" mà là "vì sao chọn hướng này, đã cân nhắc gì, đã bỏ qua gì". Với những việc kéo dài qua nhiều phiên, mình viết plan để mang context sang phiên sau.
+Mình cũng đang thử đối phó chuyện này. Sau mỗi buổi code, mình bắt agent sinh ra **intent-based changelog** - không phải "đã đổi gì" mà là "vì sao chọn hướng này, đã cân nhắc gì, đã bỏ qua gì". Với những việc kéo dài qua nhiều phiên, mình viết plan để mang context sang phiên sau.
 
 Nó có ích. Nhưng vẫn chưa đủ. Một nửa số lần mình vẫn phải tự tay chỉ agent quay lại đọc đống tài liệu đó. Tài liệu có tồn tại, chỉ là chúng chưa được coi là ưu tiên hàng đầu.
 
-[AGENTS.md](https://agents.md "reference | Quy ước để chỉ cho AI agent cách tương tác với repo") là một điểm khởi đầu tốt—nó dạy agent cách làm việc với repo. [ADRs](https://github.com/joelparkerhenderson/architecture-decision-record "reference | Mẫu ghi lại quyết định kiến trúc và lý do đi kèm") giúp ghi lại các quyết định kiến trúc. Nhưng cả hai đều không lưu được **phần chìm**: dự án đã chủ động quyết định *không* trở thành cái gì, cách tiếp cận nào từng bị loại bỏ, ranh giới scope nào từng được giữ chặt trước áp lực, hay trade-off nào từng hợp lý cách đây ba năm trong một bối cảnh mà chẳng ai viết xuống.
+[AGENTS.md](https://agents.md "reference | Quy ước để chỉ cho AI agent cách tương tác với repo") là một điểm khởi đầu tốt - nó dạy agent cách làm việc với repo. [ADRs](https://github.com/joelparkerhenderson/architecture-decision-record "reference | Mẫu ghi lại quyết định kiến trúc và lý do đi kèm") giúp ghi lại các quyết định kiến trúc. Nhưng cả hai đều không lưu được **phần chìm**: dự án đã chủ động quyết định *không* trở thành cái gì, cách tiếp cận nào từng bị loại bỏ, ranh giới scope nào từng được giữ chặt trước áp lực, hay trade-off nào từng hợp lý cách đây ba năm trong một bối cảnh mà chẳng ai viết xuống.
 
-Toàn bộ thứ đó nằm trong đầu maintainer. Khi những maintainer đó rời đi—hoặc thật ra chưa từng tồn tại đúng nghĩa—debug sẽ biến thành khảo cổ học.
+Toàn bộ thứ đó nằm trong đầu maintainer. Khi những maintainer đó rời đi - hoặc thật ra chưa từng tồn tại đúng nghĩa - debug sẽ biến thành khảo cổ học.
 
 ## Vấn đề pipeline
 
@@ -98,7 +98,7 @@ Nghe thì có vẻ các công ty big tech sẽ là nơi giữ tiêu chuẩn. H�
 
 Đúng một phần. Mức sàn của họ là liability, không phải tay nghề. [AWS](https://aws.amazon.com/ "aside | Ví dụ rõ nhất: docs tệ suốt nhiều năm nhưng vẫn thống trị thị trường") có tài liệu tệ thật sự hơn cả thập kỷ nay mà vẫn in tiền đều đều. Con hào là switching cost. Chất lượng chỉ cần vượt qua cái ngưỡng "đừng gây ra sự cố đắt đỏ" là được.
 
-Vấn đề sâu hơn là: chính những công ty đó bán công cụ tạo ra output kiểu vibe-code, trong khi hạ tầng họ vận hành lại là thứ tuyệt đối không được phép vibe-code—kernel, hệ thống phân tán, security primitive. Ở bên trong họ vẫn cần người thật sự hiểu hệ thống. Nhưng ở bên ngoài, họ đang bào mòn cái pipeline từng đào tạo ra những người đó. Junior dev ngày xưa sẽ học bằng cách vật lộn qua từng PR. Giờ thì họ prompt để đi tiếp.
+Vấn đề sâu hơn là: chính những công ty đó bán công cụ tạo ra output kiểu vibe-code, trong khi hạ tầng họ vận hành lại là thứ tuyệt đối không được phép vibe-code - kernel, hệ thống phân tán, security primitive. Ở bên trong họ vẫn cần người thật sự hiểu hệ thống. Nhưng ở bên ngoài, họ đang bào mòn cái pipeline từng đào tạo ra những người đó. Junior dev ngày xưa sẽ học bằng cách vật lộn qua từng PR. Giờ thì họ prompt để đi tiếp.
 
 Mười năm nữa, kỹ sư hệ thống sẽ từ đâu chui ra?
 
@@ -108,6 +108,6 @@ Mình không nghĩ open source đã hỏng. Mô hình con người-có-kiến-th
 
 Nhưng hiện tại có hai chuyện đang xảy ra song song: nhóm contributor giỏi nhất trở nên mạnh hơn rất nhiều, còn mức sàn để gọi là "đóng góp" thì rơi xuống gần bằng 0. Điểm cân bằng cuối cùng của hệ sinh thái đó sẽ trông ra sao, giờ vẫn chưa ai biết.
 
-Những codebase kiểu [Potemkin](https://en.wikipedia.org/wiki/Potemkin_village "reference | Ẩn dụ về mặt tiền giả—trông khỏe mạnh nhưng rỗng ruột bên trong") vẫn chưa xuất hiện ở quy mô lớn.
+Những codebase kiểu [Potemkin](https://en.wikipedia.org/wiki/Potemkin_village "reference | Ẩn dụ về mặt tiền giả - trông khỏe mạnh nhưng rỗng ruột bên trong") vẫn chưa xuất hiện ở quy mô lớn.
 
 *Chưa thôi.*

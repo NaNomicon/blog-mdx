@@ -58,7 +58,7 @@ Nhưng nhiều khi chỉ là nhìn vậy thôi.
 
 Mình tìm thấy hơn bảy mươi Docker named volume mồ côi trên mỗi con trong hai con server. Dữ liệu game, build cache cũ, nhiều đời state của Langfuse, rồi đủ thứ tàn dư từ những stack mà trong đầu mình đã cho vào nhóm "xong từ lâu rồi". Ban đầu mình chạy `docker volume prune` và gần như chẳng lấy lại được gì. Vài mẩu anonymous volume. Sáu mươi chín kilobyte. Gần như một trò đùa.
 
-Dọn thật sự chỉ bắt đầu khi mình dùng [`docker volume prune -a`](https://docs.docker.com/reference/cli/docker/volume/prune/ "reference | Chế độ volume-prune đầy đủ của Docker, cần thiết nếu muốn xóa named volume mồ côi") vì Docker bây giờ mặc định vẫn tha cho named volume, trừ khi mình nói toẹt ra là đừng tha nữa.
+Dọn thật sự chỉ bắt đầu khi mình dùng [`docker volume prune - a`](https://docs.docker.com/reference/cli/docker/volume/prune/ "reference | Chế độ volume-prune đầy đủ của Docker, cần thiết nếu muốn xóa named volume mồ côi") vì Docker bây giờ mặc định vẫn tha cho named volume, trừ khi mình nói toẹt ra là đừng tha nữa.
 
 Chỉ một flag đó thôi đã biến kết quả từ kiểu "nhìn như sạch rồi đó" thành **91 GB lấy lại được** trên hai VPS.
 

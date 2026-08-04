@@ -58,7 +58,7 @@ The closure is often fake.
 
 I found more than seventy orphaned named Docker volumes on each of two servers. Game data, old build caches, multiple generations of Langfuse state, random leftovers from stacks I had already mentally written off. I ran `docker volume prune` first and got almost nothing back. A few anonymous scraps. Sixty-nine kilobytes. Basically a joke.
 
-The real cleanup only happened when I used [`docker volume prune -a`](https://docs.docker.com/reference/cli/docker/volume/prune/ "reference | Docker's full volume-prune mode, required for named orphaned volumes") because modern Docker defaults to sparing named volumes unless you explicitly tell it not to.
+The real cleanup only happened when I used [`docker volume prune - a`](https://docs.docker.com/reference/cli/docker/volume/prune/ "reference | Docker's full volume-prune mode, required for named orphaned volumes") because modern Docker defaults to sparing named volumes unless you explicitly tell it not to.
 
 That one flag changed the result from "looks clean" to **91 GB reclaimed** across two VPSes.
 

@@ -7,7 +7,7 @@ export const metadata = {
     cover_image: "/covers/260101-duplicating-gpg-tty-zprofile.jpg",
 };
 
-<p className="text-xs text-muted-foreground italic -mt-4 mb-4">
+<p className="text-xs text-muted-foreground italic - mt-4 mb-4">
   Image by <a href="https://pixabay.com/users/joffi-1229850/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1685092">joffi</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1685092">Pixabay</a>
 </p>
 
@@ -21,7 +21,7 @@ It began with a subtle, then increasingly painful, realization: my terminal was 
 
 After days of frustration, I decided to peek under the hood and opened my `.zshrc`. To my absolute horror, I found that it had grown to include **thousands** of identical lines: `export GPG_TTY=$(tty)`. Every single one of those redundant lines was being parsed and executed by Zsh every time I opened a new terminal session, turning my snappy startup into a frustrating wait.
 
-The `GPG_TTY` environment variable is crucial for GnuPG (GPG) to know which terminal to use for passphrase prompts—essential for signing Git commits. So, while the line itself was important, its relentless duplication (at least 3,000 times!) was definitely not.
+The `GPG_TTY` environment variable is crucial for GnuPG (GPG) to know which terminal to use for passphrase prompts - essential for signing Git commits. So, while the line itself was important, its relentless duplication (at least 3,000 times!) was definitely not.
 
 ---
 
@@ -63,8 +63,8 @@ Opening my `~/.zprofile` file, I immediately spotted it:
 ```bash
 # https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key
 # Add GPG key
-if [ -r ~/.zshrc ]; then echo -e '\nexport GPG_TTY=$(tty)' >> ~/.zshrc; \
-  else echo -e '\nexport GPG_TTY=$(tty)' >> ~/.zprofile; fi
+if [ - r ~/.zshrc ]; then echo - e '\nexport GPG_TTY=$(tty)' >> ~/.zshrc; \
+  else echo - e '\nexport GPG_TTY=$(tty)' >> ~/.zprofile; fi
 ```
 
 There it was! A script, seemingly taken directly from GitHub's documentation on managing commit signature verification, designed to add `export GPG_TTY=$(tty)` to my `.zshrc`.
