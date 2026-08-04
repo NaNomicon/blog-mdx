@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/NaNomicon/blog-mdx/compare/v1.4.0...v1.5.0) (2026-08-04)
+
+
+### Features
+
+* **content:** add ai-did-the-work post ([0f12dea](https://github.com/NaNomicon/blog-mdx/commit/0f12deac276a31d4c8b9c9e50fd880dfbbb8a39a))
+
 ## [1.4.0](https://github.com/NaNomicon/blog-mdx/compare/v1.3.0...v1.4.0) (2026-07-29)
 
 
