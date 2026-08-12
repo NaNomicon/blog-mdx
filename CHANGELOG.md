@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.6.0](https://github.com/NaNomicon/blog-mdx/compare/v1.5.0...v1.6.0) (2026-08-12)
+
+
+### Features
+
+* **content:** add ai-raises-the-skill-floor post ([9234d5a](https://github.com/NaNomicon/blog-mdx/commit/9234d5a29e673a8c6c2acf0e89a1a21ad8169ecd))
+
+
+### Bug Fixes
+
+* **content:** replace banned words in 6 posts ([38e2a5f](https://github.com/NaNomicon/blog-mdx/commit/38e2a5f315b9e0595da68cd05ffe82a5fe21dd3d))
+* **tooltip:** decode hex html entities in og cache ([7b03282](https://github.com/NaNomicon/blog-mdx/commit/7b03282c5c6bbd3e7528af5391123fc7f8d43276))
+* **tooltip:** stop title truncation at apostrophes in posts index ([cf69dd8](https://github.com/NaNomicon/blog-mdx/commit/cf69dd8e36c51681a53744cab79e9094737ef00f))
+
 ## [1.5.0](https://github.com/NaNomicon/blog-mdx/compare/v1.4.0...v1.5.0) (2026-08-04)
 
 
