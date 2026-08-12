@@ -25,14 +25,16 @@ function extractMetadata(content) {
 
   const metadataStr = metadataMatch[1];
   
-  // Basic regex to extract fields from the metadata object string
-  // Handles both double and single quotes
-  const titleMatch = metadataStr.match(/title:\s*["'](.+?)["']/);
-  const descMatch = metadataStr.match(/description:\s*["'](.+?)["']/);
+  // Basic regex to extract fields from the metadata object string.
+  // Use backreference to match the SAME quote type that opened the string,
+  // so an apostrophe inside a double-quoted title doesn't truncate it.
+  // Handles both double and single quotes.
+  const titleMatch = metadataStr.match(/title:\s*("([^"]*)"|'([^']*)')/);
+  const descMatch = metadataStr.match(/description:\s*("([^"]*)"|'([^']*)')/);
 
   return {
-    title: titleMatch ? titleMatch[1] : null,
-    description: descMatch ? descMatch[1] : ''
+    title: titleMatch ? (titleMatch[2] ?? titleMatch[3]) : null,
+    description: descMatch ? (descMatch[2] ?? descMatch[3]) : ''
   };
 }
 

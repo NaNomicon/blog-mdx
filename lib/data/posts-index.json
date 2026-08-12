@@ -1,25 +1,25 @@
 {
   "/blog/fixing-sleep-schedule": {
     "title": "The Neuroscience Behind Fixing Your Sleep Schedule Summarized",
-    "description": "A summarization of Dr. K",
+    "description": "A summarization of Dr. K's video about fixing sleep schedule",
     "href": "/blog/fixing-sleep-schedule",
     "type": "blog"
   },
   "/blog/deploy-dokploy": {
     "title": "Deploying Dokploy (and your docker registry) on multiple machines for self-hosting services",
-    "description": "Learn how to streamline deployments and self-host services using Dokploy, a flexible and developer-centric platform. This step-by-step guide walks you through setting up Dokploy on multiple VPS servers, deploying a private Docker registry, and configuring HTTPS with Let",
+    "description": "Learn how to streamline deployments and self-host services using Dokploy, a flexible and developer-centric platform. This step-by-step guide walks you through setting up Dokploy on multiple VPS servers, deploying a private Docker registry, and configuring HTTPS with Let's Encrypt. Perfect for developers looking to consolidate projects, automate deployments, and maintain full control of their infrastructure.",
     "href": "/blog/deploy-dokploy",
     "type": "blog"
   },
   "/blog/the-hidden-buttons-that-must-never-die": {
     "title": "The Hidden Buttons That Must Never Die",
-    "description": "A cautionary tale about the dangers of removing seemingly innocent UI elements from production code. Learn how two harmless-looking buttons brought down an entire booking system, the perils of obfuscated JavaScript dependencies, and why sometimes the best fix is to hide rather than delete. A freelancer",
+    "description": "A cautionary tale about the dangers of removing seemingly innocent UI elements from production code. Learn how two harmless-looking buttons brought down an entire booking system, the perils of obfuscated JavaScript dependencies, and why sometimes the best fix is to hide rather than delete. A freelancer's nightmare turned into a valuable lesson about technical debt, client communication, and the hidden connections in legacy codebases.",
     "href": "/blog/the-hidden-buttons-that-must-never-die",
     "type": "blog"
   },
   "/blog/when-brute-force-fails": {
     "title": "When Brute Force Fails: Why Simple Solutions Beat Complex Engineering",
-    "description": "I inherited a messy codebase and spent a week building complex detection systems and tiered build configs. All failed. Then I found the solution was sitting right there on the internet. Here",
+    "description": "I inherited a messy codebase and spent a week building complex detection systems and tiered build configs. All failed. Then I found the solution was sitting right there on the internet. Here's how stepping back and using existing tools saved the project, and why patience beats cleverness in software engineering.",
     "href": "/blog/when-brute-force-fails",
     "type": "blog"
   },
@@ -43,7 +43,7 @@
   },
   "/blog/identity-fade": {
     "title": "When \\",
-    "description": "Ever had an inspiring moment where you feel like you",
+    "description": "Ever had an inspiring moment where you feel like you've unlocked your 'real' self - only to watch it fade days later? This deep-dive explores the psychology behind why inspired feelings slip away and how to actually make those changes stick. Learn about possible selves, context-dependent identity, behavioral anchoring, and practical strategies to move from feeling-dependent to behavior-dependent change.",
     "href": "/blog/identity-fade",
     "type": "blog"
   },
@@ -67,7 +67,7 @@
   },
   "/blog/unlimited-tokens-is-a-huge-game-changer": {
     "title": "Having Unlimited Tokens is a Huge Game Changer",
-    "description": "How OpenCode",
+    "description": "How OpenCode's free models shifted my workflow from 'cost-anxiety' to 'unlimited experimentation,' making my AI-assisted development more stable and ambitious.",
     "href": "/blog/unlimited-tokens-is-a-huge-game-changer",
     "type": "blog"
   },
@@ -79,25 +79,25 @@
   },
   "/blog/ai-bubble-is-good": {
     "title": "The AI Bubble is Good, Actually",
-    "description": "Why the inevitable AI crash will trigger a golden age for builders, based on the Carlota Perez framework and the ",
+    "description": "Why the inevitable AI crash will trigger a golden age for builders, based on the Carlota Perez framework and the 'Linux Effect'.",
     "href": "/blog/ai-bubble-is-good",
     "type": "blog"
   },
   "/blog/open-source-is-becoming-open-token": {
     "title": "Open Source is Becoming Open-Token",
-    "description": "AI agents are quietly changing what ",
+    "description": "AI agents are quietly changing what 'contributing to open source' means. It's not all bad - but the incentive structure has shifted in ways nobody's talking about.",
     "href": "/blog/open-source-is-becoming-open-token",
     "type": "blog"
   },
   "/blog/the-tax-of-software-that-wont-die": {
-    "title": "The Tax of Software That Won",
-    "description": "A ghost PufferPanel service, 91 GB of orphaned Docker volumes, and Apple",
+    "title": "The Tax of Software That Won't Die",
+    "description": "A ghost PufferPanel service, 91 GB of orphaned Docker volumes, and Apple's simulator runtimes all taught me the same thing: software keeps charging rent long after the product says it's gone.",
     "href": "/blog/the-tax-of-software-that-wont-die",
     "type": "blog"
   },
   "/blog/from-framework-fatigue-to-ecosystem-fatigue": {
     "title": "From Framework Fatigue to Ecosystem Fatigue",
-    "description": "The old joke was that JavaScript got a new framework every week. Now every week brings a new world asking for your notes, workflows, and trust—while you pay the migration bill if it dies.",
+    "description": "The old joke was that JavaScript got a new framework every week. Now every week brings a new world asking for your notes, workflows, and trust - while you pay the migration bill if it dies.",
     "href": "/blog/from-framework-fatigue-to-ecosystem-fatigue",
     "type": "blog"
   },
@@ -114,14 +114,20 @@
     "type": "blog"
   },
   "/blog/ai-did-the-work": {
-    "title": "AI Did the Work. That",
+    "title": "AI Did the Work. That's Not the Point.",
     "description": "I used AI to fix a phone system I barely understood. A chatbot arrived at the same diagnosis with the same data. The interesting part is what happened before the prompt.",
     "href": "/blog/ai-did-the-work",
     "type": "blog"
   },
+  "/blog/ai-actually-raises-the-skill-floor-if-youre-serious": {
+    "title": "AI Actually Raises the Skill Floor - If You're Serious",
+    "description": "AI lowered the barrier to starting. It raised the floor for shipping. Three paths  - full teams, guard systems, or enforcement by construction  - all demand more cross-domain awareness, not less.",
+    "href": "/blog/ai-actually-raises-the-skill-floor-if-youre-serious",
+    "type": "blog"
+  },
   "/notes/a-new-way-of-operating": {
     "title": "A new way of operating",
-    "description": "Introduction to Austin Kleon",
+    "description": "Introduction to Austin Kleon's perspective on findability versus just being good.",
     "href": "/notes/a-new-way-of-operating",
     "type": "note"
   },
@@ -150,14 +156,14 @@
     "type": "note"
   },
   "/notes/dont-be-a-hoarder": {
-    "title": "Don",
+    "title": "Don't be a hoarder",
     "description": "Sharing your collections and inspirations as a way to define your taste and identity.",
     "href": "/notes/dont-be-a-hoarder",
     "type": "note"
   },
   "/notes/find-a-scenius": {
     "title": "Find a scenius",
-    "description": "Austin Kleon explains Brian Eno",
+    "description": "Austin Kleon explains Brian Eno's concept of 'scenius' - the collective form of genius.",
     "href": "/notes/find-a-scenius",
     "type": "note"
   },
@@ -210,8 +216,8 @@
     "type": "note"
   },
   "/notes/the-so-what-test": {
-    "title": "The ",
-    "description": "How to filter what you share using the ",
+    "title": "The 'so what?' test",
+    "description": "How to filter what you share using the 'so what?' test to ensure value for your audience.",
     "href": "/notes/the-so-what-test",
     "type": "note"
   },
@@ -228,13 +234,13 @@
     "type": "note"
   },
   "/notes/work-doesnt-speak-for-itself": {
-    "title": "Work doesn",
+    "title": "Work doesn't speak for itself",
     "description": "Why the stories you tell about your work are just as important as the work itself.",
     "href": "/notes/work-doesnt-speak-for-itself",
     "type": "note"
   },
   "/notes/you-cant-find-your-voice-if-you-dont-use-it": {
-    "title": "You can",
+    "title": "You can't find your voice if you don't use it",
     "description": "Finding your voice through the act of sharing and using it.",
     "href": "/notes/you-cant-find-your-voice-if-you-dont-use-it",
     "type": "note"
@@ -258,7 +264,7 @@
     "type": "note"
   },
   "/notes/let-em-take-their-best-shot": {
-    "title": "Let ",
+    "title": "Let 'em take their best shot",
     "description": "How to take criticisms and protect your vulnerabilities.",
     "href": "/notes/let-em-take-their-best-shot",
     "type": "note"
@@ -277,7 +283,7 @@
   },
   "/notes/cool-side-quest": {
     "title": "Side Quest: PewDiePie at Wit Studio",
-    "description": "Reflections on PewDiePie",
+    "description": "Reflections on PewDiePie's visit to Wit Studio and their incredible culture of continuous improvement.",
     "href": "/notes/cool-side-quest",
     "type": "note"
   },
@@ -295,7 +301,7 @@
   },
   "/notes/ai-copyright-code-art-music": {
     "title": "The Illusion of Consent: AI Training in Code vs. Art vs. Music",
-    "description": "How AI ",
+    "description": "How AI 'stealing' is treated differently across coding, visual art, and music - and why.",
     "href": "/notes/ai-copyright-code-art-music",
     "type": "note"
   },
