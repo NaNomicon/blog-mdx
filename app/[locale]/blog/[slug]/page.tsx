@@ -14,6 +14,7 @@ import {
 import { BlogLayout } from "@/components/mdx/blog-layout";
 import { InlineEngagement } from "@/components/mdx/inline-engagement";
 import { ViewTracker } from "@/components/mdx/view-tracker";
+import { CommentSection } from "@/components/comments/comment-section";
 import { FallbackBanner } from "@/components/i18n/fallback-banner";
 import {
   getPostBySlug,
@@ -127,6 +128,8 @@ export default async function Page({ params }: Props) {
 
             <InlineEngagement slug={slug} className="mt-16" />
           </article>
+
+          <CommentSection postSlug={slug} />
         </div>
       </div>
     </>
