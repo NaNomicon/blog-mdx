@@ -116,5 +116,53 @@
     "currentStatusTitle": "Trạng Thái Hiện Tại",
     "currentStatusDescription": "Website này vẫn đang được xây dựng, ngày càng tiến bộ theo mỗi lượt ghé thăm. Mình liên tục thêm nội dung mới, tinh chỉnh thiết kế và nâng cao trải nghiệm người dùng.",
     "exploreButton": "Khám phá suy nghĩ của mình"
+  },
+  "Comments": {
+    "section": {
+      "title": "Bình luận"
+    },
+    "form": {
+      "placeholder": "Viết bình luận... (hỗ trợ Markdown)",
+      "submit": "Đăng bình luận",
+      "save": "Lưu thay đổi",
+      "preview": "Xem trước",
+      "cancel": "Hủy",
+      "saving": "Đang lưu...",
+      "replyingTo": "Đang trả lời {username}"
+    },
+    "username": {
+      "label": "Bình luận với tên",
+      "change": "Đổi",
+      "placeholder": "Chọn một tên",
+      "random": "Ngẫu nhiên",
+      "taken": "Tên này đã được sử dụng",
+      "invalid": "3-30 ký tự, chỉ chữ cái, số và gạch dưới"
+    },
+    "sort": {
+      "newest": "Mới nhất",
+      "oldest": "Cũ nhất",
+      "top": "Nổi bật"
+    },
+    "vote": {
+      "up": "Bình chọn lên",
+      "down": "Bình chọn xuống"
+    },
+    "reply": "Trả lời",
+    "edit": "Sửa",
+    "delete": {
+      "label": "Xóa",
+      "confirm": "Xóa bình luận này?"
+    },
+    "edited": "(đã sửa)",
+    "deleted": "[đã xóa]",
+    "empty": "Chưa có bình luận nào. Hãy là người đầu tiên chia sẻ suy nghĩ!",
+    "loadMore": "Tải thêm bình luận",
+    "showReplies": "{count, plural, one {Hiện # phản hồi} other {Hiện # phản hồi}}",
+    "hideReplies": "Ẩn phản hồi",
+    "error": {
+      "generic": "Đã có lỗi xảy ra. Vui lòng thử lại.",
+      "rateLimit": "Chậm lại nào! Vui lòng đợi trước khi đăng tiếp.",
+      "editExpired": "Thời gian chỉnh sửa đã hết (15 phút)"
+    }
   }
 }

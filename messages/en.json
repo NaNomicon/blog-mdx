@@ -116,5 +116,53 @@
     "currentStatusTitle": "Current Status",
     "currentStatusDescription": "This website is currently under construction, evolving and improving with each visit. I'm constantly adding new content, refining the design, and enhancing the user experience.",
     "exploreButton": "Explore my thoughts"
+  },
+  "Comments": {
+    "section": {
+      "title": "Comments"
+    },
+    "form": {
+      "placeholder": "Write a comment... (Markdown supported)",
+      "submit": "Post Comment",
+      "save": "Save Changes",
+      "preview": "Preview",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "replyingTo": "Replying to {username}"
+    },
+    "username": {
+      "label": "Commenting as",
+      "change": "Change",
+      "placeholder": "Pick a username",
+      "random": "Random",
+      "taken": "Username already taken",
+      "invalid": "3-30 characters, letters, numbers, underscores only"
+    },
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "top": "Top"
+    },
+    "vote": {
+      "up": "Upvote",
+      "down": "Downvote"
+    },
+    "reply": "Reply",
+    "edit": "Edit",
+    "delete": {
+      "label": "Delete",
+      "confirm": "Delete this comment?"
+    },
+    "edited": "(edited)",
+    "deleted": "[deleted]",
+    "empty": "No comments yet. Be the first to share your thoughts!",
+    "loadMore": "Load more comments",
+    "showReplies": "{count, plural, one {Show # reply} other {Show # replies}}",
+    "hideReplies": "Hide replies",
+    "error": {
+      "generic": "Something went wrong. Please try again.",
+      "rateLimit": "Slow down! Please wait before posting again.",
+      "editExpired": "Edit window has expired (15 minutes)"
+    }
   }
 }
