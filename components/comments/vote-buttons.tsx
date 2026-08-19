@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { useAnonymousAuth } from "@/hooks/use-anonymous-auth";
+import { isRateLimitError } from "@convex-dev/rate-limiter";
 import type { Id } from "@/convex/_generated/dataModel";
 
 interface VoteButtonsProps {
@@ -65,7 +66,7 @@ export function VoteButtons({ commentId, score, userVote }: VoteButtonsProps) {
     } catch (err) {
       setOptimisticVote(previousVote);
       setOptimisticScore(previousScore);
-      toast.error(t("error.rateLimit"));
+      toast.error(isRateLimitError(err) ? t("error.rateLimit") : t("error.generic"));
     } finally {
       setInFlight(false);
     }

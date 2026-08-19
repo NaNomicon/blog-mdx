@@ -1,5 +1,6 @@
 import { v, ConvexError } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import type { Doc } from "./_generated/dataModel";
 import { auth } from "./auth";
 import {
   paginationOptsValidator,
@@ -55,8 +56,9 @@ export const addComment = mutation({
     const parentId = args.parentId ?? undefined;
 
     let depth = 0;
+    let parent: Doc<"comments"> | null = null;
     if (parentId) {
-      const parent = await ctx.db.get(parentId);
+      parent = await ctx.db.get(parentId);
       if (!parent) throw new Error("Parent comment not found");
       if (parent.postSlug !== args.postSlug)
         throw new Error("Parent comment belongs to a different post");
@@ -69,7 +71,7 @@ export const addComment = mutation({
     const now = Date.now();
     const id = await ctx.db.insert("comments", {
       postSlug: args.postSlug,
-      parentId: parentId as undefined,
+      parentId,
       authorId: userId,
       username: profile.displayName,
       content,
@@ -82,8 +84,8 @@ export const addComment = mutation({
       deletedAt: undefined,
     });
 
-    if (parentId) {
-      await ctx.db.patch(parentId, { replyCount: (await ctx.db.get(parentId))?.replyCount! + 1 });
+    if (parent) {
+      await ctx.db.patch(parent._id, { replyCount: parent.replyCount + 1 });
     }
 
     return id;
@@ -264,6 +266,9 @@ export const getComments = query({
     }
 
     // Top-level only — the slug indexes don't cover parentId, so filter it out.
+    // ponytail: .filter() runs post-index in memory, so a page can be sparse on
+    // reply-heavy posts (20 index rows may yield <20 top-level comments). Add a
+    // compound by_slug_parent_createdAt index (or isTopLevel field) if that matters.
     const paginated = await base
       .filter((q) => q.eq(q.field("parentId"), undefined))
       .paginate(args.paginationOpts);

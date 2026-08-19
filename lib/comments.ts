@@ -1,5 +1,9 @@
 import type { Id } from "@/convex/_generated/dataModel";
 
+// 0-indexed nesting cap (depth 3 = 4 levels). Server enforces in addComment
+// (rejects when parent.depth >= 3); clients use it to hide reply/expand UI.
+export const MAX_COMMENT_DEPTH = 3;
+
 export interface CommentWithMeta {
   _id: Id<"comments">;
   postSlug: string;

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { CommentMarkdown } from "@/components/comments/comment-markdown";
-import { UsernamePicker } from "@/components/comments/username-picker";
+import { useAnonymousAuth } from "@/hooks/use-anonymous-auth";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -42,6 +42,7 @@ export function CommentForm({
   const t = useTranslations("Comments");
   const addComment = useMutation(api.comments.addComment);
   const editComment = useMutation(api.comments.editComment);
+  const { ensureAuthenticated } = useAnonymousAuth();
 
   const [content, setContent] = useState(initialContent);
   const [tab, setTab] = useState<Tab>("write");
@@ -49,13 +50,17 @@ export function CommentForm({
   const [submitting, setSubmitting] = useState(false);
   const isEdit = mode === "edit";
 
+  // Username is rendered by the parent (CommentSection) as its own picker.
+  // Rendering a picker here with a noop callback would dead-end the flow.
   if (!username) {
-    return <UsernamePicker currentUsername={null} onUsernameChange={() => {}} />;
+    return null;
   }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!content.trim() || submitting) return;
+    const authed = await ensureAuthenticated();
+    if (!authed) return;
     setSubmitting(true);
     setError(null);
     try {
@@ -127,7 +132,11 @@ export function CommentForm({
 
       <div className="flex gap-2">
         <Button type="submit" size="sm" disabled={submitting || !content.trim()}>
-          {isEdit ? t("form.save") : t("form.submit")}
+          {submitting
+            ? t("form.saving")
+            : isEdit
+              ? t("form.save")
+              : t("form.submit")}
         </Button>
         {isEdit && onCancel && (
           <Button type="button" variant="ghost" size="sm" onClick={onCancel}>

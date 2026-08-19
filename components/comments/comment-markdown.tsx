@@ -50,7 +50,7 @@ export function CommentMarkdown({ content, className }: CommentMarkdownProps) {
             );
           },
           a: ({ href, children }) => {
-            const safeHref = href?.toLowerCase().startsWith("javascript:")
+            const safeHref = href?.trim().toLowerCase().startsWith("javascript:")
               ? undefined
               : href;
             return (

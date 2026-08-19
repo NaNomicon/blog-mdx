@@ -7,11 +7,10 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import type { CommentWithMeta, CommentCallback } from "@/lib/comments";
+import { MAX_COMMENT_DEPTH } from "@/lib/comments";
 import { CommentCard } from "@/components/comments/comment-card";
 import { useAnonymousAuth } from "@/hooks/use-anonymous-auth";
 import { Button } from "@/components/ui/button";
-
-const MAX_DEPTH = 3;
 
 interface CommentThreadProps {
   comment: CommentWithMeta;
@@ -37,7 +36,7 @@ export function CommentThread({
   const [expanded, setExpanded] = useState(false);
 
   const canExpand = comment.replyCount > 0;
-  const isLeaf = depth >= MAX_DEPTH;
+  const isLeaf = depth >= MAX_COMMENT_DEPTH;
 
   const replies = useQuery(
     api.comments.getReplies,

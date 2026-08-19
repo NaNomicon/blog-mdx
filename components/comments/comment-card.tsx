@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { Reply, Pencil, Trash2 } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import { MAX_COMMENT_DEPTH } from "@/lib/comments";
 import type { CommentWithMeta, CommentCallback } from "@/lib/comments";
 import { CommentMarkdown } from "@/components/comments/comment-markdown";
 import { VoteButtons } from "@/components/comments/vote-buttons";
@@ -49,20 +50,25 @@ export function CommentCard({
   const [editing, setEditing] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [editExpired, setEditExpired] = useState(false);
 
   const isOwner = currentUserId !== null && comment.authorId === currentUserId;
   const isDeleted = comment.deletedAt !== null;
-  const isLeaf = depth >= 3;
+  const isLeaf = depth >= MAX_COMMENT_DEPTH;
 
-  const canEdit = isOwner && Date.now() - comment.createdAt < EDIT_WINDOW_MS && !isDeleted;
+  const canEdit =
+    isOwner && !editExpired && Date.now() - comment.createdAt < EDIT_WINDOW_MS && !isDeleted;
 
   // Hide the Edit button once the 15-min window elapses on a long-lived page.
+  // Uses a dedicated editExpired state so the button re-renders away even if
+  // the edit form is not open (setEditing(false) on an already-closed form is
+  // a React no-op and would leave canEdit stale).
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (!canEdit) return;
     const remaining = EDIT_WINDOW_MS - (Date.now() - comment.createdAt);
     if (remaining <= 0) return;
-    timerRef.current = setTimeout(() => setEditing(false), remaining);
+    timerRef.current = setTimeout(() => setEditExpired(true), remaining);
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
