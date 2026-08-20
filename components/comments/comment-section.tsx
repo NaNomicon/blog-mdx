@@ -69,13 +69,19 @@ export function CommentSection({ postSlug }: { postSlug: string }) {
   const noop = () => {};
 
   return (
-    <section className="space-y-4" aria-label={t("section.title")}>
+    <section
+      id="comments"
+      className="mx-auto w-full max-w-2xl scroll-mt-20 space-y-4"
+      aria-label={t("section.title")}
+    >
       <h2 className="text-lg font-semibold">{t("section.title")}</h2>
 
       <div onFocusCapture={handleFocus}>
-        <div className="mb-2">
-          <UsernamePicker currentUsername={username} onUsernameChange={setClaimedUsername} />
-        </div>
+        {username && (
+          <div className="mb-2">
+            <UsernamePicker currentUsername={username} onUsernameChange={setClaimedUsername} />
+          </div>
+        )}
         <CommentForm postSlug={postSlug} username={username} onSubmitted={noop} />
       </div>
 
@@ -103,7 +109,7 @@ export function CommentSection({ postSlug }: { postSlug: string }) {
       ) : mergedComments.length === 0 ? (
         <p className="text-sm text-muted-foreground">{t("empty")}</p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-6">
           {mergedComments.map((comment) => (
             <li key={comment._id}>
               <CommentThread

@@ -295,6 +295,20 @@ export const getComments = query({
   },
 });
 
+export const getCommentCount = query({
+  args: v.object({ postSlug: v.string() }),
+  returns: v.number(),
+  handler: async (ctx, args) => {
+    // ponytail: counts ALL comments (incl. replies + deleted) for the post via
+    // the by_slug_createdAt index. Post's total comment count; not just top-level.
+    const docs = await ctx.db
+      .query("comments")
+      .withIndex("by_slug_createdAt", (q) => q.eq("postSlug", args.postSlug))
+      .collect();
+    return docs.length;
+  },
+});
+
 export const getReplies = query({
   args: v.object({ parentId: v.id("comments") }),
   returns: v.array(commentReturnValidator),

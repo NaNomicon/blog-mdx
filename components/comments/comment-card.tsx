@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
+import { formatDistanceToNow } from "date-fns";
 import { useTranslations } from "next-intl";
 import { Reply, Pencil, Trash2, BadgeCheck } from "lucide-react";
 import { api } from "@/convex/_generated/api";
@@ -111,16 +112,13 @@ export function CommentCard({
                   {t("verified")}
                 </span>
               )}
+              <span className="text-xs text-muted-foreground/60" aria-hidden="true">·</span>
+              <span className="text-xs text-muted-foreground/60">
+                {formatDistanceToNow(comment.createdAt, { addSuffix: true })}
+              </span>
               {comment.isEdited && (
                 <span className="text-xs text-muted-foreground">{t("edited")}</span>
               )}
-              <span className="ml-auto">
-                <VoteButtons
-                  commentId={comment._id}
-                  score={comment.score}
-                  userVote={comment.userVote}
-                />
-              </span>
             </div>
           )}
 
@@ -132,6 +130,11 @@ export function CommentCard({
 
           {!isDeleted && (
             <div className="flex items-center gap-2">
+              <VoteButtons
+                commentId={comment._id}
+                score={comment.score}
+                userVote={comment.userVote}
+              />
               {!isLeaf && (
                 <Button
                   variant="ghost"

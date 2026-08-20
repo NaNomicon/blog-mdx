@@ -1,9 +1,10 @@
 "use client";
 
 import { useQuery, useMutation } from "convex/react";
+import { useTranslations } from "next-intl";
 import { api } from "@/convex/_generated/api";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, Heart, ThumbsUp, Rocket, Plus } from "lucide-react";
+import { Eye, Heart, ThumbsUp, Rocket, Plus, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -36,9 +37,11 @@ const PREDEFINED_REACTIONS = [
 const MAX_VISIBLE_CUSTOM_REACTIONS = 3;
 
 export function InlineEngagement({ slug, className }: { slug: string; className?: string }) {
+  const t = useTranslations("Comments");
   const engagement = useQuery(api.engagement.getEngagement, { slug });
   const userReactions = useQuery(api.engagement.getUserReactions, { slug }) ?? [];
   const toggleReaction = useMutation(api.engagement.toggleReaction);
+  const commentCount = useQuery(api.comments.getCommentCount, { postSlug: slug });
   const { resolvedTheme } = useTheme();
 
   const handleToggleReaction = async (reactionType: string) => {
@@ -78,6 +81,16 @@ export function InlineEngagement({ slug, className }: { slug: string; className?
         </div>
 
         <div className="h-4 w-px bg-border/60" />
+
+        {typeof commentCount === "number" && commentCount > 0 && (
+          <a
+            href="#comments"
+            className="flex items-center gap-1.5 px-2 py-1 text-sm font-medium transition-colors hover:text-foreground"
+          >
+            <MessageCircle className="h-4 w-4" />
+            <span>{t("count", { count: commentCount })}</span>
+          </a>
+        )}
 
         {/* Reactions */}
         <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">

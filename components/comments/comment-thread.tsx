@@ -77,7 +77,7 @@ export function CommentThread({
           onClick={() => setCollapsed(true)}
           className="w-1 shrink-0 cursor-pointer rounded-full bg-border/40 transition-colors hover:bg-border"
         />
-        <div className="min-w-0 flex-1">
+        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
           <CommentCard
             comment={comment}
             depth={depth}
@@ -89,29 +89,31 @@ export function CommentThread({
           />
 
           {canExpand && !isLeaf && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-7 px-2 text-xs"
-              onClick={() => setExpanded((v) => !v)}
-              aria-expanded={expanded}
-            >
-              {expanded ? (
-                <>
-                  <ChevronUp className="h-3 w-3" />
-                  {t("hideReplies")}
-                </>
-              ) : (
-                <>
-                  <ChevronDown className="h-3 w-3" />
-                  {t("showReplies", { count: comment.replyCount })}
-                </>
-              )}
-            </Button>
+            <div className="pl-2.5">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-2 text-xs"
+                onClick={() => setExpanded((v) => !v)}
+                aria-expanded={expanded}
+              >
+                {expanded ? (
+                  <>
+                    <ChevronUp className="h-3 w-3" />
+                    {t("hideReplies")}
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-3 w-3" />
+                    {t("showReplies", { count: comment.replyCount })}
+                  </>
+                )}
+              </Button>
+            </div>
           )}
 
           {expanded && mergedReplies && mergedReplies.length > 0 && (
-            <ul className="space-y-3 border-l border-border/40 pl-4">
+            <ul className="space-y-5">
               {mergedReplies.map((reply) => (
                 <li key={reply._id}>
                   <CommentThread

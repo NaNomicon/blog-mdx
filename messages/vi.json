@@ -164,6 +164,7 @@
       "rateLimit": "Chậm lại nào! Vui lòng đợi trước khi đăng tiếp.",
       "editExpired": "Thời gian chỉnh sửa đã hết (15 phút)"
     },
-    "verified": "Bạn"
+    "verified": "Tác giả",
+    "count": "{count, plural, one {# bình luận} other {# bình luận}}"
   }
 }

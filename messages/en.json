@@ -164,6 +164,7 @@
       "rateLimit": "Slow down! Please wait before posting again.",
       "editExpired": "Edit window has expired (15 minutes)"
     },
-    "verified": "You"
+    "verified": "Author",
+    "count": "{count, plural, one {# comment} other {# comments}}"
   }
 }
