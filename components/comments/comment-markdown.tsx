@@ -2,13 +2,14 @@
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import { cn } from "@/lib/utils";
 
-// rehypeHighlight MUST run before rehypeSanitize, and the custom schema MUST
-// allow className on code/span. The default GitHub schema strips class
-// attributes, which would destroy all hljs-* classes and break highlighting.
+// NOTE: rehype-highlight is deliberately NOT used here. Importing it pulls in
+// lowlight -> highlight.js@11, which clashes with the site's hoisted
+// highlight.js@10.7.2 (used by tailwind-highlightjs) and breaks the clean
+// Vercel build ("Module not found: highlight.js/lib/languages/*"). Comments
+// don't need full syntax highlighting; the styled <code> renderer is enough.
 const sanitizeSchema = {
   ...defaultSchema,
   attributes: {
@@ -16,7 +17,6 @@ const sanitizeSchema = {
     // Bare property name = any value allowed. ["className"] (array) would
     // strip ALL className instead.
     code: [...(defaultSchema.attributes?.code ?? []), "className"],
-    span: [...(defaultSchema.attributes?.span ?? []), "className"],
   },
 };
 
@@ -30,7 +30,7 @@ export function CommentMarkdown({ content, className }: CommentMarkdownProps) {
     <div className={className}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeHighlight, [rehypeSanitize, sanitizeSchema]]}
+        rehypePlugins={[[rehypeSanitize, sanitizeSchema]]}
         components={{
           pre: ({ children }) => (
             <pre className="overflow-x-auto rounded-md bg-muted/60 p-3 text-sm">{children}</pre>
