@@ -163,6 +163,7 @@
       "generic": "Something went wrong. Please try again.",
       "rateLimit": "Slow down! Please wait before posting again.",
       "editExpired": "Edit window has expired (15 minutes)"
-    }
+    },
+    "verified": "You"
   }
 }

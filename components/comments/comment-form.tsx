@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, KeyboardEvent } from "react";
 import { useMutation } from "convex/react";
 import { ConvexError } from "convex/values";
 import { isRateLimitError } from "@convex-dev/rate-limiter";
@@ -56,8 +56,7 @@ export function CommentForm({
     return null;
   }
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const submit = async () => {
     if (!content.trim() || submitting) return;
     const authed = await ensureAuthenticated();
     if (!authed) return;
@@ -85,6 +84,18 @@ export function CommentForm({
       }
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    submit();
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+      e.preventDefault();
+      submit();
     }
   };
 
@@ -118,6 +129,7 @@ export function CommentForm({
         <Textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder={t("form.placeholder")}
           rows={4}
           className="w-full"

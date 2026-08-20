@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
-import { Reply, Pencil, Trash2 } from "lucide-react";
+import { Reply, Pencil, Trash2, BadgeCheck } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import { cn } from "@/lib/utils";
 import { MAX_COMMENT_DEPTH } from "@/lib/comments";
 import type { CommentWithMeta, CommentCallback } from "@/lib/comments";
 import { CommentMarkdown } from "@/components/comments/comment-markdown";
@@ -90,17 +91,36 @@ export function CommentCard({
   return (
     <div className="space-y-2">
       <div className="flex items-start gap-2">
-        {!isDeleted && (
-          <VoteButtons commentId={comment._id} score={comment.score} userVote={comment.userVote} />
-        )}
-
         <div className="min-w-0 flex-1 space-y-1">
           {!isDeleted && (
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-foreground">{comment.username}</span>
+              <span
+                className={cn(
+                  "text-sm",
+                  isOwner ? "font-bold text-green-600 dark:text-green-400" : "font-semibold text-foreground"
+                )}
+              >
+                {comment.username}
+              </span>
+              {isOwner && (
+                <span
+                  className="flex items-center gap-0.5 text-xs font-medium text-green-600 dark:text-green-400"
+                  title={t("verified")}
+                >
+                  <BadgeCheck className="h-3.5 w-3.5" />
+                  {t("verified")}
+                </span>
+              )}
               {comment.isEdited && (
                 <span className="text-xs text-muted-foreground">{t("edited")}</span>
               )}
+              <span className="ml-auto">
+                <VoteButtons
+                  commentId={comment._id}
+                  score={comment.score}
+                  userVote={comment.userVote}
+                />
+              </span>
             </div>
           )}
 

@@ -54,12 +54,45 @@ export function CommentMarkdown({ content, className }: CommentMarkdownProps) {
               ? undefined
               : href;
             return (
-              <a href={safeHref} target="_blank" rel="noopener noreferrer">
+              <a
+                href={safeHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary underline underline-offset-4"
+              >
                 {children}
               </a>
             );
           },
-          p: ({ children }) => <p className="my-2 leading-relaxed">{children}</p>,
+          h1: ({ children }) => (
+            <h1 className="mt-4 mb-2 text-2xl font-semibold tracking-tight text-foreground">
+              {children}
+            </h1>
+          ),
+          h2: ({ children }) => (
+            <h2 className="mt-4 mb-2 text-xl font-semibold tracking-tight text-foreground">
+              {children}
+            </h2>
+          ),
+          h3: ({ children }) => (
+            <h3 className="mt-3 mb-1.5 text-lg font-semibold tracking-tight text-foreground">
+              {children}
+            </h3>
+          ),
+          h4: ({ children }) => (
+            <h4 className="mt-3 mb-1.5 text-base font-semibold text-foreground">{children}</h4>
+          ),
+          strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
+          em: ({ children }) => <em className="italic text-foreground/80">{children}</em>,
+          blockquote: ({ children }) => (
+            <blockquote className="my-2 rounded-r-lg border-l-4 border-primary bg-primary/5 py-2 pl-4 italic text-foreground/70">
+              {children}
+            </blockquote>
+          ),
+          ul: ({ children }) => <ul className="my-2 list-disc space-y-1 pl-5">{children}</ul>,
+          ol: ({ children }) => <ol className="my-2 list-decimal space-y-1 pl-5">{children}</ol>,
+          li: ({ children }) => <li className="leading-relaxed text-foreground/80">{children}</li>,
+          p: ({ children }) => <p className="my-2 leading-relaxed text-foreground/80">{children}</p>,
         }}
       >
         {content}

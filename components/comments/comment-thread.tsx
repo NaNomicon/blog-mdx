@@ -33,18 +33,19 @@ export function CommentThread({
 }: CommentThreadProps) {
   const t = useTranslations("Comments");
   const { isAuthenticated } = useAnonymousAuth();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(depth === 0);
+  const [collapsed, setCollapsed] = useState(false);
 
   const canExpand = comment.replyCount > 0;
   const isLeaf = depth >= MAX_COMMENT_DEPTH;
 
   const replies = useQuery(
     api.comments.getReplies,
-    canExpand && expanded ? { parentId: comment._id } : "skip"
+    canExpand && expanded && !collapsed ? { parentId: comment._id } : "skip"
   );
   const votes = useQuery(
     api.comments.getUserVotes,
-    isAuthenticated && canExpand && expanded && replies && replies.length > 0
+    isAuthenticated && canExpand && expanded && !collapsed && replies && replies.length > 0
       ? { commentIds: replies.map((r) => r._id) }
       : "skip"
   );
@@ -52,57 +53,82 @@ export function CommentThread({
   const votesMap = Object.fromEntries((votes ?? []).map((v) => [v.commentId, v.direction]));
   const mergedReplies = replies?.map((r) => ({ ...r, userVote: votesMap[r._id] ?? null }));
 
+  if (collapsed) {
+    return (
+      <button
+        type="button"
+        onClick={() => setCollapsed(false)}
+        className="flex w-full items-center gap-1.5 rounded px-1 py-0.5 text-left text-xs text-muted-foreground hover:bg-muted/40"
+      >
+        <ChevronDown className="h-3 w-3 shrink-0" />
+        <span className="truncate font-medium">
+          {comment.username} · {t("showReplies", { count: comment.replyCount })}
+        </span>
+      </button>
+    );
+  }
+
   return (
     <div className="space-y-2">
-      <CommentCard
-        comment={comment}
-        depth={depth}
-        currentUserId={currentUserId}
-        username={username}
-        onReply={onReply}
-        onEdit={onEdit}
-        onDelete={onDelete}
-      />
+      <div className="flex gap-1.5">
+        <button
+          type="button"
+          aria-label="Collapse thread"
+          onClick={() => setCollapsed(true)}
+          className="w-1 shrink-0 cursor-pointer rounded-full bg-border/40 transition-colors hover:bg-border"
+        />
+        <div className="min-w-0 flex-1">
+          <CommentCard
+            comment={comment}
+            depth={depth}
+            currentUserId={currentUserId}
+            username={username}
+            onReply={onReply}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
 
-      {canExpand && !isLeaf && (
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-7 px-2 text-xs"
-          onClick={() => setExpanded((v) => !v)}
-          aria-expanded={expanded}
-        >
-          {expanded ? (
-            <>
-              <ChevronUp className="h-3 w-3" />
-              {t("hideReplies")}
-            </>
-          ) : (
-            <>
-              <ChevronDown className="h-3 w-3" />
-              {t("showReplies", { count: comment.replyCount })}
-            </>
+          {canExpand && !isLeaf && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 px-2 text-xs"
+              onClick={() => setExpanded((v) => !v)}
+              aria-expanded={expanded}
+            >
+              {expanded ? (
+                <>
+                  <ChevronUp className="h-3 w-3" />
+                  {t("hideReplies")}
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="h-3 w-3" />
+                  {t("showReplies", { count: comment.replyCount })}
+                </>
+              )}
+            </Button>
           )}
-        </Button>
-      )}
 
-      {expanded && mergedReplies && mergedReplies.length > 0 && (
-        <ul className="space-y-3 border-l border-border/40 pl-4">
-          {mergedReplies.map((reply) => (
-            <li key={reply._id}>
-              <CommentThread
-                comment={reply}
-                depth={depth + 1}
-                currentUserId={currentUserId}
-                username={username}
-                onReply={onReply}
-                onEdit={onEdit}
-                onDelete={onDelete}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
+          {expanded && mergedReplies && mergedReplies.length > 0 && (
+            <ul className="space-y-3 border-l border-border/40 pl-4">
+              {mergedReplies.map((reply) => (
+                <li key={reply._id}>
+                  <CommentThread
+                    comment={reply}
+                    depth={depth + 1}
+                    currentUserId={currentUserId}
+                    username={username}
+                    onReply={onReply}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

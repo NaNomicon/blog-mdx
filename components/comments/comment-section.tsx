@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { useQuery, usePaginatedQuery } from "convex/react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { useQuery, usePaginatedQuery, useMutation } from "convex/react";
 import { useTranslations } from "next-intl";
 import { api } from "@/convex/_generated/api";
 import type { CommentWithMeta } from "@/lib/comments";
@@ -9,6 +9,7 @@ import { CommentForm } from "@/components/comments/comment-form";
 import { CommentThread } from "@/components/comments/comment-thread";
 import { UsernamePicker } from "@/components/comments/username-picker";
 import { useAnonymousAuth } from "@/hooks/use-anonymous-auth";
+import { generateRandomUsername } from "@/lib/username-generator";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +27,22 @@ export function CommentSection({ postSlug }: { postSlug: string }) {
   const profile = useQuery(api.comments.getUserProfile);
   const username = claimedUsername ?? profile?.displayName ?? null;
   const currentUserId = profile?.userId ?? null;
+
+  const setUsername = useMutation(api.comments.setUsername);
+
+  // Auto-claim a random username once signed in, so the comment input is
+  // available immediately on a fresh (no profile) session.
+  const autoClaimedRef = useRef(false);
+  useEffect(() => {
+    if (username || !isAuthenticated || autoClaimedRef.current) return;
+    autoClaimedRef.current = true;
+    const name = generateRandomUsername();
+    setUsername({ username: name })
+      .then(() => setClaimedUsername(name))
+      .catch(() => {
+        autoClaimedRef.current = false;
+      });
+  }, [username, isAuthenticated, setUsername]);
 
   const { results, status, loadMore, isLoading: commentsLoading } = usePaginatedQuery(
     api.comments.getComments,
@@ -55,6 +72,13 @@ export function CommentSection({ postSlug }: { postSlug: string }) {
     <section className="space-y-4" aria-label={t("section.title")}>
       <h2 className="text-lg font-semibold">{t("section.title")}</h2>
 
+      <div onFocusCapture={handleFocus}>
+        <div className="mb-2">
+          <UsernamePicker currentUsername={username} onUsernameChange={setClaimedUsername} />
+        </div>
+        <CommentForm postSlug={postSlug} username={username} onSubmitted={noop} />
+      </div>
+
       <div role="group" aria-label="sort" className="flex gap-1">
         {SORTS.map((s) => (
           <button
@@ -70,14 +94,6 @@ export function CommentSection({ postSlug }: { postSlug: string }) {
             {t(`sort.${s}`)}
           </button>
         ))}
-      </div>
-
-      {!username && (
-        <UsernamePicker currentUsername={null} onUsernameChange={setClaimedUsername} />
-      )}
-
-      <div onFocusCapture={handleFocus}>
-        <CommentForm postSlug={postSlug} username={username} onSubmitted={noop} />
       </div>
 
       {isLoading ? (
