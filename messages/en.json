@@ -137,8 +137,8 @@
       "random": "Random",
       "taken": "Username already taken",
       "invalid": "3-30 characters, letters, numbers, underscores only",
-      "ownerToken": "Author verification token",
-      "ownerTokenInvalid": "Invalid author verification token"
+      "ownerToken": "Owner verification token",
+      "ownerTokenInvalid": "Invalid owner verification token"
     },
     "sort": {
       "newest": "Newest",
@@ -166,7 +166,7 @@
       "rateLimit": "Slow down! Please wait before posting again.",
       "editExpired": "Edit window has expired (15 minutes)"
     },
-    "verified": "Author",
+    "verified": "Owner",
     "count": "{count, plural, one {# comment} other {# comments}}"
   }
 }

@@ -137,8 +137,8 @@
       "random": "Ngẫu nhiên",
       "taken": "Tên này đã được sử dụng",
       "invalid": "3-30 ký tự, chỉ chữ cái, số và gạch dưới",
-      "ownerToken": "Mã xác minh tác giả",
-      "ownerTokenInvalid": "Mã xác minh tác giả không hợp lệ"
+      "ownerToken": "Mã xác minh chủ sở hữu",
+      "ownerTokenInvalid": "Mã xác minh chủ sở hữu không hợp lệ"
     },
     "sort": {
       "newest": "Mới nhất",
@@ -166,7 +166,7 @@
       "rateLimit": "Chậm lại nào! Vui lòng đợi trước khi đăng tiếp.",
       "editExpired": "Thời gian chỉnh sửa đã hết (15 phút)"
     },
-    "verified": "Tác giả",
+    "verified": "Chủ sở hữu",
     "count": "{count, plural, one {# bình luận} other {# bình luận}}"
   }
 }
