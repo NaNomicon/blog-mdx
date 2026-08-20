@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useMutation, useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useAuthActions } from "@convex-dev/auth/react";
+import { useAnonymousAuth } from "@/hooks/use-anonymous-auth";
 
 interface ViewTrackerProps {
   slug: string;
@@ -12,8 +12,7 @@ interface ViewTrackerProps {
 
 export function ViewTracker({ slug, mode = "immediate" }: ViewTrackerProps) {
   const recordView = useMutation(api.engagement.recordView);
-  const { signIn } = useAuthActions();
-  const { isAuthenticated, isLoading } = useConvexAuth();
+  const { isAuthenticated, isLoading, ensureAuthenticated } = useAnonymousAuth();
   const hasRecorded = useRef(false);
   const elementRef = useRef<HTMLDivElement>(null);
 
@@ -22,10 +21,8 @@ export function ViewTracker({ slug, mode = "immediate" }: ViewTrackerProps) {
       if (isLoading || hasRecorded.current) return;
       
       try {
-        if (!isAuthenticated) {
-          await signIn("anonymous");
-          return;
-        }
+        const ok = await ensureAuthenticated();
+        if (!ok) return;
 
         await recordView({ slug });
         hasRecorded.current = true;
@@ -54,7 +51,7 @@ export function ViewTracker({ slug, mode = "immediate" }: ViewTrackerProps) {
 
       return () => observer.disconnect();
     }
-  }, [slug, recordView, signIn, isAuthenticated, isLoading, mode]);
+  }, [slug, recordView, isAuthenticated, isLoading, mode, ensureAuthenticated]);
 
   if (mode === "scroll") {
     return <div ref={elementRef} className="h-px w-full" aria-hidden="true" />;
