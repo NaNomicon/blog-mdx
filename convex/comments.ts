@@ -7,6 +7,7 @@ import {
   paginationResultValidator,
 } from "convex/server";
 import { checkCommentRateLimit, checkVoteRateLimit } from "./rateLimits";
+import { OWNER_USERNAME } from "../lib/comments";
 
 const commentReturnValidator = v.object({
   _id: v.id("comments"),
@@ -203,7 +204,10 @@ export const voteComment = mutation({
 });
 
 export const setUsername = mutation({
-  args: v.object({ username: v.string() }),
+  args: v.object({
+    username: v.string(),
+    token: v.optional(v.string()),
+  }),
   returns: v.null(),
   handler: async (ctx, args) => {
     const userId = await auth.getUserId(ctx);
@@ -214,6 +218,14 @@ export const setUsername = mutation({
       throw new Error("Username must be 3-30 characters, alphanumeric + underscore");
 
     const usernameLower = username.toLowerCase();
+
+    if (usernameLower === OWNER_USERNAME) {
+      if (args.token !== process.env.AUTHOR_VERIFICATION_TOKEN)
+        throw new ConvexError({
+          kind: "ownerTokenInvalid",
+          message: "Invalid author verification token",
+        });
+    }
 
     const existing = await ctx.db
       .query("usernames")

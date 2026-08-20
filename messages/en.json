@@ -136,7 +136,9 @@
       "placeholder": "Pick a username",
       "random": "Random",
       "taken": "Username already taken",
-      "invalid": "3-30 characters, letters, numbers, underscores only"
+      "invalid": "3-30 characters, letters, numbers, underscores only",
+      "ownerToken": "Author verification token",
+      "ownerTokenInvalid": "Invalid author verification token"
     },
     "sort": {
       "newest": "Newest",

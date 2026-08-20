@@ -136,7 +136,9 @@
       "placeholder": "Chọn một tên",
       "random": "Ngẫu nhiên",
       "taken": "Tên này đã được sử dụng",
-      "invalid": "3-30 ký tự, chỉ chữ cái, số và gạch dưới"
+      "invalid": "3-30 ký tự, chỉ chữ cái, số và gạch dưới",
+      "ownerToken": "Mã xác minh tác giả",
+      "ownerTokenInvalid": "Mã xác minh tác giả không hợp lệ"
     },
     "sort": {
       "newest": "Mới nhất",

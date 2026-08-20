@@ -9,7 +9,7 @@ import { Reply, Pencil, Trash2, BadgeCheck } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
-import { MAX_COMMENT_DEPTH } from "@/lib/comments";
+import { MAX_COMMENT_DEPTH, isOwnerUsername } from "@/lib/comments";
 import type { CommentWithMeta, CommentCallback } from "@/lib/comments";
 import { CommentMarkdown } from "@/components/comments/comment-markdown";
 import { VoteButtons } from "@/components/comments/vote-buttons";
@@ -98,12 +98,14 @@ export function CommentCard({
               <span
                 className={cn(
                   "text-sm",
-                  isOwner ? "font-bold text-green-600 dark:text-green-400" : "font-semibold text-foreground"
+                  isOwnerUsername(comment.username)
+                    ? "font-bold text-green-600 dark:text-green-400"
+                    : "font-semibold text-foreground"
                 )}
               >
                 {comment.username}
               </span>
-              {isOwner && (
+              {isOwnerUsername(comment.username) && (
                 <span
                   className="flex items-center gap-0.5 text-xs font-medium text-green-600 dark:text-green-400"
                   title={t("verified")}

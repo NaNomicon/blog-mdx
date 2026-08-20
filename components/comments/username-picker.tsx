@@ -7,6 +7,7 @@ import { Shuffle, Check } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { api } from "@/convex/_generated/api";
 import { generateRandomUsername } from "@/lib/username-generator";
+import { isOwnerUsername, OWNER_USERNAME } from "@/lib/comments";
 import { useAnonymousAuth } from "@/hooks/use-anonymous-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,7 @@ export function UsernamePicker({ currentUsername, onUsernameChange }: UsernamePi
   const { ensureAuthenticated } = useAnonymousAuth();
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState(currentUsername ?? "");
+  const [token, setToken] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -36,17 +38,17 @@ export function UsernamePicker({ currentUsername, onUsernameChange }: UsernamePi
     setSubmitting(true);
     setError(null);
     try {
-      // Gate on anonymous sign-in. On a fresh session, view-tracker signs in
-      // async on mount — claiming before that completes throws "Not
-      // authenticated". First attempt signs in, returns false.
       const authed = await ensureAuthenticated();
       if (!authed) return;
-      await setUsername({ username: value });
+      await setUsername({ username: value, token: token || undefined });
       onUsernameChange(value);
       setEditing(false);
+      setToken("");
     } catch (err) {
       if (err instanceof ConvexError && err.data?.kind === "usernameTaken") {
         setError(t("username.taken"));
+      } else if (err instanceof ConvexError && err.data?.kind === "ownerTokenInvalid") {
+        setError(t("username.ownerTokenInvalid"));
       } else {
         setError(t("error.generic"));
       }
@@ -85,6 +87,16 @@ export function UsernamePicker({ currentUsername, onUsernameChange }: UsernamePi
             <Shuffle className="h-3.5 w-3.5" />
             {t("username.random")}
           </Button>
+          {isOwnerUsername(value) && (
+            <Input
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+              placeholder={t("username.ownerToken")}
+              type="password"
+              className="w-48"
+              aria-label={t("username.ownerToken")}
+            />
+          )}
           <Button type="submit" size="sm" disabled={submitting}>
             <Check className="h-3.5 w-3.5" />
             {t("form.save")}

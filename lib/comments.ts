@@ -4,6 +4,14 @@ import type { Id } from "@/convex/_generated/dataModel";
 // (rejects when parent.depth >= 3); clients use it to hide reply/expand UI.
 export const MAX_COMMENT_DEPTH = 3;
 
+// Reserved blog-owner username. Only claimable via a server-side verification
+// token (see convex/comments.ts setUsername). Comments by this username get the
+// green "Author" badge.
+export const OWNER_USERNAME = "owner";
+
+export const isOwnerUsername = (username: string) =>
+  username.toLowerCase() === OWNER_USERNAME;
+
 export interface CommentWithMeta {
   _id: Id<"comments">;
   postSlug: string;
