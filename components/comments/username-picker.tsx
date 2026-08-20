@@ -7,6 +7,7 @@ import { Shuffle, Check } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { api } from "@/convex/_generated/api";
 import { generateRandomUsername } from "@/lib/username-generator";
+import { useAnonymousAuth } from "@/hooks/use-anonymous-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -20,6 +21,7 @@ interface UsernamePickerProps {
 export function UsernamePicker({ currentUsername, onUsernameChange }: UsernamePickerProps) {
   const t = useTranslations("Comments");
   const setUsername = useMutation(api.comments.setUsername);
+  const { ensureAuthenticated } = useAnonymousAuth();
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -47,6 +49,11 @@ export function UsernamePicker({ currentUsername, onUsernameChange }: UsernamePi
     setSubmitting(true);
     setError(null);
     try {
+      // Gate on anonymous sign-in. On a fresh session, view-tracker signs in
+      // async on mount — claiming a username before that completes would throw
+      // "Not authenticated" server-side. First attempt signs in, returns false.
+      const authed = await ensureAuthenticated();
+      if (!authed) return;
       await setUsername({ username: value });
       onUsernameChange(value);
       setEditing(false);
