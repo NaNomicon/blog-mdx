@@ -8,22 +8,22 @@ export const metadata = {
   tags: ["herdr", "agents", "terminal"],
 };
 
-I've been using Herdr, which is three things wearing one name: an agent-aware terminal multiplexer, a headless server that runs named terminals, and a desktop and phone client that look into that server. It is the first setup where I can run four agents at once, see which one is stuck, and answer it from the sofa - without changing anything about the agents themselves.
+I've been using [Herdr](https://herdr.dev "reference | The project site: an agent-aware multiplexer, a headless core, and desktop plus phone clients"), which is three things wearing one name: an agent-aware terminal multiplexer, a headless server that runs named terminals, and a desktop and phone client that look into that server. It is the first setup where I can run four agents at once, see which one is stuck, and answer it from the sofa - without handing any of it to a new agent runtime.
 
-I like running a small crew. One carries the main task, another checks its work, and a third digs into whatever detail the first two trip over. They hand work to each other, and I am there. 
+I like running a small crew. One carries the main task, another checks its work, and a third digs into whatever detail the first two trip over. They hand work to each other, and I am there.
 
 The pattern I keep running into is the same one: spawn the sub-agent in the background, let it finish, read its summary afterwards. I cannot work that way. A background process hides the middle of the turn, and the middle is where the expensive mistakes happen.
 
-Sometimes an agent goes off the rails early, then still hands back a tidy, confident answer - with the wrong turn buried three paragraphs up in its reasoning. Reading the output afterward means auditing a conclusion with no visibility into how it got there. Most harnesses ship sub-agents of their own now, and you can switch views mid-turn, but that context-switching adds up fast. Bounce between a lead and its worker a few times and you lose the thread of both, all while trapped inside one harness's window.
+Sometimes an agent goes off the rails early, then still hands back a tidy, confident answer - with the wrong turn buried three paragraphs up in its reasoning. Reading the output afterward means auditing a conclusion with no visibility into how it got there. Most harnesses ship sub-agents of their own now, and watching one means switching views inside that harness. Bounce between a lead and its worker a few times and you lose the thread of both, all while trapped inside one window.
 
 <figure className="pb-4">
   <img src="/261112-herdr-is-f-ing-amazing/omp-agent-hub.png" alt="omp Agent Hub roster" className="w-full rounded-lg" />
   <figcaption className="text-sm opacity-60 text-center pt-2">omp's own roster. One harness, its own window.</figcaption>
 </figure>
 
-I run multiple harnesses by choice. Every provider gives you only one account, even the top tier hits rate limits (others' words, not mine), and I am not paying five companies' maximum plans just to keep moving. That is the appeal of T3Code: several harnesses, one window. As far as I can tell, though, it has no plugin or mod layer. Adopting it means rebuilding my workflow inside someone else's opinions, and I would rather keep my own.
+I run multiple harnesses by choice. Providers give you one account, even the top tier hits rate limits (others' words, not mine), and I am not paying five companies' maximum plans just to keep moving. That is the appeal of [T3Code](https://github.com/pingdotgg/t3code "mention | App that runs several coding agent harnesses in one window"): several harnesses, one window. As far as I can tell, though, it has no plugin or mod layer. Adopting it means rebuilding my workflow inside someone else's opinions, and I would rather keep my own.
 
-The other fix I reached for is putting every terminal on screen, which works right up until it does not. Four agents fill a screen. The fifth one costs you a quarter of the window, the ones you are not reading cost you the rest, and the whole arrangement dies with the window it lives in. I wanted somewhere the agents could live, not a wall of terminals I have to keep in sight.
+The other fix I reached for is putting every terminal on screen, which works right up until it does not. Four agents fill a screen. The fifth one costs you a quarter of the window, the ones you are not reading cost you the rest, and the arrangement is only ever as good as the screen you are willing to give it. I wanted somewhere the agents could live, not a wall of terminals I have to keep in sight.
 
 ## tmux did its job
 
@@ -34,23 +34,23 @@ For a long time, tmux was all I asked for. Ten agents meant ten panes, or fewer 
   <figcaption className="text-sm opacity-60 text-center pt-2">tmux, ten panes, all of them mine to watch</figcaption>
 </figure>
 
-To tmux, a pane is just a process. It cannot tell me whether the agent inside is thinking, waiting on my approval, or died ten minutes ago while I stared at its scrollback. It cannot hand a message to a sibling pane either, which is why my scripts kept accumulating shell shims to type into panes on my behalf. By the end, I wasn't arranging shells anymore. I was building an agent workspace out of tmux, badly.
+To tmux, a pane is just a process. It cannot tell me whether the agent inside is thinking, waiting on my approval, or died ten minutes ago while I stared at its scrollback. It can type into a sibling pane with `send-keys`, but typing is not messaging, which is why my scripts kept accumulating shell shims to do it on my behalf. By the end, I wasn't arranging shells anymore. I was building an agent workspace out of tmux, badly.
 
 ## Through OpenRig into the Herdr TUI
 
-I first ran herdr on October 21, and not because I was shopping for a multiplexer. At the time I was wiring up OpenRig - pods, role-based agents, a daemon keeping them alive - whose tmux runtime pushed prompts through a shell shim. Six minutes after my first herdr command, that same rig was running with --provider herdr instead. Until that day, I had filed Herdr away as just another tmux clone and never opened it.
+I first ran [herdr](https://github.com/herdrdev/herdr "mention | The multiplexer itself; I opened it to satisfy OpenRig and stayed for the rest") on October 21, and not because I was shopping for a multiplexer. At the time I was wiring up [OpenRig](https://github.com/mvschwarz/openrig "mention | Rig project I was building at the time; it needed somewhere to put agent terminals") - pods, role-based agents, a daemon keeping them alive - whose tmux runtime pushed prompts through a shell shim. Six minutes after my first herdr command, that same rig was running with `--provider herdr` instead. Until that day, I had filed Herdr away as just another tmux clone and never opened it.
 
 <YouTube id="AL-PQuB2wy0" />
 
-Inside the TUI, the whole picture shifted. Agents had names and state badges, workers could prompt siblings directly, and scripts could block on a teammate instead of a guessed timer. I put a team in one workspace and wrote three small wrappers - team say, team wait, and team read - that made coordination effortless.
+Inside the TUI, the whole picture shifted. Agents had names and state badges, workers could prompt siblings directly, and scripts could block on a teammate instead of a guessed timer. I put a team in one workspace and wrote three small wrappers - `team say`, `team wait`, and `team read` - that made coordination a one-liner.
 
-What didn't hold was the layer on top. I built an extension bridge so an omp seat could render omp's own TUI inside the rig, opened it as a draft PR, and then parked it when a *proposed* cleaner harness contract made my patch obsolete. That was the end of my OpenRig detour. OpenRig got me to open Herdr, even if it wasn't what kept me there.
+What didn't hold was the layer on top. I built an extension bridge so an omp seat could render omp's own TUI inside the rig, opened it as [a draft PR](https://github.com/mvschwarz/openrig/pull/1747 "further-reading | The draft PR for that bridge; parked, not merged"), and then parked it when a *proposed* cleaner harness contract made my patch obsolete. That was the end of my OpenRig detour. OpenRig got me to open Herdr, even if it wasn't what kept me there.
 
 Still, the TUI didn't solve the window problem. The team lived inside that terminal session, which meant keeping it open to see what was happening - and none of those TUI agents showed up in the desktop app that came next. I finally had a place to put the herd, but I still had to carry the box around.
 
 ## Core under the app
 
-Ironically, what pulled me over to the headless architecture was the desktop client. A post about the new app showed vertical tabs - the exact reason I had been running cmux - alongside live agent status badges next to terminal names. Digging into how it worked led me to herdr-core, which turned out to be the real foundation.
+Ironically, what pulled me over to the headless architecture was the desktop client. A post about the new app showed vertical tabs - the exact reason I had been running cmux - alongside live agent status badges next to terminal names. Digging into how it worked led me to [herdr-core](https://github.com/herdrdev/herdr-core "mention | Headless server that runs named persistent terminals for the desktop and phone clients"), which turned out to be the real foundation.
 
 
 <figure className="pb-4">
@@ -59,32 +59,30 @@ Ironically, what pulled me over to the headless architecture was the desktop cli
 </figure>
 
 
-Core runs terminals without drawing a single pixel. I start a terminal, address it by name through the hc CLI, send it work, wait, and read the output while it runs completely off-screen.
+Core runs terminals without drawing a single pixel. I start a terminal, address it by name through the `hc` CLI, send it work, wait, and read the output while it runs completely off-screen.
 
-More importantly, the status badges aren't guesswork. Programs report their own state over OSC 7501, the Program Status Protocol:
+More importantly, the status badges aren't guesswork. Programs report their own state over `OSC 7501`, the Program Status Protocol:
 
 ```bash
 printf '\e]7501;state=blocked:app=my-agent\e\\'
 ```
 
-Core does not scrape terminal frames or maintain a hardcoded list of agent brands - it simply trusts what the process reports. If a program stays silent, it gets no badge, and hc wait falls back to waiting for exit. That boundary matters. A status badge is only useful when the program declares its state, not when a UI tries to guess from screen text. Four states cover everything - working, done, idle, and blocked - and I haven't missed a fifth. I don't need a progress bar; I just need to know who is waiting on me, who is finished, and who is still running.
+Core does not scrape terminal frames or maintain a hardcoded list of agent brands - it simply trusts what the process reports. If a program stays silent, it gets no badge, and `hc wait` falls back to waiting for exit. That boundary matters. A status badge is only useful when the program declares its state, not when a UI tries to guess from screen text. The vocabulary is small - working, blocked, done, idle, error - and I have not needed a sixth. I don't need a progress bar; I just need to know who is waiting on me, who is finished, and who is still running.
 
--- embed https://herdr.dev/mobile/foldable.webp
-
-omp reports on its own. Hermes did not, so I wrote a small plugin, and it has worked since the first try. By the time I decided to publish it in case someone else was stuck on the same gap, someone had shipped an equivalent two days earlier. That is the entire cost of being late: fifteen minutes of work instead of an afternoon of integration, because the protocol is three lines long.
+omp reports on its own. Hermes did not, so I wrote a small plugin, and it has worked since the first try. By the time I decided to publish it in case someone else was stuck on the same gap, [someone had shipped a plugin covering part of it two days earlier](https://github.com/jspoynor/herdr-hermes-status "mention | Public Hermes status plugin, narrower in scope: Python CLI only, no desktop or gateway"). That is the entire cost of being late: fifteen minutes of work instead of an afternoon of integration, because the protocol is one escape sequence.
 
 With Core, the team finally has shape: a space for the project, a tab for the task, panes for agents, and sub-agents nested directly under their lead. That nesting isn't cosmetic - I can see which worker belongs to which lead without keeping a mental map. My first real Core run - an omp pane replying READY, hc wait returning done on turn one, and tearing the pane down - was boring in the exact way good plumbing should be.
 
 ## The desktop is where I work
 
-herdr-app turns those background terminals into a workspace I actually want to sit in: projects down the sidebar, tasks in tabs, agents in panes, and sub-agents tucked one click beneath the lead that spawned them.
+[herdr-app](https://github.com/herdrdev/herdr-app "mention | Desktop client that arranges core terminals into spaces, tabs, and panes") turns those background terminals into a workspace I actually want to sit in: projects down the sidebar, tasks in tabs, agents in panes, and sub-agents tucked one click beneath the lead that spawned them.
 
 <figure className="pb-4">
   <img src="/261112-herdr-is-f-ing-amazing/agent-hierarchy.png" alt="Sub-agents nested under their lead" className="rounded-lg mx-auto max-w-full h-auto" />
   <figcaption className="text-sm opacity-60 text-center pt-2">The hierarchy, one click down</figcaption>
 </figure>
 
-The feature I didn't expect to rely on so heavily is peeking. terminal.peek lets me glance into a worker without reshuffling my layout; terminal.show promotes it to a real pane once it earns the screen space. For years I assumed visibility meant giving every worker a permanent tile. Now the terminals keep running in the background while I decide which single one deserves my attention right now.
+The feature I didn't expect to rely on so heavily is peeking. `terminal.peek` lets me glance into a worker without reshuffling my layout; `terminal.show` promotes it to a real pane once it earns the screen space. For years I assumed visibility meant giving every worker a permanent tile. Now the terminals keep running in the background while I decide which single one deserves my attention right now.
 
 <figure className="pb-4">
   <img src="/261112-herdr-is-f-ing-amazing/terminal-peek.png" alt="terminal.peek in the desktop app" className="w-full rounded-lg" />
@@ -93,43 +91,43 @@ The feature I didn't expect to rely on so heavily is peeking. terminal.peek lets
 
 There are rough edges worth noting:
 
-- layout.apply is destructive - it can kill and recreate shells - so I don't treat it as a harmless resize command.
-- There is no pane.rename or documented one-shot tiling verb, which is why my own hgrid.py script is still around.
+- `layout.apply` is destructive - it can kill and recreate shells - so I don't treat it as a harmless resize command.
+- There is no `pane.rename` or documented one-shot tiling verb, which is why my own `hgrid.py` script is still around.
 - There is no documented way to move a live terminal directly between tabs.
-- Core does not restore running agent state after a server reboot - a kept terminal comes back as an empty shell in its old directory, so persistence is not session resurrection.
+- Core does not restore running agent state after a server reboot - a kept terminal comes back as a fresh shell in its old directory, so persistence is not session resurrection.
 - App mods are trusted JavaScript with full network and command access; I wouldn't install one blindly from a random thread.
 
 I would rather keep a couple of small wrapper scripts for those gaps than pretend they aren't there.
 
 ## The same herd on my phone
 
-Away from the desk, the mobile client is where this setup goes from "nice workspace" to genuinely indispensable. The Herdr phone app connects straight to herdr-core over SSH - no Herdr account, no vendor relay - and groups your agents into an Inbox sorted by needs you, done, working, and idle. Tapping an agent opens its live terminal so I can read the output and reply without disturbing my desktop panes.
+Away from the desk, the mobile client is where this setup goes from "nice workspace" to the part I would miss. The [Herdr phone app](https://herdr.dev/mobile/ "reference | Official mobile client; connects to herdr-core over SSH, no account or relay") connects straight to herdr-core over SSH - no Herdr account, no vendor relay - and groups your agents into an Inbox sorted by needs you, done, working, and idle. Tapping an agent opens its live terminal so I can read the output and reply without disturbing my desktop panes.
 
 <figure className="pb-4">
-  <img src="/261112-herdr-is-f-ing-amazing/phone-inbox.png" alt="The Herdr app inbox on a phone" className="rounded-lg mx-auto max-w-full h-auto" />
+  <img src="/261112-herdr-is-f-ing-amazing/phone-inbox.png" alt="The Herdr app inbox on a phone" className="rounded-lg mx-auto max-w-[50%] h-auto" />
   <figcaption className="text-sm opacity-60 text-center pt-2">The same herd, from the sofa</figcaption>
 </figure>
 
 April is when I last tried to solve this, and I solved it on paper: Blink, Moshi, Mosh, tmux, the whole phone-to-host chain, with a Moshi + Mosh + tmux stack that looked like it would work. I prepared the host, then never set the push token, so the notifications that were the entire point never fired once. What I wanted was to see and act on the same work from the sofa, not squint at a session that might have quietly dropped while I was away from it.
 
-Now I open the phone and the herd is there. The app is six days old as I write this, so I will not claim the setup is frictionless for everyone. It needs `herdr-core` running, one install command, and SSH reachability, which for me means Tailscale, which is how I reach this box from anywhere anyway. In the time I have used it I have not hit a real bug. It does not offer a separate approval card and it will not let me edit the desktop layout, and when an agent needs me I open its terminal and answer there, which is what I was going to do anyway.
+Now I open the phone and the herd is there. The app is six days old as I write this, so I will not claim the setup is frictionless for everyone. It needs herdr-core running, one install command on the box, and SSH reachability, which for me means Tailscale, which is how I reach this box from anywhere anyway. In the time I have used it I have not hit a real bug. It does not offer a separate approval card and it will not let me edit the desktop layout, and when an agent needs me I open its terminal and answer there, which is what I was going to do anyway.
 
 ## New glass over familiar steel
 
-Everything underneath Herdr is older than the app itself, which made trusting it easy.
+The three things Herdr stands on were all older than Herdr, which made trusting it easy.
 
-The terminal engine is Ghostty's: herdr-app, the TUI, and herdr-core all build against vendored libghostty-vt bindings. Having used Ghostty directly, then inside cmux, and now inside Herdr, it's the same rock-solid engine in its third wrapper.
+The terminal engine is [Ghostty](https://ghostty.org "reference | Terminal emulator whose VT library all three Herdr products are built on")'s: herdr-app, the TUI, and herdr-core all build against vendored `libghostty-vt` bindings. Having used Ghostty directly, then inside cmux, and now inside Herdr, it's the same engine in its third wrapper.
 
-The agents stay ordinary CLI programs. Core manages a pseudo-terminal per session via spawn_pty; hc run launches any command, hc send types into it, and hc read pulls the screen and scrollback. Neither omp nor Hermes needed special adapters to run here, and my team orchestration script is a few hundred lines calling a plain CLI - meaning I can read and fix it at midnight instead of debugging someone's plugin SDK.
+The agents stay ordinary CLI programs. Core manages a pseudo-terminal per session via `spawn_pty`; `hc run` launches any command, `hc send` types into it, and `hc read` pulls the screen and scrollback. Both run here as ordinary programs; only Hermes needed a small plugin to report its state. My team orchestration script is a few hundred lines calling a plain CLI, which means I can read and fix it at midnight instead of debugging someone's plugin SDK.
 
-Even the desktop UI stands on proven ground: herdr-app vendors GPUI, Zed's UI framework. I don't need to know the internals to appreciate the result - a fast sidebar, tabs, and panes that mirror the TUI layout I already knew how to drive on day one.
+Even the desktop UI stands on proven ground: herdr-app vendors [GPUI](https://github.com/zed-industries/zed/tree/main/crates/gpui "reference | Zed's GPU-accelerated UI framework, vendored by herdr-app"), Zed's UI framework. I don't need to know the internals to appreciate the result - a fast sidebar, tabs, and panes that mirror the TUI layout I already knew how to drive on day one.
 
-I expected a trade-off and didn't find one. Agents still run in real terminals, non-reporting harnesses take fifteen minutes to wire up, and reboots return a shell in the last working directory just like tmux did. Nothing got worse.
+I expected a trade-off and did not find one that costs me anything I use. Agents still run in real terminals, non-reporting harnesses take fifteen minutes to wire up, and a reboot hands back a shell in the last working directory, which is what tmux gave me too. Nothing I relied on got worse.
 
 ## A place, not a vendor bet
 
-What keeps me invested beyond any single client is the open protocol underneath. Because OSC 7501 is an open escape sequence, any program that emits its state lands in the exact same Inbox regardless of who built it - omp natively, Hermes via a tiny plugin, or a bash script of my own. Herdr doesn't need a partnership with an AI vendor just to show whether a process is thinking or blocked.
+What keeps me invested beyond any single client is the open protocol underneath. Because `OSC 7501` is an open escape sequence, any program running in a core terminal that emits its state lands in the exact same Inbox regardless of who built it - omp natively, Hermes via a tiny plugin, or a bash script of my own. Herdr doesn't need a partnership with an AI vendor just to show whether a process is thinking or blocked.
 
-That is the difference between a place where agents live and a launcher for one company's product. tmux still handles plain panes and persistence just fine. The Herdr TUI proved agents could be visible and coordinate, even if it trapped them in a single window. Moving to herdr-core decoupled the agents from the glass - letting me work from a clean desktop layout at my desk, or clear a blocked agent from the sofa, without keeping a wall of terminals open all day.
+That is the difference between a place where agents live and a launcher for one company's product. tmux still handles plain panes and persistence just fine. The Herdr TUI proved agents could be visible and coordinate, even though its agents never turned up in the app. Moving to herdr-core decoupled the agents from the glass - letting me work from a clean desktop layout at my desk, or clear a blocked agent from the sofa, without keeping a wall of terminals open all day.
 
 I stopped keeping every agent on screen. Now I check the herd when I need it.
