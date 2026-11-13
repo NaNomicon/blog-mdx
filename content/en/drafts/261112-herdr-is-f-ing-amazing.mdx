@@ -10,30 +10,39 @@ export const metadata = {
 
 ## The thing I wanted
 
-I want several agents running at once. One handles the main task, another checks its work, maybe a third researches a detail. They need to hand work to each other. I need to see what they are doing. 
+I want several agents running at once. One handles the main task, another checks its work, maybe a third researches a detail. They need to hand work to each other. I need to see what they are doing.
 
-That last part rules out a lot of the obvious orchestration advice. Start agents in the background, wait for a result, and inspect the output later? No. The sub-agent disappears into a process. I cannot watch what it does, and I will not run work I cannot see. {Mention built-in subagents in most harnesses, they can be switched to view. Most providers only allow 1 account per person, I dont want to subscribe to the highest tier, some with the highest tier still hit limit, so you cheat, or use multiple providers/harnesses. I know about T3Code, it's a cool project, you use multiple harnesses in one app. I like that idea, but I dont really like moving to a very opinionated app, it currently doesnt support plugins/mods (verify)so it's a little hard to fit my existing workflow. (check notes about T3Code)}
+That last part rules out a lot of the obvious orchestration advice. Start agents in the background, wait for a result, inspect the output later? No. The sub-agent disappears into a process and I cannot watch it. Sometimes the mistake is in the thinking block, not in the answer, and I only catch it while the turn is running. A clean final message can hide a wrong path.
+
+Most harnesses now ship sub-agents of their own, and you can switch the view to one while it runs, but only inside that harness and only in its own window. The switching is the tax. I go back and forth between the lead and its workers and lose the thread of both.
+
+I want more than one harness anyway. Providers hand you one account, and even the top tier still hits limits. I do not want to pay for the top tier of anything, so running several is how I get more work done at once without buying each provider's ceiling. That is why [T3Code](https://github.com/pingdotgg/t3code "mention | App that runs several coding agent harnesses in one window") appeals to me: several harnesses, one app. From what I can see it has no plugin or mod layer, so my setup would have to be rebuilt inside someone else's opinions, and that is where I stop.
 
 Putting every terminal on screen solves visibility and creates a different problem. Every worker costs screen space, including the four I am not reading, and the arrangement only exists inside that one window. I wanted a place for the agents, not a permanent wall of terminals.
 
 ## tmux did its job
 
-{To me tmux is just a "terminal" with the ability to split into panes so I can "monitor" my agents (mostly to see if they're done working). there's no need to mention to deep about the date, the config. If I have 10 agents running, I need to have 10 of them on screen, clustered, or hid them inside spaces (use the tmux term) and I need to switch between them to see which one is idle}
-I had put real work into tmux. The config dates to February. By March I had continuum and resurrect saving and restoring sessions. In September I added `retile.py`, an adaptive grid that rearranged panes as the count changed; the following month I biased it toward columns. Splitting a pane, closing one, getting the layout back after a restart - tmux did those jobs well.
+tmux is a terminal that splits into panes, and that was all I asked of it. Ten agents working meant ten panes on one screen, or a few hidden in sessions I switched back to, looking for the one that had gone quiet. I built a grid that rearranged itself as panes came and went. It worked.
 
-This is not a story about tmux failing at persistence or panes.
+This is not a story about tmux failing at panes or persistence.
 
 Its blind spot is the pane itself. A pane cannot tell me whether an agent is thinking, waiting for my approval, or dead. It knows there is a process. Agents cannot drive the layout or ask a sibling to check something, either. I kept adding scripts around tmux because my actual problem was no longer arranging shells.
 
-## Herdr TUI showed the agents
+## Herdr TUI, found through someone else's rig
 
-I first ran [`herdr`](https://github.com/herdrdev/herdr "mention | Agent-aware terminal workspace manager I tried before moving to core") on 21 October, and not for its own sake. The rig {mentions openrig here, it's a cool project} I was wiring pasted prompts into tmux panes through a shell shim. Six minutes after I first ran herdr, the same rig opened with `--provider herdr` instead. The TUI gave agents names and state badges, and workers could prompt each other or wait on a blocked teammate. I put a team in one workspace and added `team say`, `team wait`, and `team read` so they could coordinate. {not really reliable, I lost the easy-to-read harnesses (the only supported harnesses were Claude Code and Codex, and they're literally the exception, my existing omp didnt work out of the box, I needed to write integration for it, [link the PR], then it was put on hold for a newer better official integration contract). But openrig used herdr, that's the 1st time I used herdr. Before then I just think it's a tmux alternative}
+I first ran [`herdr`](https://github.com/herdrdev/herdr "mention | Agent-aware terminal workspace manager I tried before moving to core") on 21 October, and not for its own sake. [OpenRig](https://github.com/mvschwarz/openrig "mention | Rig project I was wiring at the time; it needed somewhere to put agent terminals") is a rig I liked: pods, agents with roles, a daemon to keep them alive. Its tmux runtime pasted prompts into panes through a shell shim. Six minutes after I first ran herdr, the same rig opened with `--provider herdr` instead. Before that I had filed herdr as a tmux alternative and moved on.
 
-That fixed the blindness. It did not fix the window. I still had to keep the TUI open to see the team, and the team lived in that TUI's session. The TUI and the later desktop app do not share live agents. I wanted a separate place I could open when useful, without making it the place where every terminal had to sit all day.
+The TUI did what I wanted from it. Agents got names and state badges, a worker could prompt a sibling, and a wait could block on a teammate instead of on a timer. I put a team in one workspace and wrote `team say`, `team wait`, `team read`.
 
-## Core made the terminals addressable
+The layer above it was the part that did not hold. I wrote an extension bridge so an omp seat could show omp's own TUI inside the rig ([openrig#1747](https://github.com/mvschwarz/openrig/pull/1747 "further-reading | The draft PR for that bridge; still open, still a draft")), then stopped, because a better harness contract was coming and my patch was in its way. OpenRig is what got me to open herdr. It is not what kept me.
 
-The change came when I moved the team to [`herdr-core`](https://github.com/herdrdev/herdr-core "mention | Headless server that runs named persistent terminals for the desktop and phone clients"). Core runs terminals without drawing a UI. I can start one, address it by name from the `hc` CLI, send it work, wait, and read the result. The program exists without taking up a pane on my screen. {I moved from herdr tui to herdr app, core is the underlying thing. I read a blog post about the new app, it looks cool. It has the vertical tabs that I liked (I was using cmux for the exact reason), so I checked it out. In their homepages there are some screenshots, I saw in some of them agents status, that was cool, I digged in, I loved it.}
+The TUI also did not fix the window. The team lived in that session, and I had to keep it open to see the team. The TUI and the later desktop app do not share live agents. I wanted a place I could open when it was useful, without making it the place where every terminal had to sit all day.
+
+## Core under the app
+
+The push came from the desktop app, not the server. A post about the new app showed vertical tabs, which is exactly why I had been running cmux, and a few screenshots showed agent status next to terminal names. That was the part I wanted. I looked into it and found [`herdr-core`](https://github.com/herdrdev/herdr-core "mention | Headless server that runs named persistent terminals for the desktop and phone clients") underneath, which turned out to be the more important piece.
+
+Core runs terminals without drawing a UI. I can start one, address it by name from the `hc` CLI, send it work, wait, and read the result. The program exists without taking up a pane on my screen.
 
 The status is not a guess from a screenshot. A reporting program sends its state through OSC 7501, the Program Status Protocol. In shell form, a program can report blocked like this:
 
@@ -43,14 +52,17 @@ printf '\e]7501;state=blocked:app=my-agent\e\\'
 
 Core does not scrape terminal text or recognize agent brands. It knows what the program reports. If a program does not report, it has no agent status; `hc wait` can only wait for it to exit. That boundary matters. A badge is useful because the program says what it is doing, not because a UI guessed from one frame of output.
 
-{hermes didnt work out of the box, omp did. I wrote a very small plugin for hermes, it works seamlessly, cool. By the time I decide to poublish the plugin since I think someone might also need it (in waiting for official support), some body has beaten me to it by 2 days. But cool, I spent 15m writing the plugin, not 4h writing the integration.}
+The states are few: working, done, idle, and blocked when a human is needed. That is the whole vocabulary, and it is enough. I do not need a progress percentage. I need to know which pane is waiting on me, which is finished, and which is still going.
+
+omp already reports. Hermes did not, so I wrote a small plugin, and it has worked since. By the time I decided to publish it in case someone else needed it while official support was pending, someone had published an equivalent two days earlier. Fine. Fifteen minutes, not four hours.
+
 The team has a shape now: space for a project, tab for a task, panes for agents. The lead's sub-agents appear under it. That last part is not cosmetic. I can see which worker belongs to which lead instead of keeping a second list in my head.
 
 My first real core team was small: an omp pane answered `READY`, `hc wait` returned `done` at turn 1, and I removed the pane. Boring. Exactly the kind of result I wanted from the plumbing.
 
 ## The desktop is where I work
 
-[`herdr-app`](https://github.com/herdrdev/herdr-app "mention | Desktop client that arranges core terminals into spaces, tabs, and panes") puts those running terminals into a desktop workspace. I organize by project, put tasks in tabs, and keep agents in panes. The sub-agents sit under the lead that started them {I dont need to see the sub-agents panes all the time, but they're still accessible with just one click}. 
+[`herdr-app`](https://github.com/herdrdev/herdr-app "mention | Desktop client that arranges core terminals into spaces, tabs, and panes") puts those running terminals into a desktop workspace. I organize by project, put tasks in tabs, and keep agents in panes. The sub-agents sit under the lead that started them, one click away, without each one holding a slice of the screen.
 
 When I want to check one terminal, I can peek at it without reshuffling the whole window. `terminal.peek` gives me a temporary look; `terminal.show` places it in a pane. I used to think visibility meant a pane for every worker, permanently arranged. Now the terminals keep working while I decide which one to open.
 
@@ -64,27 +76,26 @@ The phone is where this setup makes sense away from the desk. The [`Herdr` phone
 
 I spent time in April researching this exact problem: Blink, Moshi, Mosh, tmux, the whole phone-to-host chain. I wrote down a Moshi + Mosh + tmux stack that looked like it should work. I prepared the host, then never set the push token, so notifications never worked. I kept wanting remote access to mean I could see and act on the same work, not squint at a terminal session that might have lost its connection.
 
-Now I open the phone and see the herd. The app is six days old as I write this, so this is not a claim that every setup is frictionless. It needs `herdr-core` running and SSH reachability; away from home that means SSH over Tailscale. The iOS app is version 1.0.5. There are open reports from Android users about key authentication and from a user asking for ProxyJump support. Those are reports, not proof that everyone hits the same bugs. The phone app also does not offer a separate approval card or let me edit the desktop layout. When an agent needs me, I can open its terminal and respond there.
+Now I open the phone and see the herd. The app is six days old as I write this, so I will not claim the setup is frictionless for everyone. It needs `herdr-core` running, which is one install command, and SSH reachability; away from home that is SSH over Tailscale, which is how I reach this box anyway. In the time I have used it I have not hit a real bug. The phone app also does not offer a separate approval card or let me edit the desktop layout. When an agent needs me, I open its terminal and reply there.
 
 The TUI has its own phone route through any SSH client, but that is not this app. The phone app connects to core; TUI sessions are separate and never appear in its Inbox. Moving the team to core is what made the phone part possible.
 
 ## New on top of old things
 
-The app is six days old. Everything it stands on is older.
+Everything here is older than the app is.
 
-Terminal emulation is Ghostty's. `herdr-app` builds a local `ghostty-sys` crate whose manifest reads "Generated bindings to upstream libghostty-vt (vendor/ghostty)". The TUI carries `ghostty-vt`, described in-tree as "Herdr's binding to its vendored libghostty-vt", and core depends on the same crate. The VT engine I already trusted, in a different frame.
+The terminal engine is Ghostty's. `herdr-app` builds a local `ghostty-sys` crate whose manifest reads "Generated bindings to upstream libghostty-vt (vendor/ghostty)". The TUI carries `ghostty-vt`, described in-tree as "Herdr's binding to its vendored libghostty-vt", and core depends on the same crate. I have run Ghostty as my terminal for a long time, then through cmux, and now through this. Same engine, third wrapper. I did not have to trust a new terminal; I already trusted that one.
 
 The agents are ordinary programs. Core owns a pseudo-terminal per terminal and starts children through `spawn_pty`; `hc run` takes any command, `hc send` types into it, `hc read` gives back the screen and the scrollback. Nothing about omp or Hermes changed to run here. My team script is a few hundred lines calling the same CLI any shell could call.
 
-The desktop UI is not theirs either: `herdr-app` vendors GPUI, the framework from Zed, with its Apache licence sitting in the tree next to the vendored Ghostty. New composition over old parts.
+The desktop UI is not theirs either: `herdr-app` vendors GPUI, the framework from Zed, with its Apache licence sitting in the tree next to the vendored Ghostty. I do not know much about the machinery underneath. What I notice is the shape: a sidebar, tabs, and panes. It is the TUI in a window, and I already knew how to use that.
 
-What I did give up, so the sentence stays honest: an agent must run inside a core terminal before the app or the phone can see it. A program that does not report has no status at all, and `hc wait` falls back to waiting for the process to exit. And a restart returns a pane as a fresh shell, not the work that was in it. Those are boundaries of the layer I chose, not of the terminal underneath.
-{to me they're old things, ghostty is "old", stable, I literally switched terminals a lot (probably check notes), I settled with ghostty, then cmux (libghostty), then this (still ghostty). So the terminal is reliable, I knew that. Idk what underlying mechanisms are, I just know I can run harnesses inside them teminals, cool. desktop UI is very minimal-ish, my layout is a sidebar, tabs, and panes, which I already get used to on herdr tui. it's literally the desktop version of tui, }
+I expected to give something up and found I did not. An agent has to run inside a terminal to be seen at all; that is what the thing is. A program that does not report needs a few lines of integration, and both harnesses I run took an afternoon. A restart returns a shell in the last directory, which is what tmux gave me before, so nothing got worse. I have not found anything I used to do that I cannot do here.
 
 ## It is a place, not a vendor bet
 
 The protocol is the part I care about beyond one app. OSC 7501 is open. A program that reports its state can show up in the same list, regardless of which company made it. `omp` reports natively. Hermes reports through a plugin I wrote. The app does not need a special relationship with every agent vendor just to show whether its process is working or blocked.
 
-That is why Herdr stuck for me. I argued the general version of this before, in [From Framework Fatigue to Ecosystem Fatigue](/blog/260410-from-framework-fatigue-to-ecosystem-fatigue) - the bill lands on you when the surface you depend on is a product instead of a protocol. tmux still gives me panes and persistence. The TUI made agents visible but kept them in a window. Core gives the terminals names and status without requiring that window; the desktop app and phone let me look in when I need to. Several agents can work together, and I can see where they are.
+That is why Herdr stuck for me. tmux still gives me panes and persistence. The TUI made agents visible but kept them in a window. Core gives the terminals names and status without requiring that window; the desktop app and phone let me look in when I need to. Several agents can work together, and I can see where they are, which was the whole point.
 
 I stopped keeping every agent on screen. Now I check the herd when I need it.
