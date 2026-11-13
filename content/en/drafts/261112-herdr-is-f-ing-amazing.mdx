@@ -69,9 +69,14 @@ printf '\e]7501;state=blocked:app=my-agent\e\\'
 
 Core does not scrape terminal frames or maintain a hardcoded list of agent brands - it simply trusts what the process reports. If a program stays silent, it gets no badge, and `hc wait` falls back to waiting for exit. That boundary matters. A status badge is only useful when the program declares its state, not when a UI tries to guess from screen text. The vocabulary is small - working, blocked, done, idle, error - and I have not needed a sixth. I don't need a progress bar; I just need to know who is waiting on me, who is finished, and who is still running.
 
+<figure className="pb-4">
+  <img src="/261112-herdr-is-f-ing-amazing/mobile-foldable.webp" alt="An agent asking for approval, seen on a phone" className="rounded-lg mx-auto max-w-[50%] h-auto" />
+  <figcaption className="text-sm opacity-60 text-center pt-2">A blocked agent asking, seen from the phone.</figcaption>
+</figure>
+
 omp reports on its own. Hermes did not, so I wrote a small plugin, and it has worked since the first try. By the time I decided to publish it in case someone else was stuck on the same gap, [someone had shipped a plugin covering part of it two days earlier](https://github.com/jspoynor/herdr-hermes-status "mention | Public Hermes status plugin, narrower in scope: Python CLI only, no desktop or gateway"). That is the entire cost of being late: fifteen minutes of work instead of an afternoon of integration, because the protocol is one escape sequence.
 
-With Core, the team finally has shape: a space for the project, a tab for the task, panes for agents, and sub-agents nested directly under their lead. That nesting isn't cosmetic - I can see which worker belongs to which lead without keeping a mental map. My first real Core run - an omp pane replying READY, hc wait returning done on turn one, and tearing the pane down - was boring in the exact way good plumbing should be.
+With Core, the team finally has shape: a space for the project, a tab for the task, panes for agents, and sub-agents nested directly under their lead. That nesting isn't cosmetic - I can see which worker belongs to which lead without keeping a mental map. My first real Core run - an omp pane replying READY, `hc wait` returning done on turn one, and tearing the pane down - was boring in the exact way good plumbing should be.
 
 ## The desktop is where I work
 
