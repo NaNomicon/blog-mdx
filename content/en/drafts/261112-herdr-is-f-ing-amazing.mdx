@@ -36,11 +36,11 @@ The TUI did what I wanted from it. Agents got names and state badges, a worker c
 
 The layer above it was the part that did not hold. I wrote an extension bridge so an omp seat could show omp's own TUI inside the rig ([openrig#1747](https://github.com/mvschwarz/openrig/pull/1747 "further-reading | The draft PR for that bridge; still open, still a draft")), then stopped, because a better harness contract was coming and my patch was in its way. OpenRig is what got me to open herdr. It is not what kept me.
 
-The TUI also did not fix the window. The team lived in that session, and I had to keep it open to see the team. The TUI and the later desktop app do not share live agents. I wanted a place I could open when it was useful, without making it the place where every terminal had to sit all day.
+The problem I came for was still there, though. The team lived in that session, and I had to keep it open to see the team. The TUI and the later desktop app do not share live agents. I wanted a place I could open when it was useful, without making it the place where every terminal had to sit all day.
 
 ## Core under the app
 
-The push came from the desktop app, not the server. A post about the new app showed vertical tabs, which is exactly why I had been running cmux, and a few screenshots showed agent status next to terminal names. That was the part I wanted. I looked into it and found [`herdr-core`](https://github.com/herdrdev/herdr-core "mention | Headless server that runs named persistent terminals for the desktop and phone clients") underneath, which turned out to be the more important piece.
+The push came from the desktop app, not the server. A post about the new app showed vertical tabs, which is exactly why I had been running cmux, another terminal built on the same Ghostty engine, and a few screenshots showed agent status next to terminal names. That was the part I wanted. I looked into it and found [`herdr-core`](https://github.com/herdrdev/herdr-core "mention | Headless server that runs named persistent terminals for the desktop and phone clients") underneath, which turned out to be the more important piece.
 
 Core runs terminals without drawing a UI. I can start one, address it by name from the `hc` CLI, send it work, wait, and read the result. The program exists without taking up a pane on my screen.
 
@@ -82,19 +82,19 @@ The TUI has its own phone route through any SSH client, but that is not this app
 
 ## New on top of old things
 
-Everything here is older than the app is.
+Everything underneath is older than the app itself.
 
 The terminal engine is Ghostty's. `herdr-app` builds a local `ghostty-sys` crate whose manifest reads "Generated bindings to upstream libghostty-vt (vendor/ghostty)". The TUI carries `ghostty-vt`, described in-tree as "Herdr's binding to its vendored libghostty-vt", and core depends on the same crate. I have run Ghostty as my terminal for a long time, then through cmux, and now through this. Same engine, third wrapper. I did not have to trust a new terminal; I already trusted that one.
 
 The agents are ordinary programs. Core owns a pseudo-terminal per terminal and starts children through `spawn_pty`; `hc run` takes any command, `hc send` types into it, `hc read` gives back the screen and the scrollback. Nothing about omp or Hermes changed to run here. My team script is a few hundred lines calling the same CLI any shell could call.
 
-The desktop UI is not theirs either: `herdr-app` vendors GPUI, the framework from Zed, with its Apache licence sitting in the tree next to the vendored Ghostty. I do not know much about the machinery underneath. What I notice is the shape: a sidebar, tabs, and panes. It is the TUI in a window, and I already knew how to use that.
+The desktop UI is not theirs either: `herdr-app` vendors GPUI, the framework from Zed, with its Apache license sitting in the tree next to the vendored Ghostty. I do not know much about the machinery underneath. What I notice is the shape: a sidebar, tabs, and panes. It is the TUI in a window, and I already knew how to use that.
 
 I expected to give something up and found I did not. An agent has to run inside a terminal to be seen at all; that is what the thing is. A program that does not report needs a few lines of integration, and both harnesses I run took an afternoon. A restart returns a shell in the last directory, which is what tmux gave me before, so nothing got worse. I have not found anything I used to do that I cannot do here.
 
 ## It is a place, not a vendor bet
 
-The protocol is the part I care about beyond one app. OSC 7501 is open. A program that reports its state can show up in the same list, regardless of which company made it. `omp` reports natively. Hermes reports through a plugin I wrote. The app does not need a special relationship with every agent vendor just to show whether its process is working or blocked.
+The protocol is the part I care about beyond one app. OSC 7501 is open. A program that reports its state can show up in the same list, regardless of which company made it. omp reports natively. Hermes reports through a plugin I wrote. The app does not need a special relationship with every agent vendor just to show whether its process is working or blocked.
 
 That is why Herdr stuck for me. tmux still gives me panes and persistence. The TUI made agents visible but kept them in a window. Core gives the terminals names and status without requiring that window; the desktop app and phone let me look in when I need to. Several agents can work together, and I can see where they are, which was the whole point.
 
