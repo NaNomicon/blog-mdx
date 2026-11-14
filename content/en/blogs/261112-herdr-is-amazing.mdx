@@ -1,9 +1,9 @@
 export const metadata = {
-  title: "Herdr is f***ing amazing",
+  title: "Herdr is amazing",
   publishDate: "2026-11-12",
   description: "Herdr gave me one visible place to run agent teams across my desktop and phone.",
   category: "Technology",
-  cover_image: "/covers/261112-herdr-is-f-ing-amazing.png",
+  cover_image: "/covers/261112-herdr-is-amazing.jpg",
   tldr: "I wanted several agents working together without hiding them in background processes or giving every terminal a permanent window. Herdr gives me a named, visible home for the team, from desktop to phone.",
   tags: ["herdr", "agents", "terminal"],
 };
@@ -15,7 +15,7 @@ I like running a small crew. One carries the main task, another checks its work,
 Sometimes an agent goes off the rails early, then still hands back a tidy, confident answer - with the wrong turns buried three paragraphs up in its reasoning. Reading the output afterward means auditing a conclusion with no visibility into how it got there. Most harnesses ship sub-agents of their own now, and watching one means switching views inside that harness. Bounce between a lead and its workers a few times and you lose the thread of both, all while trapped inside one window.
 
 <figure className="pb-4">
-  <img src="/261112-herdr-is-f-ing-amazing/omp-agent-hub.png" alt="omp Agent Hub roster" className="w-full rounded-lg" />
+  <img src="/261112-herdr-is-amazing/omp-agent-hub.png" alt="omp Agent Hub roster" className="w-full rounded-lg" />
   <figcaption className="text-sm opacity-60 text-center pt-2">`omp`'s own sub-agents window. You get tired switching between them.</figcaption>
 </figure>
 
@@ -28,7 +28,7 @@ The other fix I reached for is putting every terminal on screen, which works rig
 For a long time, [`tmux`](https://github.com/tmux/tmux "reference | Terminal multiplexer; my workspace for years before this") was all I asked for. Ten agents meant ten panes, or fewer panes tucked into sessions I kept cycling through to hunt down whichever one had gone quiet. I even wrote an auto-tiling grid that rearranged itself as panes appeared and exited, preferring columns whenever the count got awkward. It worked - and I want that on the record, because everything below is about a job `tmux` never claimed to do.
 
 <figure className="pb-4">
-  <img src="/261112-herdr-is-f-ing-amazing/tmux-ten-panes.png" alt="tmux with ten panes" className="w-full rounded-lg" />
+  <img src="/261112-herdr-is-amazing/tmux-ten-panes.png" alt="tmux with ten panes" className="w-full rounded-lg" />
   <figcaption className="text-sm opacity-60 text-center pt-2">`tmux`, ten panes, all of them mine to watch</figcaption>
 </figure>
 
@@ -52,7 +52,7 @@ Ironically, what pulled me over to the headless architecture was the desktop cli
 
 
 <figure className="pb-4">
-  <img src="/261112-herdr-is-f-ing-amazing/herdr-desktop-app.png" alt="Herdr landing page with a collage of agent workspaces" className="w-full rounded-lg" />
+  <img src="/261112-herdr-is-amazing/herdr-desktop-app.png" alt="Herdr landing page with a collage of agent workspaces" className="w-full rounded-lg" />
   <figcaption className="text-sm opacity-60 text-center pt-2">look at those screenshots, aren't they cool?</figcaption>
 </figure>
 
@@ -68,7 +68,7 @@ printf '\e]7501;state=blocked:app=my-agent\e\\'
 Core does not scrape terminal frames or maintain a hardcoded list of agent brands - it simply trusts what the process reports. If a program stays silent, it gets no badge, and `hc wait` falls back to waiting for exit. That boundary matters. A status badge is only useful when the program declares its state, not when a UI tries to guess from screen text. The vocabulary is small - `working`, `blocked`, `done`, `idle`, `error` - and I have not needed a sixth. I don't need a progress bar; I just need to know who is waiting on me, who is finished, and who is still running.
 
 <figure className="pb-4">
-  <img src="/261112-herdr-is-f-ing-amazing/mobile-foldable.webp" alt="An agent asking for approval, seen on a phone" className="rounded-lg mx-auto max-w-[50%] h-auto" />
+  <img src="/261112-herdr-is-amazing/mobile-foldable.webp" alt="An agent asking for approval, seen on a phone" className="rounded-lg mx-auto max-w-[50%] h-auto" />
   <figcaption className="text-sm opacity-60 text-center pt-2">A blocked agent asking, seen from the app.</figcaption>
 </figure>
 
@@ -81,14 +81,14 @@ With Core, the team finally has shape: a space for the project, a tab for the ta
 [`herdr-app`](https://github.com/herdrdev/herdr-app "mention | Desktop client that arranges core terminals into spaces, tabs, and panes") turns those background terminals into a workspace I actually want to sit in: projects down the sidebar, tasks in tabs, agents in panes, and sub-agents tucked one click beneath the lead that spawned them.
 
 <figure className="pb-4">
-  <img src="/261112-herdr-is-f-ing-amazing/agent-hierarchy.png" alt="Sub-agents nested under their lead" className="rounded-lg mx-auto max-w-full h-auto" />
+  <img src="/261112-herdr-is-amazing/agent-hierarchy.png" alt="Sub-agents nested under their lead" className="rounded-lg mx-auto max-w-full h-auto" />
   <figcaption className="text-sm opacity-60 text-center pt-2">The hierarchy, one click down</figcaption>
 </figure>
 
 The feature I didn't expect to rely on so heavily is peeking. `terminal.peek` lets me glance into a worker without reshuffling my layout; `terminal.show` promotes it to a real pane once it earns the screen space. For years I assumed visibility meant giving every worker a permanent tile. Now the terminals keep running in the background while I decide which single one deserves my attention right now.
 
 <figure className="pb-4">
-  <img src="/261112-herdr-is-f-ing-amazing/terminal-peek.png" alt="terminal.peek in the desktop app" className="w-full rounded-lg" />
+  <img src="/261112-herdr-is-amazing/terminal-peek.png" alt="terminal.peek in the desktop app" className="w-full rounded-lg" />
   <figcaption className="text-sm opacity-60 text-center pt-2">Terminal peeking</figcaption>
 </figure>
 
@@ -107,7 +107,7 @@ I would rather keep a couple of small wrapper scripts for those gaps than preten
 Away from the desk, the mobile client is where this setup goes from "nice workspace" to the part I would miss. The [`Herdr` phone app](https://herdr.dev/mobile/ "reference | Official mobile client; connects to herdr-core over SSH, no account or relay") connects straight to `herdr-core` over SSH - no `Herdr` account, no vendor relay - and groups your agents into an Inbox sorted by `needs you`, `done`, `working`, `idle`, and `error`. Tapping an agent opens its live terminal so I can read the output and reply without disturbing my desktop panes.
 
 <figure className="pb-4">
-  <img src="/261112-herdr-is-f-ing-amazing/phone-inbox.png" alt="The Herdr app inbox on a phone" className="rounded-lg mx-auto max-w-[50%] h-auto" />
+  <img src="/261112-herdr-is-amazing/phone-inbox.png" alt="The Herdr app inbox on a phone" className="rounded-lg mx-auto max-w-[50%] h-auto" />
   <figcaption className="text-sm opacity-60 text-center pt-2">The same herd, from the sofa</figcaption>
 </figure>
 

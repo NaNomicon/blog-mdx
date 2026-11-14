@@ -125,6 +125,12 @@
     "href": "/blog/ai-actually-raises-the-skill-floor-if-youre-serious",
     "type": "blog"
   },
+  "/blog/herdr-is-amazing": {
+    "title": "Herdr is amazing",
+    "description": "Herdr gave me one visible place to run agent teams across my desktop and phone.",
+    "href": "/blog/herdr-is-amazing",
+    "type": "blog"
+  },
   "/notes/a-new-way-of-operating": {
     "title": "A new way of operating",
     "description": "Introduction to Austin Kleon's perspective on findability versus just being good.",
