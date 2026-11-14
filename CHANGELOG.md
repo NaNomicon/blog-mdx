@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/NaNomicon/blog-mdx/compare/v1.7.0...v1.7.1) (2026-11-14)
+
+
+### Bug Fixes
+
+* **seo:** dedupe article meta, redirect old herdr slug ([0ff0338](https://github.com/NaNomicon/blog-mdx/commit/0ff033872e3593db16c8c93016699bd04737ec2a))
+
 ## [1.7.0](https://github.com/NaNomicon/blog-mdx/compare/v1.6.0...v1.7.0) (2026-11-14)
 
 
