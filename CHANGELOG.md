@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/NaNomicon/blog-mdx/compare/v1.7.1...v1.7.2) (2026-11-14)
+
+
+### Bug Fixes
+
+* **blog:** revert herdr cover to the stock photo, cropped to 1200x630 ([c626746](https://github.com/NaNomicon/blog-mdx/commit/c626746f80b809e3921ab396ca77ec56bcee86a8))
+
 ## [1.7.1](https://github.com/NaNomicon/blog-mdx/compare/v1.7.0...v1.7.1) (2026-11-14)
 
 
