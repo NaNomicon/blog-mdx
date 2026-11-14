@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/NaNomicon/blog-mdx/compare/v1.6.0...v1.7.0) (2026-11-14)
+
+
+### Features
+
+* **blog:** publish herdr is f***ing amazing ([485f060](https://github.com/NaNomicon/blog-mdx/commit/485f060f6a18ae94551cd890aa0a0c53a65b195e))
+
 ## [1.6.0](https://github.com/NaNomicon/blog-mdx/compare/v1.5.0...v1.6.0) (2026-08-12)
 
 
