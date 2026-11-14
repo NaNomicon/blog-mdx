@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/NaNomicon/blog-mdx/compare/v1.7.2...v1.7.3) (2026-11-14)
+
+
+### Bug Fixes
+
+* **blog:** shift herdr cover crop to the top of the frame ([2a5969f](https://github.com/NaNomicon/blog-mdx/commit/2a5969f80008e2dcad55cb61273242cffe6111ca))
+
 ## [1.7.2](https://github.com/NaNomicon/blog-mdx/compare/v1.7.1...v1.7.2) (2026-11-14)
 
 
