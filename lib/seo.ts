@@ -136,15 +136,6 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
             // Copyright
             "copyright": `Copyright ${new Date().getFullYear()} ${author}`,
 
-            // Revised date for blog posts
-            ...(publishDate && {
-                "revised": new Date(publishDate).toISOString(),
-            }),
-
-            // Category for blog posts
-            ...(category && {
-                "article:section": category,
-            }),
 
             // Disable automatic translation
             "google": "notranslate",
@@ -175,22 +166,6 @@ export function generateSEOMetadata(config: SEOConfig): Metadata {
         },
     };
 
-    // Add structured data for blog posts
-    if (slug && publishDate) {
-        const additionalMeta: Record<string, string> = {
-            "article:published_time": publishDate,
-            "article:author": author,
-        };
-
-        if (category) {
-            additionalMeta["article:section"] = category;
-        }
-
-        metadata.other = {
-            ...metadata.other,
-            ...additionalMeta,
-        };
-    }
 
     return metadata;
 }

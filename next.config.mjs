@@ -89,6 +89,21 @@ const nextConfig = {
   optimizeFonts: true,
 
   // Optionally, add any other Next.js config below
+  async redirects() {
+    return [
+      {
+        source: "/blog/261112-herdr-is-f-ing-amazing",
+        destination: "/blog/261112-herdr-is-amazing",
+        permanent: true,
+      },
+      {
+        source: "/vi/blog/261112-herdr-is-f-ing-amazing",
+        destination: "/vi/blog/261112-herdr-is-amazing",
+        permanent: true,
+      },
+    ];
+  },
+
 };
 
 const withMDX = createMDX({
